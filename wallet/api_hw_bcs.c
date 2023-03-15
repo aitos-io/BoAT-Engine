@@ -555,7 +555,7 @@ BOAT_RESULT BoatHwbcsTxInit(BoatHwbcsTx *tx_ptr,
     }
 
     /* wallet assignment */
-    tx_ptr->wallet_ptr = wallet_ptr;
+    tx_ptr->wallet_ptr = (BoatHwbcsWallet *)wallet_ptr;
 
     /* paramList assignment */
     paramSrcList[0] = (BCHAR *)chaincodeId_path_str;
