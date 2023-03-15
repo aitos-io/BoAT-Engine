@@ -28,6 +28,8 @@ api_chainmaker.c defines the chainmaker wallet API for BoAT IoT SDK.
 #include "common/result.pb-c.h"
 #include "common/transaction.pb-c.h"
 #include "boatchainmaker_v2/boatchainmaker.h"
+#include "boatosal.h"
+#include "boat_keystore_intf.h"
 
 /**
  * @description:
@@ -168,7 +170,8 @@ BOAT_RESULT BoatChainmakerTxInit(const BoatChainmakerWallet *wallet_ptr, BoatCha
         return BOAT_ERROR_COMMON_INVALID_ARGUMENT;
     }
 
-    tx_ptr->wallet_ptr = (BoatChainmakerTx *)wallet_ptr;
+    /////tx_ptr->wallet_ptr = (BoatChainmakerTx *)wallet_ptr;
+    tx_ptr->wallet_ptr = (BoatChainmakerWallet *)wallet_ptr;
     tx_ptr->gas_limit = gas_limit;
     return result;
 }
@@ -193,7 +196,7 @@ __BOATSTATIC BOAT_RESULT BoatChainmakerTxRequest(BoatChainmakerTx *tx_ptr, Commo
     // ((http2IntfContext *)tx_ptr->wallet_ptr->http2Context_ptr)->tlsCAchain.field_ptr = BoatMalloc(((http2IntfContext *)tx_ptr->wallet_ptr->http2Context_ptr)->tlsCAchain.field_len);
     // memset(((http2IntfContext *)tx_ptr->wallet_ptr->http2Context_ptr)->tlsCAchain.field_ptr, 0x00, ((http2IntfContext *)tx_ptr->wallet_ptr->http2Context_ptr)->tlsCAchain.field_len);
     // memcpy(((http2IntfContext *)tx_ptr->wallet_ptr->http2Context_ptr)->tlsCAchain.field_ptr, tx_ptr->wallet_ptr->network_info.ca_tls_cert_content.content, tx_ptr->wallet_ptr->network_info.ca_tls_cert_content.length);
-    ((http2IntfContext *)tx_ptr->wallet_ptr->http2Context_ptr)->tlsCAchain.field_ptr = tx_ptr->wallet_ptr->network_info.ca_tls_cert_content.content;
+    ((http2IntfContext *)tx_ptr->wallet_ptr->http2Context_ptr)->tlsCAchain.field_ptr = (BUINT8 *)tx_ptr->wallet_ptr->network_info.ca_tls_cert_content.content;
 
 #if (BOAT_CHAINMAKER_TLS_IDENTIFY_CLIENT == 1)
     // if (((http2IntfContext *)(tx_ptr->wallet_ptr->http2Context_ptr))->tlsPrikey.field_ptr != NULL)
@@ -211,7 +214,7 @@ __BOATSTATIC BOAT_RESULT BoatChainmakerTxRequest(BoatChainmakerTx *tx_ptr, Commo
     ((http2IntfContext *)(tx_ptr->wallet_ptr->http2Context_ptr))->tlsCert.field_len = tx_ptr->wallet_ptr->network_info.client_tls_cert_content.length + 1;
     // ((http2IntfContext *)(tx_ptr->wallet_ptr->http2Context_ptr))->tlsCert.field_ptr = BoatMalloc(((http2IntfContext *)(tx_ptr->wallet_ptr->http2Context_ptr))->tlsCert.field_len);
     // strcpy((BCHAR *)((http2IntfContext *)(tx_ptr->wallet_ptr->http2Context_ptr))->tlsCert.field_ptr, tx_ptr->wallet_ptr->network_info.client_tls_cert_content.content);
-    ((http2IntfContext *)(tx_ptr->wallet_ptr->http2Context_ptr))->tlsCert.field_ptr = tx_ptr->wallet_ptr->network_info.client_tls_cert_content.content;
+    ((http2IntfContext *)(tx_ptr->wallet_ptr->http2Context_ptr))->tlsCert.field_ptr = (BUINT8 *)tx_ptr->wallet_ptr->network_info.client_tls_cert_content.content;
 #endif
 #endif
     ((http2IntfContext *)tx_ptr->wallet_ptr->http2Context_ptr)->pathTmp = "/api.RpcNode/SendRequest";
@@ -307,13 +310,13 @@ BOAT_RESULT BoatChainmakerAddTxParam(BoatChainmakerTx *tx_ptr, BUINT8 length, co
         }
         if (i & 0x01)
         {
-            tx_ptr->trans_para.parameters[tx_ptr->trans_para.n_parameters].value.field_ptr = (BCHAR *)args;
+            tx_ptr->trans_para.parameters[tx_ptr->trans_para.n_parameters].value.field_ptr = (BUINT8 *)args;
             tx_ptr->trans_para.parameters[tx_ptr->trans_para.n_parameters].value.field_len = strlen(args);
             tx_ptr->trans_para.n_parameters++;
         }
         else
         {
-            tx_ptr->trans_para.parameters[tx_ptr->trans_para.n_parameters].key = (BCHAR *)args;
+            tx_ptr->trans_para.parameters[tx_ptr->trans_para.n_parameters].key = (char *)args;
         }
     }
 
@@ -321,10 +324,25 @@ BOAT_RESULT BoatChainmakerAddTxParam(BoatChainmakerTx *tx_ptr, BUINT8 length, co
     return result;
 }
 
+BOAT_RESULT BoatChainmakerResponseInit(BoatResponseData *response_data)
+{
+    BOAT_RESULT result = BOAT_SUCCESS;
+    if (NULL == response_data)
+    {
+        BoatLog(BOAT_LOG_CRITICAL, "response_data is NULL.");
+        return BOAT_ERROR_COMMON_INVALID_ARGUMENT;
+    }
+
+    response_data->message = NULL;
+    response_data->contract_result.contract_message = NULL;
+    response_data->contract_result.payload.field_ptr = NULL;
+    response_data->contract_result.payload.field_len = 0;
+    return result;
+}
+
 BOAT_RESULT BoatChainmakerContractInvoke(BoatChainmakerTx *tx_ptr, char *method, char *contract_name, bool sync_result, BoatResponseData *response_data)
 {
     BUINT32 i;
-    BUINT32 len;
     Common__TxResponse *tx_response = NULL;
     BCHAR invoke_tx_id[BOAT_TXID_LEN] = {0};
     BCHAR query_systm_tx_id[BOAT_TXID_LEN] = {0};
@@ -370,7 +388,7 @@ BOAT_RESULT BoatChainmakerContractInvoke(BoatChainmakerTx *tx_ptr, char *method,
 
     response_data->code = tx_response->code;
     // if (strlen(tx_response->message) < BOAT_HLCHAINMAKER_HTTP2_SEND_BUF_MAX_LEN)
-    if (tx_response->code != SUCCESS)
+    if ((BoatResponseCode)tx_response->code != SUCCESS)
     {
         response_data->message = BoatMalloc(strlen(tx_response->message) + 1);
         if (response_data->message == NULL)
@@ -529,7 +547,6 @@ BOAT_RESULT BoatChainmakerContractInvoke(BoatChainmakerTx *tx_ptr, char *method,
 
 BOAT_RESULT BoatChainmakerContractQuery(BoatChainmakerTx *tx_ptr, char *method, char *contract_name, BoatResponseData *response_data)
 {
-    BUINT32 len = 0;
     TxType tx_type = TXTYPE_QUERY_USER_CONTRACT;
     Common__TxResponse *tx_response = NULL;
     BCHAR query_tx_id[BOAT_TXID_LEN] = {0};
@@ -637,22 +654,6 @@ BOAT_RESULT BoatChainmakerContractQuery(BoatChainmakerTx *tx_ptr, char *method, 
     {
         common__tx_response__free_unpacked(tx_response, NULL);
     }
-    return result;
-}
-
-BOAT_RESULT BoatChainmakerResponseInit(BoatResponseData *response_data)
-{
-    BOAT_RESULT result = BOAT_SUCCESS;
-    if (NULL == response_data)
-    {
-        BoatLog(BOAT_LOG_CRITICAL, "response_data is NULL.");
-        return BOAT_ERROR_COMMON_INVALID_ARGUMENT;
-    }
-
-    response_data->message = NULL;
-    response_data->contract_result.contract_message = NULL;
-    response_data->contract_result.payload.field_ptr = NULL;
-    response_data->contract_result.payload.field_len = 0;
     return result;
 }
 

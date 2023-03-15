@@ -26,6 +26,8 @@
 #include "boatEngine.h"
 #include "persiststore.h"
 #include "boatlog.h"
+#include "boatosal.h"
+
 
 /**
  * @description:

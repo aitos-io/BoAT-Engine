@@ -26,13 +26,15 @@ perform it and wait for its receipt.
 #include "boatcita.h"
 #include "cJSON.h"
 #include "blockchain.pb-c.h"
+#include "boatosal.h"
+#include "boat_keystore_intf.h"
+
 
 
 BOAT_RESULT CitaSendRawtx(BOAT_INOUT BoatCitaTx *tx_ptr)
 {
     BCHAR *tx_hash_str;
 
-    BUINT8 sig_parity = 0;
     BUINT8 sign_result[65] = {0};
     BUINT8 message_digest[32];
     BUINT8 message_digestLen;
@@ -68,7 +70,7 @@ BOAT_RESULT CitaSendRawtx(BOAT_INOUT BoatCitaTx *tx_ptr)
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, CitaSendRawtx_cleanup);
     }
     UtilityBinToHex(probuf_nonce_str,
-                (char*)tx_ptr->rawtx_fields.nonce.field, 16,
+                (BUINT8 *)tx_ptr->rawtx_fields.nonce.field, 16,
                 BIN2HEX_LEFTTRIM_UNFMTDATA, BIN2HEX_PREFIX_0x_NO, BOAT_FALSE);
     
     transaction.nonce = probuf_nonce_str;
@@ -179,7 +181,7 @@ BOAT_RESULT CitaSendRawtx(BOAT_INOUT BoatCitaTx *tx_ptr)
 
     /* print cita transaction message */
     BoatLog_hexdump(BOAT_LOG_VERBOSE, "Transaction Message(sign     )", 
-                    unverified_transaction.signature.data, unverified_transaction.signature.len);
+                    unverified_transaction.signature.data, (int)unverified_transaction.signature.len);
     /* print cita transaction message */
     BoatLog_hexdump(BOAT_LOG_VERBOSE, "Transaction Message(Nonce    )", 
                     tx_ptr->rawtx_fields.nonce.field, tx_ptr->rawtx_fields.nonce.field_len);
@@ -192,7 +194,7 @@ BOAT_RESULT CitaSendRawtx(BOAT_INOUT BoatCitaTx *tx_ptr)
     BoatLog_hexdump(BOAT_LOG_VERBOSE, "Transaction Message(Data     )", 
                     tx_ptr->rawtx_fields.data.field_ptr, tx_ptr->rawtx_fields.data.field_len);
     BoatLog_hexdump(BOAT_LOG_VERBOSE, "Transaction Message(chain_id )", 
-                     transaction.chain_id_v1.data,  transaction.chain_id_v1.len);
+                     transaction.chain_id_v1.data,  (int)transaction.chain_id_v1.len);
     
     param_cita_sendRawTransaction.signedtx_str = probuf_hex_str;
     tx_hash_str = web3_cita_sendRawTransaction(tx_ptr->wallet_ptr->web3intf_context_ptr,

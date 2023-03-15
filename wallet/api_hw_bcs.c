@@ -23,6 +23,10 @@ api_hw_bcs.c defines the hwbcs wallet API for BoAT IoT SDK.
 /* self-header include */
 #include "boatinternal.h"
 #include "boatlog.h"
+#include "boatosal.h"
+#include "boatdal.h"
+#include "boat_keystore_intf.h"
+
 #if PROTOCOL_USE_HWBCS == 1
 #include "boatprotocols.h"
 #include "http2intf.h"

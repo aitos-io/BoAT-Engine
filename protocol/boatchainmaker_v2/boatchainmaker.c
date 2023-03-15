@@ -28,6 +28,9 @@ wait for its receipt.
 #include "boatlog.h"
 #include "common/request.pb-c.h"
 #include "common/transaction.pb-c.h"
+#include "boatosal.h"
+#include "boat_keystore_intf.h"
+
 
 BOAT_RESULT hlchainmakerTransactionPacked(BoatChainmakerTx *tx_ptr, BCHAR *method, BCHAR *contract_name, TxType tx_type, char *tx_id)
 {
@@ -145,7 +148,7 @@ BOAT_RESULT hlchainmakerTransactionPacked(BoatChainmakerTx *tx_ptr, BCHAR *metho
 
     /* print chainmaker transaction message */
     BoatLog(BOAT_LOG_VERBOSE, "Transaction Message tx_id = %s", tx_id);
-    BoatLog(BOAT_LOG_VERBOSE, "Transaction Message time = %lld", common_payload.timestamp);
+    BoatLog(BOAT_LOG_VERBOSE, "Transaction Message time = %ld", common_payload.timestamp);
 
     for (i = 0; i < common_payload.n_parameters; i++)
     {

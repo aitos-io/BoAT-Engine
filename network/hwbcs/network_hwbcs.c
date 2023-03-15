@@ -27,6 +27,7 @@
 #include "persiststore.h"
 #include "boatlog.h"
 #include "hwbcs_network.pb-c.h"
+#include "boatosal.h"
 
 __BOATSTATIC BOAT_RESULT BoATHwbcs_checkNodefig(BoatHwbcsNodesCfg nodeCfg)
 {

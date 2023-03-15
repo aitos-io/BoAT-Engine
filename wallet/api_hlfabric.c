@@ -23,6 +23,9 @@ api_hlfabric.c defines the fabric wallet API for BoAT IoT SDK.
 /* self-header include */
 #include "boatinternal.h"
 #include "boatlog.h"
+#include "boatosal.h"
+#include "boat_keystore_intf.h"
+
 #if PROTOCOL_USE_HLFABRIC == 1
 #include "boatprotocols.h"
 #include "http2intf.h"
@@ -30,6 +33,7 @@ api_hlfabric.c defines the fabric wallet API for BoAT IoT SDK.
 #include "peer/proposal_response.pb-c.h"
 #include "orderer/cluster.pb-c.h"
 #include "peer/proposal.pb-c.h"
+#include "boatosal.h"
 
 /*!****************************************************************************
  * @brief Access to the specified node

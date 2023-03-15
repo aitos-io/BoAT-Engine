@@ -25,6 +25,8 @@
 #include "boatinternal.h"
 #include "boatEngine.h"
 #include "boatlog.h"
+#include "boatosal.h"
+
 
 /**
  * @description:

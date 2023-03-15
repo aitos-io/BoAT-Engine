@@ -28,6 +28,9 @@ wait for its receipt.
 #include "boatlog.h"
 #include "common/request.pb-c.h"
 #include "common/transaction.pb-c.h"
+#include "boatosal.h"
+#include "boat_keystore_intf.h"
+
 
 BOAT_RESULT generateTxRequestPayloadPack(BoatChainmakerTx *tx_ptr, char *method, char *contract_name, BoatFieldVariable *output_ptr)
 {
@@ -56,7 +59,7 @@ BOAT_RESULT generateTxRequestPayloadPack(BoatChainmakerTx *tx_ptr, char *method,
         }
         memcpy(key_value_pair, &keyValuePair, sizeof(Common__KeyValuePair));
         key_value_pair->key = tx_ptr->trans_para.parameters[i].key;
-        key_value_pair->value = tx_ptr->trans_para.parameters[i].value.field_ptr;
+        key_value_pair->value = (char *)tx_ptr->trans_para.parameters[i].value.field_ptr;
         transactPayload.parameters[i] = key_value_pair;
     }
 

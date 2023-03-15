@@ -25,6 +25,8 @@ api_ethereum.c defines the Ethereum wallet API for BoAT IoT SDK.
 #include "boatprotocols.h"
 #include "rpcintf.h"
 #include "cJSON.h"
+#include "boatosal.h"
+#include "boat_keystore_intf.h"
 
 /**
  * @description:

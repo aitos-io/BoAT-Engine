@@ -24,6 +24,7 @@
 #include "rpcintf.h"
 #include "cJSON.h"
 #include "web3intf.h"
+#include "boatosal.h"
 
 Web3IntfContext *web3_init(void)
 {

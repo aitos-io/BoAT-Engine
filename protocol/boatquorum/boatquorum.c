@@ -25,6 +25,9 @@ perform it and wait for its receipt.
 #include "web3intf.h"
 #include "boatquorum.h"
 #include "cJSON.h"
+#include "boatosal.h"
+#include "boat_keystore_intf.h"
+
 
 BOAT_RESULT QuorumSendRawtx(BOAT_INOUT BoatQuorumTx *tx_ptr)
 {

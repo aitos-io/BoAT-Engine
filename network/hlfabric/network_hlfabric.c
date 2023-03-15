@@ -27,7 +27,7 @@
 #include "persiststore.h"
 #include "fabric_network.pb-c.h"
 #include "boatlog.h"
-
+#include "boatosal.h"
 __BOATSTATIC BOAT_RESULT BoATHlfabric_checkNodefig(BoatHlfabricNodesCfg nodeCfg)
 {
     BOAT_RESULT result = BOAT_SUCCESS;

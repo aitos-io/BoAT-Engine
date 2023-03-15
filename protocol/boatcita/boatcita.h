@@ -85,6 +85,11 @@ extern "C" {
 
 BOAT_RESULT CitaSendRawtx(BOAT_INOUT BoatCitaTx *tx_ptr);
 
+BOAT_RESULT cita_parse_json_result(const BCHAR *json_string, 
+                                  const BCHAR *child_name, 
+                                  BoatFieldVariable *result_out);
+
+
 /*! @}*/
 
 #ifdef __cplusplus

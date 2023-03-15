@@ -27,6 +27,7 @@
 #include "persiststore.h"
 #include "boatlog.h"
 #include "chainmaker_network.pb-c.h"
+#include "boatosal.h"
 
 /**
  * @description:
@@ -75,7 +76,7 @@ __BOATSTATIC BOAT_RESULT BoATChainmaker_getNetworkFromProto(BoatChainmakerNetwor
 
     if (strlen(network_proto->ca_tls_cert_content) - 1 > sizeof(Networkdata->ca_tls_cert_content.content))
     {
-        BoatLog(BOAT_LOG_NORMAL, "client tls cert len exceed = %lld", strlen(network_proto->ca_tls_cert_content));
+        BoatLog(BOAT_LOG_NORMAL, "client tls cert len exceed = %ld", strlen(network_proto->ca_tls_cert_content));
         return BOAT_ERROR_COMMON_OUT_OF_MEMORY;
     }
 

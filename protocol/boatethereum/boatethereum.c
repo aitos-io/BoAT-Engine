@@ -25,6 +25,8 @@ perform it and wait for its receipt.
 #include "web3intf.h"
 #include "boatethereum.h"
 #include "cJSON.h"
+#include "boatosal.h"
+#include "boat_keystore_intf.h"
 
 
 BOAT_RESULT EthSendRawtx(BOAT_INOUT BoatEthTx *tx_ptr)

@@ -27,6 +27,8 @@
 #include "persiststore.h"
 #include "cita_network.pb-c.h"
 #include "boatlog.h"
+#include "boatosal.h"
+
 
 /**
  * @description:

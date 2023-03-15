@@ -25,6 +25,7 @@
 #define __NETWORK_HWBCS_H__
 
 #include "boatiotsdk.h"
+#include "boatdal.h"
 
 #define BOAT_HWBCS_TLS_SUPPORT BOAT_TLS_SUPPORT					//!< If need client support TLS, set it to 1.
 #define BOAT_HWBCS_TLS_IDENTIFY_CLIENT BOAT_TLS_IDENTIFY_CLIENT //!< If server need identify client, set it to 1.

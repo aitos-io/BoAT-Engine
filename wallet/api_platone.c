@@ -27,6 +27,8 @@ boatPlatonewallet.c defines the Platone wallet API for BoAT IoT SDK.
 #include "rpcintf.h"
 #include "boatEngine.h"
 #include "cJSON.h"
+#include "boatosal.h"
+#include "boat_keystore_intf.h"
 
 /**
  * @description:

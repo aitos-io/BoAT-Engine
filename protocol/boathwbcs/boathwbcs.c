@@ -25,6 +25,9 @@ wait for its receipt.
 #include "boatconfig.h"
 #include "boathwbcs.h"
 #include "boatlog.h"
+#include "boatosal.h"
+#include "boat_keystore_intf.h"
+
 
 #if PROTOCOL_USE_HWBCS == 1
 #include "http2intf.h"
@@ -236,7 +239,7 @@ BOAT_RESULT hwbcsProposalTransactionPacked(BoatHwbcsTx *tx_ptr)
     /* approvals */
 
     approval_message.identity.len = tx_ptr->wallet_ptr->network_info.accountCertContent.length;
-    approval_message.identity.data = tx_ptr->wallet_ptr->network_info.accountCertContent.content;
+    approval_message.identity.data = (uint8_t *)tx_ptr->wallet_ptr->network_info.accountCertContent.content;
     approval_message.sign.data = signatureResult.pkcs_sign;
     approval_message.sign.len = signatureResult.pkcs_sign_length;
 

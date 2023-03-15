@@ -25,7 +25,8 @@ perform it and wait for its receipt.
 #include "web3intf.h"
 #include "boatvenachain.h"
 #include "cJSON.h"
-
+#include "boatosal.h"
+#include "boat_keystore_intf.h"
 
 BOAT_RESULT VenachainSendRawtx(BOAT_INOUT BoatVenachainTx *tx_ptr)
 {

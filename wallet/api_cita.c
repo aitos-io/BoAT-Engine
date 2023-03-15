@@ -26,6 +26,8 @@ api_cita.c defines the cita wallet API for BoAT IoT SDK.
 #include "rpcintf.h"
 #include "cJSON.h"
 #include "boatlog.h"
+#include "boatosal.h"
+#include "boat_keystore_intf.h"
 
 /**
  * @description:
@@ -87,7 +89,6 @@ BOAT_RESULT BoatCitaTxInit(BoatCitaWallet *wallet_ptr,
                            BCHAR *recipient_str,
                            BUINT64 quota)
 {
-    BCHAR *retval_str = NULL;
     BOAT_RESULT result;
     BUINT64 valid_until_block_value;
 
@@ -190,6 +191,7 @@ BOAT_RESULT BoatCitaTxSetQuotaLimit(BoatCitaTx *tx_ptr, BUINT64 quota_limit_valu
 
     // Set quotaLimit
     tx_ptr->rawtx_fields.quota = quota_limit_value;
+	return BOAT_SUCCESS;
 }
 
 BOAT_RESULT BoatCitaTxSetRecipient(BoatCitaTx *tx_ptr, BUINT8 address[BOAT_CITA_ADDRESS_SIZE])

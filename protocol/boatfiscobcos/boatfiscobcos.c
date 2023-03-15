@@ -23,6 +23,9 @@ perform it and wait for its receipt.
 
 #include "boatconfig.h"
 #include "boatinternal.h"
+#include "boatosal.h"
+#include "boat_keystore_intf.h"
+
 
 #if PROTOCOL_USE_FISCOBCOS == 1
 #include "web3intf.h"

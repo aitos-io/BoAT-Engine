@@ -29,6 +29,7 @@
 
 #include "boatiotsdk.h"
 #include "boattypes.h"
+#include "boatdal.h"
 
 #define BOAT_CHAINMAKER_TLS_SUPPORT                BOAT_TLS_SUPPORT //!< If need client support TLS, set it to 1.
 #define BOAT_CHAINMAKER_TLS_IDENTIFY_CLIENT        BOAT_TLS_IDENTIFY_CLIENT //!< If server need identify client, set it to 1.

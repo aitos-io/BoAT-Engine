@@ -25,6 +25,8 @@ wait for its receipt.
 #include "boatconfig.h"
 #include "boathlfabric.h"
 #include "boatlog.h"
+#include "boatosal.h"
+#include "boat_keystore_intf.h"
 
 #if PROTOCOL_USE_HLFABRIC == 1
 #include "http2intf.h"
