@@ -4,7 +4,7 @@
 ALLSUBDIRS := $(shell $(BOAT_FIND) . -maxdepth 1 -type d)
 ALLSUBDIRS := $(basename $(patsubst ./%,%,$(ALLSUBDIRS)))
 
-EXCLUDE_DIRS := include
+EXCLUDE_DIRS := include tests
 SUBDIRS := $(filter-out $(EXCLUDE_DIRS),$(ALLSUBDIRS))
 
 # Add _clean_ prefix to avoid clean subdir target names being confused with compile subdir targets
@@ -83,6 +83,9 @@ boatwallet_objs: $(SUBDIRS)
 
 $(SUBDIRS):
 	make -C $@ all
+
+test: $(LIBNAME)
+	make -C tests all
 	
 $(CLEAN_SUBDIRS):
 	make -C $(patsubst _clean_%,%,$@) clean
