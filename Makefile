@@ -4,7 +4,7 @@
 ALLSUBDIRS := $(shell $(BOAT_FIND) . -maxdepth 1 -type d)
 ALLSUBDIRS := $(basename $(patsubst ./%,%,$(ALLSUBDIRS)))
 
-EXCLUDE_DIRS := include tests
+EXCLUDE_DIRS := include tests demo tools
 SUBDIRS := $(filter-out $(EXCLUDE_DIRS),$(ALLSUBDIRS))
 
 # Add _clean_ prefix to avoid clean subdir target names being confused with compile subdir targets
@@ -74,6 +74,9 @@ LIBNAME = $(BOAT_LIB_DIR)/libboatengine.a
 .PHONY: all $(SUBDIRS) boatwallet_objs clean
 
 all: $(LIBNAME)
+
+demo: $(LIBNAME)
+	make -C demo all
 
 $(LIBNAME): boatwallet_objs
 	$(AR) r $(LIBNAME) $(OBJECTS)
