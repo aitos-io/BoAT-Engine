@@ -6,9 +6,11 @@ ALLSUBDIRS := $(basename $(patsubst ./%,%,$(ALLSUBDIRS)))
 
 EXCLUDE_DIRS := include tests demo tools
 SUBDIRS := $(filter-out $(EXCLUDE_DIRS),$(ALLSUBDIRS))
+CLEANEXCLUDE_DIRS := include tools
+CLEANSUBDIRS := $(filter-out $(CLEANEXCLUDE_DIRS),$(ALLSUBDIRS))
 
 # Add _clean_ prefix to avoid clean subdir target names being confused with compile subdir targets
-CLEAN_SUBDIRS := $(addprefix _clean_,$(SUBDIRS) )
+CLEAN_SUBDIRS := $(addprefix _clean_,$(CLEANSUBDIRS)	)
 
 OBJECTS = $(wildcard $(BOAT_BUILD_DIR)/BoAT-Engine/protocol/*.o) \
 		  $(wildcard $(BOAT_BUILD_DIR)/BoAT-Engine/wallet/*.o)
