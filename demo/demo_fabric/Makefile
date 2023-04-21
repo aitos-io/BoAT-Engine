@@ -11,9 +11,9 @@ DEMO_SOURCES         = $(wildcard *.c)
 DEPENDENCE_LIBS = $(BOAT_LIB_DIR)/libboatengine.a \
 				  $(BOAT_LIB_DIR)/libboatvendor.a \
 				  $(LINK_LIBS)
-
+ifneq (,$(FABRIC_DEMO_IP))
 BOAT_CFLAGS +=  -DFABRIC_DEMO_IP=\"$(FABRIC_DEMO_IP)\"
-
+endif
 all: $(OBJECTS_DIR)
 	$(CC) $(BOAT_CFLAGS) $(BOAT_LFLAGS) demo_fabric_abac.c \
 	    -DUSE_ONETIME_WALLET \
