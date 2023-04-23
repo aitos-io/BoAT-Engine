@@ -29,7 +29,7 @@ api_chainmaker.h is header file for BoAT IoT SDK chainmaker's interface.
  */
 
 #define BOAT_TXID_LEN 65
-#define BOAT_RETRY_CNT 10
+#define BOAT_RETRY_CNT 3
 #define BOAT_CHAINMAKER_MINE_INTERVAL 3 //!< Mining Interval of the blockchain, in seconds
 #define BOAT_CHAINMAKER_PRIKEY_MAX_LEN 512
 #define BOAT_CHAINMAKER_CERT_MAX_LEN 1024

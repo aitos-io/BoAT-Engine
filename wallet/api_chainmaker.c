@@ -30,6 +30,11 @@ api_chainmaker.c defines the chainmaker wallet API for BoAT IoT SDK.
 #include "boatchainmaker_v2/boatchainmaker.h"
 #include "boatosal.h"
 #include "boat_keystore_intf.h"
+#if PROTOCOL_USE_CHAINMAKER_V2
+#define CHAINMAKER_V2
+#elif PROTOCOL_USE_CHAINMAKER_V1
+#define CHAINMAKER_V1
+#endif
 
 /**
  * @description:
@@ -399,6 +404,16 @@ BOAT_RESULT BoatChainmakerContractInvoke(BoatChainmakerTx *tx_ptr, char *method,
         strcpy(response_data->message, tx_response->message);
         boat_throw(BOAT_ERROR, BoatHlchainmakerContractInvoke);
     }
+	else
+	{
+		response_data->message = BoatMalloc(strlen(tx_response->message) + 1);
+        if (response_data->message == NULL)
+        {
+            BoatLog(BOAT_LOG_CRITICAL, "response_data->message  is NULL");
+            boat_throw(BOAT_ERROR_COMMON_INVALID_ARGUMENT, BoatHlchainmakerContractInvoke);
+        }
+        strcpy(response_data->message, tx_response->message);
+	}
 
     if (sync_result)
     {
@@ -433,21 +448,21 @@ BOAT_RESULT BoatChainmakerContractInvoke(BoatChainmakerTx *tx_ptr, char *method,
                 }
 
                 response_data->code = tx_response->code;
-                // if (response_data->message != NULL)
-                // {
-                //     BoatFree(response_data->message);
-                //     response_data->message = NULL;
-                // }
-                // if (strlen(tx_response->message) < BOAT_HLCHAINMAKER_HTTP2_SEND_BUF_MAX_LEN)
-                // {
-                //     response_data->message = BoatMalloc(strlen(tx_response->message) + 1);
-                //     if (response_data->message == NULL)
-                //     {
-                //         BoatLog(BOAT_LOG_CRITICAL, "response_data->message  is NULL");
-                //         boat_throw(BOAT_ERROR_COMMON_INVALID_ARGUMENT, BoatHlchainmakerContractInvoke);
-                //     }
-                //     strcpy(response_data->message, tx_response->message);
-                // }
+                if (response_data->message != NULL)
+                {
+                    BoatFree(response_data->message);
+                    response_data->message = NULL;
+                }
+                if (strlen(tx_response->message) < BOAT_HLCHAINMAKER_HTTP2_SEND_BUF_MAX_LEN)
+                {
+                    response_data->message = BoatMalloc(strlen(tx_response->message) + 1);
+                    if (response_data->message == NULL)
+                    {
+                        BoatLog(BOAT_LOG_CRITICAL, "response_data->message  is NULL");
+                        boat_throw(BOAT_ERROR_COMMON_INVALID_ARGUMENT, BoatHlchainmakerContractInvoke);
+                    }
+                    strcpy(response_data->message, tx_response->message);
+                }
 
                 if (response_data->code == BOAT_SUCCESS)
                 {
@@ -490,7 +505,7 @@ BOAT_RESULT BoatChainmakerContractInvoke(BoatChainmakerTx *tx_ptr, char *method,
                             common__transaction_info_with_rwset__free_unpacked(transaction_info_with_rwset, NULL);
                             break;
                         }
-                        else if (i = (BOAT_RETRY_CNT - 1))
+                        else if (i == (BOAT_RETRY_CNT - 1))
                         {
                             if (transaction_info_with_rwset->transaction->result->contract_result->message != NULL)
                             {

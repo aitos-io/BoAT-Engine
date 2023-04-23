@@ -106,7 +106,7 @@ START_TEST(test_005RunTransaction_0004InvokeFailureContractNoExist)
 
     result = BoatChainmakerContractInvoke(&tx_ptr, "save", "test", true, &invoke_response);
     ck_assert_int_eq(result, BOAT_SUCCESS);
-    ck_assert_int_eq(invoke_response.code, BOAT_SUCCESS);
+    ck_assert_int_eq(invoke_response.contract_result.contract_code, INVALIDCONTRACTPARAMETERCONTRACTNAME);
     ck_assert_str_eq(invoke_response.message, "SUCCESS");
     BoatIotSdkDeInit();
 }
@@ -281,8 +281,8 @@ Suite *make_transaction_suite(void)
     tcase_add_test(tc_transaction_api, test_005RunTransaction_0003InvokeFailureContractNull);  
     tcase_add_test(tc_transaction_api, test_005RunTransaction_0004InvokeFailureContractNoExist);  
     tcase_add_test(tc_transaction_api, test_005RunTransaction_0005InvokeFailureResponseNull);  
-    tcase_add_test(tc_transaction_api, test_005RunTransaction_0006InvokeSucessSyncOn); 
     tcase_add_test(tc_transaction_api, test_005RunTransaction_0007InvokeSucessSyncOff); 
+    tcase_add_test(tc_transaction_api, test_005RunTransaction_0006InvokeSucessSyncOn); 
     tcase_add_test(tc_transaction_api, test_005RunTransaction_0008InvokeFailureInvalidUrl); 
 
     tcase_add_test(tc_transaction_api, test_005RunTransaction_0009QueryFailureTxNull); 
