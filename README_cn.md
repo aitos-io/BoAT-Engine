@@ -77,11 +77,12 @@ BaAT Engine，提供chainmaker、cita、ethereum、fiscobcos、hlfabric、hwbcs�
     将BoAT-ProjectTemplate 开发模板 clone 到 BoAT-ProjectTemplate/目录
 
 3. clone 成功后，进入 BoAT-ProjectTemplate/目录，目录下包含如下文件：
-    
+    ```
     |
     +---BoAT-ProjectTemplate/
         |---BoATLibs.conf
         |---config.py
+    ```
 
 4. 修改 BoATLibs.conf'，在BoATLibs.conf文件中写入：
         BoAT-SupportLayer
@@ -226,6 +227,7 @@ BaAT Engine，提供chainmaker、cita、ethereum、fiscobcos、hlfabric、hwbcs�
     |---config.py
     |---Makefile
     ```
+    
     在 BoAT-ProjectTemplate/目录下执行 make demo 
     编译成功后执行:
     ./build/BoAT-Engine/demo/demo_fabric//demo_fabric_abac_onetime  
