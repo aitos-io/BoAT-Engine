@@ -80,8 +80,8 @@ BaAT Engine，提供chainmaker、cita、ethereum、fiscobcos、hlfabric、hwbcs�
     ```
     |
     +---BoAT-ProjectTemplate/
-        |---BoATLibs.conf
-        |---config.py
+    |---BoATLibs.conf
+    |---config.py
     ```
 
 4. 修改 BoATLibs.conf'，在BoATLibs.conf文件中写入：
