@@ -211,21 +211,21 @@ BaAT Engine，提供chainmaker、cita、ethereum、fiscobcos、hlfabric、hwbcs�
     和 BoAT-Engine 添加必要的头文件包含路径
     
     脚本执行完后的目录结构如下：
-
+    ```
     +---BoAT-ProjectTemplate/
-        |
-        +---BoAT-Engine/
-        |    ...
-        |    |---Makefile
-        |
-        +---BoAT-SupportLayer/
-        |    ...
-        |    |---Makefile
-        |
-        |---BoATLibs.conf
-        |---config.py
-        |---Makefile
-      
+    |
+    +---BoAT-Engine/
+    |    ...
+    |    |---Makefile
+    |
+    +---BoAT-SupportLayer/
+    |    ...
+    |    |---Makefile
+    |
+    |---BoATLibs.conf
+    |---config.py
+    |---Makefile
+    ```
     在 BoAT-ProjectTemplate/目录下执行 make demo 
     编译成功后执行:
     ./build/BoAT-Engine/demo/demo_fabric//demo_fabric_abac_onetime  
