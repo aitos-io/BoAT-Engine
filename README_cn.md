@@ -52,8 +52,8 @@ BaAT Engine，提供chainmaker、cita、ethereum、fiscobcos、hlfabric、hwbcs�
 +---tests                 | Test cases
 \---tools                 | Tools for generating C interface from contract ABI
 \---wallet                | wallet API implementation for each blockchain
-
 ```
+
 ## BoAT-Engine的编译和使用
 ***BoAT-Engine的编译需要通过BoAT-ProjectTemplate模板构建编译目录来实现，操作步骤如下：***
 1. 前提条件
@@ -63,17 +63,16 @@ BaAT Engine，提供chainmaker、cita、ethereum、fiscobcos、hlfabric、hwbcs�
     4. 在 Linux 操作系统中安装 gcc 及相关编译库
     
 2. 在 Linux 操作系统下打开Terminal终端，可以在任意目录执行 git clone 命令克隆 BoAT-ProjectTemplate 模板：
-    
+    ``` 
     $ git clone -b dev https://github.com/aitos-io/BoAT-ProjectTemplate.git 
-    
-        Cloning into 'BoAT-ProjectTemplate'...
-        remote: Enumerating objects: 16, done.
-        remote: Counting objects: 100% (16/16), done.
-        remote: Compressing objects: 100% (9/9), done.
-        remote: Total 16 (delta 4), reused 11 (delta 2), pack-reused 0
-        Unpacking objects: 100% (16/16), done.
-        Checking connectivity... done.
-    
+    Cloning into 'BoAT-ProjectTemplate'...
+    remote: Enumerating objects: 16, done.
+    remote: Counting objects: 100% (16/16), done.
+    remote: Compressing objects: 100% (9/9), done.
+    remote: Total 16 (delta 4), reused 11 (delta 2), pack-reused 0
+    Unpacking objects: 100% (16/16), done.
+    Checking connectivity... done.
+    ```  
     将BoAT-ProjectTemplate 开发模板 clone 到 BoAT-ProjectTemplate/目录
 
 3. clone 成功后，进入 BoAT-ProjectTemplate/目录，目录下包含如下文件：
