@@ -72,7 +72,7 @@ BaAT Engine，提供chainmaker、cita、ethereum、fiscobcos、hlfabric、hwbcs�
     remote: Total 16 (delta 4), reused 11 (delta 2), pack-reused 0
     Unpacking objects: 100% (16/16), done.
     Checking connectivity... done.
-    ```  
+    ```
     将BoAT-ProjectTemplate 开发模板 clone 到 BoAT-ProjectTemplate/目录
 
 3. clone 成功后，进入 BoAT-ProjectTemplate/目录，目录下包含如下文件：
@@ -90,13 +90,11 @@ BaAT Engine，提供chainmaker、cita、ethereum、fiscobcos、hlfabric、hwbcs�
     以上内容表示在BoAT-ProjectTemplate编译模板中会使用以上两个git仓库的代码
 
 5. 运行 config.py 脚本，Linux 操作系统下运行 python 脚本指令如下：
-
+    ```  
     $ python3 config.py 
-
-        We will clone the BoAT-SupportLayer repository, which may take several minutes
-    
-        Input the branch name or null:
-    
+    We will clone the BoAT-SupportLayer repository, which may take several minutes
+    Input the branch name or null:
+    ```
     1.仓库分支输入交互：
         脚本在这里等待输入 clone BoAT-SupportLayer 仓库的分支名称或 tag 名称，
         将 BoAT-SupportLayer 仓库 clone 到 BoAT-ProjectTemplate/BoAT-SupportLayer/ 目录
