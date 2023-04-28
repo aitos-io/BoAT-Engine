@@ -15,6 +15,12 @@
  *****************************************************************************/
 #include "tcase_ethereum.h"
 #include "TestPython.h"
+#ifndef TEST_KEY_TYPE
+#define TEST_KEY_TYPE ""
+#endif
+#ifndef TEST_ETHEREUM_NODE_URL
+#define TEST_ETHEREUM_NODE_URL "http://127.0.0.1:7545"
+#endif
 
 #define TEST_GAS_LIMIT              "0x6691B7"
 #define TEST_GAS_PRICE              "0x4A817C800"
@@ -34,7 +40,7 @@ __BOATSTATIC BoatEthWallet *ethereumOnetimeWalletPrepare()
     BoatEthWallet *wallet_p;
 
         
-    if (TEST_KEY_TYPE == "BOAT_WALLET_PRIKEY_FORMAT_NATIVE")
+    if (0 == strcmp(TEST_KEY_TYPE, "BOAT_WALLET_PRIKEY_FORMAT_NATIVE"))
     {
         keypair_config.prikey_format  = BOAT_KEYPAIR_PRIKEY_FORMAT_NATIVE;
         UtilityHexToBin(g_binFormatKey, 32, g_ethereum_private_key_buf, TRIMBIN_TRIM_NO, BOAT_FALSE);
@@ -56,7 +62,7 @@ __BOATSTATIC BoatEthWallet *ethereumOnetimeWalletPrepare()
 	network_config.chain_id             = TEST_ETHEREUM_CHAIN_ID;
     network_config.eip155_compatibility = TEST_EIP155_COMPATIBILITY;
     memset(network_config.node_url_str,0U,BOAT_ETH_NODE_URL_MAX_LEN);
-    strncpy(network_config.node_url_str, "http://127.0.0.1:7545", BOAT_ETH_NODE_URL_MAX_LEN - 1);
+    strncpy(network_config.node_url_str,TEST_ETHEREUM_NODE_URL, BOAT_ETH_NODE_URL_MAX_LEN - 1);
 
     network_index = BoATEthNetworkCreate(&network_config,BOAT_STORE_TYPE_RAM);
     ck_assert_int_eq(network_index, 0);

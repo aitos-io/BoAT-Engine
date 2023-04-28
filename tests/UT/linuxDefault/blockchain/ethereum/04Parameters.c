@@ -14,6 +14,12 @@
  * limitations under the License.
  *****************************************************************************/
 #include "tcase_ethereum.h"
+#ifndef TEST_KEY_TYPE
+#define TEST_KEY_TYPE ""
+#endif
+#ifndef TEST_ETHEREUM_NODE_URL
+#define TEST_ETHEREUM_NODE_URL "http://127.0.0.1:7545"
+#endif
 
 #define TEST_GAS_LIMIT              "0x6691B7"
 #define TEST_GAS_PRICE              "0x4A817C800"
@@ -24,14 +30,13 @@
 
 __BOATSTATIC BoatEthWallet *ethereumOnetimeWalletPrepare()
 {
-    BOAT_RESULT index;
     BoatKeypairPriKeyCtx_config keypair_config;
     BUINT8 keypair_index;
     BoatEthNetworkConfig network_config;
     BUINT8 network_index;
     BoatEthWallet *wallet = BoatMalloc(sizeof(BoatEthWallet));
         
-    if (TEST_KEY_TYPE == "BOAT_WALLET_PRIKEY_FORMAT_NATIVE")
+    if (0 == strcmp(TEST_KEY_TYPE, "BOAT_WALLET_PRIKEY_FORMAT_NATIVE"))
     {
         keypair_config.prikey_format  = BOAT_KEYPAIR_PRIKEY_FORMAT_NATIVE;
         UtilityHexToBin(g_binFormatKey, 32, g_ethereum_private_key_buf, TRIMBIN_TRIM_NO, BOAT_FALSE);
@@ -321,7 +326,7 @@ START_TEST(test_004Parameters_0011SetNonceSuccess)
     memset(NONCE.field, 0, 32);
 	NONCE.field_len = UtilityHexToBin(NONCE.field, 32, "0xA1",
 	 				                  TRIMBIN_LEFTTRIM, BOAT_TRUE);
-	ck_assert_str_eq(tx_ctx.rawtx_fields.nonce.field, NONCE.field);
+	ck_assert_str_eq((char *)tx_ctx.rawtx_fields.nonce.field, (char *)NONCE.field);
 
 
     BoatEthWalletDeInit(wallet);
@@ -347,7 +352,7 @@ START_TEST(test_004Parameters_0012SetNonceFailureNullTx)
     ck_assert_int_eq(ret, BOAT_SUCCESS);
 
     /* Set Nonce*/
-    ret = BoatEthTxSetNonce(NULL,"0xA1");
+    ret = BoatEthTxSetNonce(NULL,(BUINT64)"0xA1");
     ck_assert_int_eq(ret, BOAT_ERROR_COMMON_INVALID_ARGUMENT);
 
     BoatEthWalletDeInit(wallet);
@@ -380,7 +385,7 @@ START_TEST(test_004Parameters_0013SetValueSuccess)
     ret = BoatEthTxSetValue(&tx_ctx,&value);
     ck_assert_int_eq(ret, BOAT_SUCCESS);
 
-    ck_assert_str_eq(tx_ctx.rawtx_fields.value.field, value.field);
+    ck_assert_str_eq((char *)tx_ctx.rawtx_fields.value.field, (char *)value.field);
 
     BoatEthWalletDeInit(wallet);
 
@@ -465,11 +470,11 @@ START_TEST(test_004Parameters_0016SetDataSuccess)
 
     /* Set Value*/
     BoatFieldVariable data;
-    data.field_ptr = "hello";
+    data.field_ptr = (BUINT8 *)"hello";
     data.field_len = strlen("hello");
     ret = BoatEthTxSetData(&tx_ctx,&data);
     ck_assert_int_eq(ret, BOAT_SUCCESS);
-    ck_assert_str_eq(tx_ctx.rawtx_fields.data.field_ptr, data.field_ptr);
+    ck_assert_str_eq((char *)tx_ctx.rawtx_fields.data.field_ptr, (char *)data.field_ptr);
 
     BoatEthWalletDeInit(wallet);
 
@@ -495,7 +500,7 @@ START_TEST(test_004Parameters_0017SetDataFailureNullTx)
 
     /* Set Value*/
     BoatFieldVariable data;
-    data.field_ptr = "hello";
+    data.field_ptr = (BUINT8 *)"hello";
     data.field_len = strlen("hello");
     ret = BoatEthTxSetData(NULL,&data);
     ck_assert_int_eq(ret, BOAT_ERROR_COMMON_INVALID_ARGUMENT);
@@ -539,7 +544,6 @@ START_TEST(test_004Parameters_0019ChangeNodeUrlSuccess)
     BOAT_RESULT ret;
 
     BoatEthWallet *wallet;
-    BoatEthTx tx_ctx;
 
     BoatIotSdkInit();
 
@@ -548,7 +552,7 @@ START_TEST(test_004Parameters_0019ChangeNodeUrlSuccess)
     /* Change url*/
     ret = BoatEthWalletChangeNodeUrl(wallet,"www.123.com");
     ck_assert_int_eq(ret, BOAT_SUCCESS);
-    ck_assert_str_eq(wallet->network_info.node_url_str,"www.123.com");
+    ck_assert_str_eq((char *)wallet->network_info.node_url_str,"www.123.com");
 
     BoatEthWalletDeInit(wallet);
 
@@ -561,7 +565,6 @@ START_TEST(test_004Parameters_0020ChangeNodeUrlFailureNullParameters)
     BOAT_RESULT ret;
 
     BoatEthWallet *wallet;
-    BoatEthTx tx_ctx;
 
     BoatIotSdkInit();
 
@@ -585,7 +588,6 @@ START_TEST(test_004Parameters_0021ChangeChainIDSuccess)
     BOAT_RESULT ret;
 
     BoatEthWallet *wallet;
-    BoatEthTx tx_ctx;
 
     BoatIotSdkInit();
 
@@ -607,7 +609,6 @@ START_TEST(test_004Parameters_0022ChangeChainIDFailureNullParameters)
     BOAT_RESULT ret;
 
     BoatEthWallet *wallet;
-    BoatEthTx tx_ctx;
 
     BoatIotSdkInit();
 
@@ -628,7 +629,6 @@ START_TEST(test_004Parameters_0023ChangeEip155CompSuccess)
     BOAT_RESULT ret;
 
     BoatEthWallet *wallet;
-    BoatEthTx tx_ctx;
 
     BoatIotSdkInit();
 
@@ -650,7 +650,6 @@ START_TEST(test_004Parameters_0024ChangeEip155CompFailureNullParameters)
     BOAT_RESULT ret;
 
     BoatEthWallet *wallet;
-    BoatEthTx tx_ctx;
 
     BoatIotSdkInit();
 

@@ -17,6 +17,9 @@
 
 #define TEST_EIP155_COMPATIBILITY   BOAT_FALSE
 #define TEST_ETHEREUM_CHAIN_ID      5777
+#ifndef TEST_ETHEREUM_NODE_URL
+#define TEST_ETHEREUM_NODE_URL "http://127.0.0.1:7545"
+#endif
 
 BoatEthNetworkConfig get_ethereum_network_settings()
 {
@@ -415,7 +418,7 @@ END_TEST
 START_TEST(test_002Network_0010DeletePersistNetworkFailureNonExistentIndex) 
 {
     BOAT_RESULT ret;
-    BUINT8 i,j,pickNum;
+    BUINT8 i,j,pickNum=0xff;
 
     BoatIotSdkInit();
     /* 1. Pick a NonExistent index */

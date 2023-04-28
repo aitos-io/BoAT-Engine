@@ -14,6 +14,10 @@
  * limitations under the License.
  *****************************************************************************/
 #include "tcase_ethereum.h"
+#ifndef TEST_ETHEREUM_NODE_URL
+#define TEST_ETHEREUM_NODE_URL "http://127.0.0.1:7545"
+#endif
+
 
 BOAT_RESULT check_ethereum_wallet(BoatEthWallet *wallet,BUINT8 keypairIndex,BCHAR *keypairName,BoatKeypairPriKeyCtx_config *keypairConfig,
                                     BUINT8 networkIndex,BoatEthNetworkConfig *networkConfig)
