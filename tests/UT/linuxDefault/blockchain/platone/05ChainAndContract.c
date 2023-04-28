@@ -15,6 +15,12 @@
  *****************************************************************************/
 #include "tcase_platone.h"
 #include "my_contract.cpp.abi.h"
+#ifndef TEST_KEY_TYPE
+#define TEST_KEY_TYPE ""
+#endif
+#ifndef TEST_PLATONE_NODE_URL
+#define TEST_PLATONE_NODE_URL "127.0.0.1"
+#endif
 
 #define TEST_GAS_LIMIT              "0x6691B7"
 #define TEST_GAS_PRICE              "0x4A817C800"
@@ -34,7 +40,7 @@ __BOATSTATIC BoatPlatoneWallet *platoneOnetimeWalletPrepare()
     BoatPlatoneWallet *wallet_p = NULL;
 
         
-    if (TEST_KEY_TYPE == "BOAT_WALLET_PRIKEY_FORMAT_NATIVE")
+    if (0 == strcmp(TEST_KEY_TYPE, "BOAT_WALLET_PRIKEY_FORMAT_NATIVE"))
     {
         BoatLog(BOAT_LOG_CRITICAL, "g_platone_private_key_buf: %s", g_platone_private_key_buf);
         keypair_config.prikey_format  = BOAT_KEYPAIR_PRIKEY_FORMAT_NATIVE;

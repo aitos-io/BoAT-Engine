@@ -17,7 +17,9 @@
 
 #define TEST_EIP155_COMPATIBILITY   BOAT_FALSE
 #define TEST_PLATONE_CHAIN_ID      1
-
+#ifndef TEST_PLATONE_NODE_URL
+#define TEST_PLATONE_NODE_URL "127.0.0.1"
+#endif
 BoatPlatoneNetworkConfig get_platone_network_settings()
 {
     g_platone_network_config.chain_id             = TEST_PLATONE_CHAIN_ID;

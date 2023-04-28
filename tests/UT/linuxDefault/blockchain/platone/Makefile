@@ -13,9 +13,12 @@ DEPENDENCE_LIBS = $(BOAT_LIB_DIR)/libboatengine.a \
 				  -lm\
 				  -lrt\
 				  -lsubunit
-
-BOAT_CFLAGS +=  -DTEST_PLATONE_NODE_URL=\"$(PLATONE_NODE_URL)\" \
-				-DTEST_KEY_TYPE=\"$(KEY_TYPE)\"
+ifneq (,$(PLATONE_NODE_URL))
+BOAT_CFLAGS +=  -DTEST_PLATONE_NODE_URL=\"$(PLATONE_NODE_URL)\" 
+endif
+ifneq (,$(KEY_TYPE))
+BOAT_CFLAGS +=  -DTEST_KEY_TYPE=\"$(KEY_TYPE)\"
+endif
 
 all: $(OBJECTS_DIR) $(OBJECTS)	
 	$(CC) $(BOAT_CFLAGS) $(BOAT_LFLAGS) $(OBJECTS) $(DEPENDENCE_LIBS) -o $(EXECUTABLE_DIR)/platone

@@ -14,6 +14,9 @@
  * limitations under the License.
  *****************************************************************************/
 #include "tcase_platone.h"
+#ifndef TEST_PLATONE_NODE_URL
+#define TEST_PLATONE_NODE_URL "127.0.0.1"
+#endif
 
 BOAT_RESULT check_platone_wallet(BoatPlatoneWallet *wallet,BUINT8 keypairIndex,BCHAR *keypairName,BoatKeypairPriKeyCtx_config *keypairConfig,
                                     BUINT8 networkIndex,BoatPlatoneNetworkConfig *networkConfig)
@@ -43,7 +46,7 @@ BOAT_RESULT check_platone_wallet(BoatPlatoneWallet *wallet,BUINT8 keypairIndex,B
 
 START_TEST(test_003Wallet_0001InitWalletSuccessOneTimeKeypairOneTimeNetwork) 
 {
-    BOAT_RESULT ret;
+    //BOAT_RESULT ret;
 
     BOAT_RESULT keypair_index;
     BoatKeypairPriKeyCtx_config keypair_config;
@@ -229,8 +232,6 @@ END_TEST
 
 START_TEST(test_003Wallet_0003WalletFailureWrongKeypair) 
 {
-    BOAT_RESULT ret;
-
     BOAT_RESULT networkIndex;
     BoatPlatoneNetworkConfig networkConfig;
     BoatPlatoneWallet *wallet_p = NULL;
@@ -257,8 +258,6 @@ END_TEST
 
 START_TEST(test_003Wallet_0006InitWalletFailureWrongNetwork) 
 {
-    BOAT_RESULT ret;
-
     BOAT_RESULT keypair_index;
     BoatKeypairPriKeyCtx_config keypair_config;
 
@@ -288,7 +287,7 @@ END_TEST
 
 START_TEST(test_003Wallet_0007DeInitWalletSuccessOneTimeKeypairOneTimeNetwork) 
 {
-    BOAT_RESULT ret;
+    //BOAT_RESULT ret;
 
     BOAT_RESULT keypair_index;
     BoatKeypairPriKeyCtx_config keypair_config;
