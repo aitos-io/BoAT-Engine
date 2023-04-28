@@ -13,8 +13,9 @@ DEPENDENCE_LIBS = $(BOAT_LIB_DIR)/libboatengine.a \
 				  -lm\
 				  -lrt\
 				  -lsubunit
-
+ifneq (,$(CHAINMAKER_NODE_URL))
 BOAT_CFLAGS +=  -DTEST_CHAINMAKER_NODE_URL=\"$(CHAINMAKER_NODE_URL)\" 
+endif
 
 all: $(OBJECTS_DIR) $(OBJECTS)	
 	$(CC) $(BOAT_CFLAGS) $(BOAT_LFLAGS) $(OBJECTS) $(DEPENDENCE_LIBS) -o $(EXECUTABLE_DIR)/chainmaker

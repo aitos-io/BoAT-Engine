@@ -14,6 +14,7 @@
  * limitations under the License.
  *****************************************************************************/
 #include "tcase_chainmaker.h"
+#include "boatosal.h"
 
 static BoatChainmakerWallet* g_chaninmaker_wallet_ptr;
 

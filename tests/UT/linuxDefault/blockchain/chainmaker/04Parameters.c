@@ -91,12 +91,12 @@ START_TEST(test_004ParametersInit_0003AddTxParamSuccess)
                                                   "key3", "value3", NULL);
     ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
 
-    ck_assert_int_eq(strcmp(tx_ptr.trans_para.parameters[0].key,             "key1"),   0);
-    ck_assert_int_eq(strcmp(tx_ptr.trans_para.parameters[0].value.field_ptr, "value1"), 0);
-    ck_assert_int_eq(strcmp(tx_ptr.trans_para.parameters[1].key,             "key2"),   0);
-    ck_assert_int_eq(strcmp(tx_ptr.trans_para.parameters[1].value.field_ptr, "value2"), 0);
-    ck_assert_int_eq(strcmp(tx_ptr.trans_para.parameters[2].key,             "key3"),   0);
-    ck_assert_int_eq(strcmp(tx_ptr.trans_para.parameters[2].value.field_ptr, "value3"), 0);
+    ck_assert_int_eq(strcmp((char *)tx_ptr.trans_para.parameters[0].key,             "key1"),   0);
+    ck_assert_int_eq(strcmp((char *)tx_ptr.trans_para.parameters[0].value.field_ptr, "value1"), 0);
+    ck_assert_int_eq(strcmp((char *)tx_ptr.trans_para.parameters[1].key,             "key2"),   0);
+    ck_assert_int_eq(strcmp((char *)tx_ptr.trans_para.parameters[1].value.field_ptr, "value2"), 0);
+    ck_assert_int_eq(strcmp((char *)tx_ptr.trans_para.parameters[2].key,             "key3"),   0);
+    ck_assert_int_eq(strcmp((char *)tx_ptr.trans_para.parameters[2].value.field_ptr, "value3"), 0);
     BoatIotSdkDeInit();
 }
 END_TEST
@@ -167,14 +167,14 @@ START_TEST(test_004ParametersInit_0009AddTxParamSucessTxLessMaxEvenParams)
     rtnVal = BoatChainmakerAddTxParam(&tx_ptr, 8, "key1", "value1", "key2", "value2", "key3", "value3", 
                                                     "key4", "value4",  NULL);
     ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
-    ck_assert_int_eq(strcmp(tx_ptr.trans_para.parameters[0].key,             "key1"),   0);
-    ck_assert_int_eq(strcmp(tx_ptr.trans_para.parameters[0].value.field_ptr, "value1"), 0);
-    ck_assert_int_eq(strcmp(tx_ptr.trans_para.parameters[1].key,             "key2"),   0);
-    ck_assert_int_eq(strcmp(tx_ptr.trans_para.parameters[1].value.field_ptr, "value2"), 0);
-    ck_assert_int_eq(strcmp(tx_ptr.trans_para.parameters[2].key,             "key3"),   0);
-    ck_assert_int_eq(strcmp(tx_ptr.trans_para.parameters[2].value.field_ptr, "value3"), 0);
-    ck_assert_int_eq(strcmp(tx_ptr.trans_para.parameters[3].key,             "key4"),   0);
-    ck_assert_int_eq(strcmp(tx_ptr.trans_para.parameters[3].value.field_ptr, "value4"), 0);
+    ck_assert_int_eq(strcmp((char *)tx_ptr.trans_para.parameters[0].key,             "key1"),   0);
+    ck_assert_int_eq(strcmp((char *)tx_ptr.trans_para.parameters[0].value.field_ptr, "value1"), 0);
+    ck_assert_int_eq(strcmp((char *)tx_ptr.trans_para.parameters[1].key,             "key2"),   0);
+    ck_assert_int_eq(strcmp((char *)tx_ptr.trans_para.parameters[1].value.field_ptr, "value2"), 0);
+    ck_assert_int_eq(strcmp((char *)tx_ptr.trans_para.parameters[2].key,             "key3"),   0);
+    ck_assert_int_eq(strcmp((char *)tx_ptr.trans_para.parameters[2].value.field_ptr, "value3"), 0);
+    ck_assert_int_eq(strcmp((char *)tx_ptr.trans_para.parameters[3].key,             "key4"),   0);
+    ck_assert_int_eq(strcmp((char *)tx_ptr.trans_para.parameters[3].value.field_ptr, "value4"), 0);
     BoatIotSdkDeInit();
 }
 END_TEST

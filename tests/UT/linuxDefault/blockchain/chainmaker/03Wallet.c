@@ -14,6 +14,10 @@
  * limitations under the License.
  *****************************************************************************/
 #include "tcase_chainmaker.h"
+#include "boatosal.h"
+#ifndef TEST_CHAINMAKER_NODE_URL
+#define TEST_CHAINMAKER_NODE_URL "127.0.0.1"
+#endif
 
 const BCHAR* chainmaker_client_sign_prikey = 
 "-----BEGIN EC PRIVATE KEY-----\n"
@@ -147,10 +151,10 @@ BOAT_RESULT test_chainmaker_create_network(BBOOL is_onetime, BUINT8 *network_ind
         return BOAT_ERROR_COMMON_OUT_OF_MEMORY;
     }
     strcpy(networkConfig.client_sign_cert_content.content, chainmaker_client_sign_cert);
-    networkConfig.node_url  = BoatMalloc(strlen(TEST_CHAINMAKER_NODE_URL) + 1);
-    networkConfig.host_name = BoatMalloc(strlen(chainmaker_host_name) + 1);
-    networkConfig.chain_id  = BoatMalloc(strlen(chainmaker_chain_id) + 1);
-    networkConfig.org_id    = BoatMalloc(strlen(chainmaker_org_id) + 1);
+    networkConfig.node_url  = (char *)BoatMalloc(strlen(TEST_CHAINMAKER_NODE_URL) + 1);
+    networkConfig.host_name = (char *)BoatMalloc(strlen(chainmaker_host_name) + 1);
+    networkConfig.chain_id  = (char *)BoatMalloc(strlen(chainmaker_chain_id) + 1);
+    networkConfig.org_id    = (char *)BoatMalloc(strlen(chainmaker_org_id) + 1);
 
     strcpy(networkConfig.node_url,  TEST_CHAINMAKER_NODE_URL);
     strcpy(networkConfig.host_name, chainmaker_host_name);
@@ -248,7 +252,7 @@ START_TEST(test_003CreateWallet_0001CreateOneTimeWalletSuccess)
     ck_assert_str_eq(g_chaninmaker_wallet_ptr->network_info.ca_tls_cert_content.content, chainmaker_ca_tls_cert);
 
     #if (BOAT_CHAINMAKER_TLS_IDENTIFY_CLIENT == 1)
-        ck_assert_str_eq(g_chaninmaker_wallet_ptr->network_info.client_tls_privkey_data.value, chainmaker_clinet_tls_prikey);
+        ck_assert_str_eq((char *)g_chaninmaker_wallet_ptr->network_info.client_tls_privkey_data.value, chainmaker_clinet_tls_prikey);
         ck_assert_str_eq(g_chaninmaker_wallet_ptr->network_info.client_tls_cert_content.content, chainmaker_client_tls_cert);  
     #endif
 #endif
@@ -339,7 +343,7 @@ START_TEST(test_003CreateWallet_0004CreatePersistWalletSuccess)
     ck_assert_str_eq(g_chaninmaker_wallet_ptr->network_info.ca_tls_cert_content.content, chainmaker_ca_tls_cert);
 
     #if (BOAT_CHAINMAKER_TLS_IDENTIFY_CLIENT == 1)
-        ck_assert_str_eq(g_chaninmaker_wallet_ptr->network_info.client_tls_privkey_data.value, chainmaker_clinet_tls_prikey);
+        ck_assert_str_eq((char *)g_chaninmaker_wallet_ptr->network_info.client_tls_privkey_data.value, chainmaker_clinet_tls_prikey);
         ck_assert_str_eq(g_chaninmaker_wallet_ptr->network_info.client_tls_cert_content.content, chainmaker_client_tls_cert);  
     #endif
 #endif
