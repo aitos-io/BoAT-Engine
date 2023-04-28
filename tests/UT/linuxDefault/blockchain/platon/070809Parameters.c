@@ -14,6 +14,10 @@
  * limitations under the License.
  *****************************************************************************/
 #include "tcase_platon.h"
+#ifndef TEST_KEY_TYPE
+#define TEST_KEY_TYPE ""
+#endif
+
 
 #define TEST_GAS_LIMIT              "0x33333"
 #define TEST_GAS_PRICE              "0x4A817C800"
@@ -37,7 +41,7 @@ __BOATSTATIC BoatPlatONWallet * platonOnetimeWalletPrepare()
     BoatPlatONWallet *wallet_p = NULL;
     
         
-    if (TEST_KEY_TYPE == "BOAT_WALLET_PRIKEY_FORMAT_NATIVE")
+    if (0 == strcmp(TEST_KEY_TYPE, "BOAT_WALLET_PRIKEY_FORMAT_NATIVE"))
     {
         keypair_config.prikey_format  = BOAT_KEYPAIR_PRIKEY_FORMAT_NATIVE;
         UtilityHexToBin(g_binFormatKey, 32, g_platon_private_key_buf, TRIMBIN_TRIM_NO, BOAT_FALSE);
@@ -387,7 +391,7 @@ START_TEST(test_008ParametersSet_0004SetValueSuccess)
     ret = BoatPlatONTxSetValue(&tx_ctx,&value);
     ck_assert_int_eq(ret, BOAT_SUCCESS);
 
-    ck_assert_str_eq(tx_ctx.rawtx_fields.value.field, value.field);
+    ck_assert_str_eq((char *)tx_ctx.rawtx_fields.value.field, (char *)value.field);
 
     BoatPlatONWalletDeInit(wallet);
 
@@ -472,11 +476,11 @@ START_TEST(test_008ParametersSet_0007SetDataSuccess)
 
     /* Set Value*/
     BoatFieldVariable data;
-    data.field_ptr = "hello";
+    data.field_ptr = (BUINT8 *)"hello";
     data.field_len = strlen("hello");
     ret = BoatPlatONTxSetData(&tx_ctx,&data);
     ck_assert_int_eq(ret, BOAT_SUCCESS);
-    ck_assert_str_eq(tx_ctx.rawtx_fields.data.field_ptr, data.field_ptr);
+    ck_assert_str_eq((char *)tx_ctx.rawtx_fields.data.field_ptr, (char *)data.field_ptr);
 
     BoatPlatONWalletDeInit(wallet);
 
@@ -502,7 +506,7 @@ START_TEST(test_008ParametersSet_0008SetDataFailureNullTx)
 
     /* Set Value*/
     BoatFieldVariable data;
-    data.field_ptr = "hello";
+    data.field_ptr = (BUINT8 *)"hello";
     data.field_len = strlen("hello");
     ret = BoatPlatONTxSetData(NULL,&data);
     ck_assert_int_eq(ret, BOAT_ERROR_COMMON_INVALID_ARGUMENT);
@@ -555,7 +559,7 @@ START_TEST(test_009ParametersChange_0001ChangeNodeUrlSuccess)
     /* Change url*/
     ret = BoatPlatONWalletChangeNodeUrl(wallet,"www.123.com");
     ck_assert_int_eq(ret, BOAT_SUCCESS);
-    ck_assert_str_eq(wallet->network_info.node_url_str,"www.123.com");
+    ck_assert_str_eq((char *)wallet->network_info.node_url_str,"www.123.com");
 
     BoatPlatONWalletDeInit(wallet);
 

@@ -14,6 +14,10 @@
  * limitations under the License.
  *****************************************************************************/
 #include "tcase_platon.h"
+#include "boatosal.h"
+#ifndef TEST_KEY_TYPE
+#define TEST_KEY_TYPE ""
+#endif
 
 #define TEST_GAS_LIMIT "0x6691B7"
 #define TEST_GAS_PRICE "0x4A817C800"
@@ -28,7 +32,7 @@ BoatKeypairPriKeyCtx_config get_platon_keypair_settings()
 {
     // set user private key context
 
-    if (TEST_KEY_TYPE == "BOAT_WALLET_PRIKEY_FORMAT_NATIVE")
+    if (0 == strcmp(TEST_KEY_TYPE, "BOAT_WALLET_PRIKEY_FORMAT_NATIVE"))
     {
         g_keypair_config.prikey_format = BOAT_KEYPAIR_PRIKEY_FORMAT_NATIVE;
         UtilityHexToBin(g_binFormatKey, 32, g_platon_private_key_buf, TRIMBIN_TRIM_NO, BOAT_FALSE);
@@ -336,7 +340,7 @@ START_TEST(test_001Keypair_0008CreateOneTimeWalletFailureWrongNativeKeyLenConfig
     keypair_config.prikey_type = BOAT_KEYPAIR_PRIKEY_TYPE_SECP256K1;
 
     keypair_index = BoatKeypairCreate(&keypair_config, "oneTime_keypair", BOAT_STORE_TYPE_RAM);
-#if 0
+#if 1
     ck_assert_int_eq(keypair_index, BOAT_ERROR_COMMON_OUT_OF_MEMORY);
 #endif
     BoatIotSdkDeInit();
@@ -681,7 +685,7 @@ END_TEST
 START_TEST(test_001Keypair_0017DeletePersistKeypairFailureNonExistentIndex)
 {
     BOAT_RESULT ret;
-    BUINT8 i, j, pickNum;
+    BUINT8 i, j, pickNum=0xff;
 
     BoatIotSdkInit();
 

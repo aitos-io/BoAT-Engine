@@ -243,8 +243,6 @@ END_TEST
 
 START_TEST(test_003Wallet_0005InitWalletFailureWrongKeypair) 
 {
-    BOAT_RESULT ret;
-
     BOAT_RESULT networkIndex;
     BoatPlatONNetworkConfig networkConfig;
     BoatPlatONWallet *wallet_p = NULL;
@@ -271,8 +269,6 @@ END_TEST
 
 START_TEST(test_003Wallet_0006InitWalletFailureWrongNetwork) 
 {
-    BOAT_RESULT ret;
-
     BOAT_RESULT keypair_index;
     BoatKeypairPriKeyCtx_config keypair_config;
 

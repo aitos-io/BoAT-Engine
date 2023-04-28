@@ -15,6 +15,9 @@
  *****************************************************************************/
 #include "tcase_platon.h"
 #include "helloworld.h"
+#ifndef TEST_KEY_TYPE
+#define TEST_KEY_TYPE ""
+#endif
 
 #define TEST_GAS_LIMIT              "0x33333"
 #define TEST_GAS_PRICE              "0x33333"
@@ -37,7 +40,7 @@ __BOATSTATIC BoatPlatONWallet *platonOnetimeWalletPrepare()
     BoatPlatONWallet *wallet_p = NULL;
 
         
-    if (TEST_KEY_TYPE == "BOAT_WALLET_PRIKEY_FORMAT_NATIVE")
+    if (0 == strcmp(TEST_KEY_TYPE, "BOAT_WALLET_PRIKEY_FORMAT_NATIVE"))
     {
         keypair_config.prikey_format  = BOAT_KEYPAIR_PRIKEY_FORMAT_NATIVE;
         UtilityHexToBin(g_binFormatKey, 32, g_platon_private_key_buf, TRIMBIN_TRIM_NO, BOAT_FALSE);

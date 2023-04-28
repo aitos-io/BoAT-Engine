@@ -19,6 +19,10 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdio.h>
+#ifndef TEST_KEY_TYPE
+#define TEST_KEY_TYPE ""
+#endif
+
 
 /* extern suite declaration */
 extern Suite *make_keypair_suite(void);
@@ -39,7 +43,7 @@ int read_key_content(char* key_ptr)
         return -1;
     }
 
-    if (TEST_KEY_TYPE == "BOAT_WALLET_PRIKEY_FORMAT_NATIVE")
+    if (0 == strcmp(TEST_KEY_TYPE, "BOAT_WALLET_PRIKEY_FORMAT_NATIVE"))
     {
         fd = open("../../../../../../tests/UT/linuxDefault/blockchain/platon/pri_key/native.key", O_RDONLY);
         if (fd < 0)
