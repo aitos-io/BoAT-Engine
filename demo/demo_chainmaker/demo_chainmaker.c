@@ -144,7 +144,7 @@ __BOATSTATIC BOAT_RESULT chainmaker_create_keypair()
         return BOAT_ERROR_WALLET_CREATE_FAIL;
     }
     keypair_index = result;
-    
+    (void)keypair_config;
     return BOAT_SUCCESS;
 }
 

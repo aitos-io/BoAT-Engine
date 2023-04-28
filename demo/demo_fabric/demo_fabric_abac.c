@@ -125,7 +125,7 @@ const BCHAR *fabric_order_tlsCert = "-----BEGIN CERTIFICATE-----\r\n"
 									"-----END CERTIFICATE-----\r\n";
 
 #ifndef FABRIC_DEMO_IP
-#define FABRIC_URL_IP "127.0.0.1"
+#define FABRIC_DEMO_IP "127.0.0.1"
 #endif
 
 const BCHAR *fabric_demo_order1_url = FABRIC_DEMO_IP ":7050";
