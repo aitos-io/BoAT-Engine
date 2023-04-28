@@ -17,6 +17,10 @@
 
 #define TEST_EIP155_COMPATIBILITY   BOAT_FALSE
 #define TEST_VENACHAIN_CHAIN_ID      300
+#ifndef TEST_VENACHAIN_NODE_URL
+#define TEST_VENACHAIN_NODE_URL "127.0.0.1"
+#endif
+
 
 BoatVenachainNetworkConfig get_venachain_network_settings()
 {
@@ -413,7 +417,7 @@ END_TEST
 START_TEST(test_002Network_0010DeletePersistNetworkFailureNonExistentIndex) 
 {
     BOAT_RESULT ret;
-    BUINT8 i,j,pickNum;
+    BUINT8 i,j,pickNum=0xff;
 
     BoatIotSdkInit();
     /* 1. Pick a NonExistent index */

@@ -7,7 +7,8 @@ This file is generated from contract ABI. DO NOT modify it by hand.
 
 #include "boatiotsdk.h"
 #include "boatEngine.h"
-
+#include "boatosal.h"
+#include "boat_keystore_intf.h"
 
 // Types specially defined for mapping from Solidity
 

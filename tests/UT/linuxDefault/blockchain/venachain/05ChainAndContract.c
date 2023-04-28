@@ -15,7 +15,12 @@
  *****************************************************************************/
 #include "tcase_venachain.h"
 #include "mycontract.cpp.abi.h"
-
+#ifndef TEST_KEY_TYPE
+#define TEST_KEY_TYPE ""
+#endif
+#ifndef TEST_VENACHAIN_NODE_URL
+#define TEST_VENACHAIN_NODE_URL "127.0.0.1"
+#endif
 #define TEST_GAS_LIMIT              "0x6691B7"
 #define TEST_GAS_PRICE              "0x4A817C800"
 #define TEST_EIP155_COMPATIBILITY   BOAT_FALSE
@@ -25,7 +30,6 @@
 
 __BOATSTATIC BoatVenachainWallet *venachainOnetimeWalletPrepare()
 {
-    BOAT_RESULT index;
     BoatKeypairPriKeyCtx_config keypair_config;
     BUINT8 keypair_index;
     BoatVenachainNetworkConfig network_config;
@@ -34,7 +38,7 @@ __BOATSTATIC BoatVenachainWallet *venachainOnetimeWalletPrepare()
     BoatVenachainWallet *wallet_p = NULL;
 
         
-    if (TEST_KEY_TYPE == "BOAT_WALLET_PRIKEY_FORMAT_NATIVE")
+    if (0 == strcmp(TEST_KEY_TYPE, "BOAT_WALLET_PRIKEY_FORMAT_NATIVE"))
     {
         keypair_config.prikey_format  = BOAT_KEYPAIR_PRIKEY_FORMAT_NATIVE;
         UtilityHexToBin(g_binFormatKey, 32, g_venachain_private_key_buf, TRIMBIN_TRIM_NO, BOAT_FALSE);
@@ -73,14 +77,7 @@ START_TEST(test_010CallContract_0001CallContractSuccess)
 
     BoatVenachainWallet *wallet = NULL;
     BoatVenachainTx tx_ctx;
-
     BCHAR *result_str;
-    BSINT32 bs[10];
-    BUINT32 i;
-    BoatFieldVariable parse_result = {NULL, 0};
-    BoatAddress ba;
-    Bbytes32 b32;
-    BCHAR s[] = "AbCdEfGhIjKlMn";
 
     BoatIotSdkInit();
 
@@ -111,10 +108,7 @@ END_TEST
 
 START_TEST(test_011GetBalance_0001GetSuccess) 
 {
-    BOAT_RESULT ret;
-
     BoatVenachainWallet *wallet = NULL;
-    BoatVenachainTx tx_ctx;
 
     BCHAR *result_str;
 
@@ -134,10 +128,7 @@ END_TEST
 
 START_TEST(test_011GetBalance_0002GetSuccessNullAddress) 
 {
-    BOAT_RESULT ret;
-
     BoatVenachainWallet *wallet = NULL;
-    BoatVenachainTx tx_ctx;
 
     BCHAR *result_str;
 
@@ -157,10 +148,7 @@ END_TEST
 
 START_TEST(test_011GetBalance_0003GetFailureNullWallet) 
 {
-    BOAT_RESULT ret;
-
     BoatVenachainWallet *wallet = NULL;
-    BoatVenachainTx tx_ctx;
 
     BCHAR *result_str;
 

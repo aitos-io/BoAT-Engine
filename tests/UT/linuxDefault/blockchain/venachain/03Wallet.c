@@ -14,6 +14,9 @@
  * limitations under the License.
  *****************************************************************************/
 #include "tcase_venachain.h"
+#ifndef TEST_VENACHAIN_NODE_URL
+#define TEST_VENACHAIN_NODE_URL "127.0.0.1"
+#endif
 
 BOAT_RESULT check_venachain_wallet(BoatVenachainWallet *wallet,BUINT8 keypairIndex,BCHAR *keypairName,BoatKeypairPriKeyCtx_config *keypairConfig,
                                     BUINT8 networkIndex,BoatVenachainNetworkConfig *networkConfig)
@@ -243,8 +246,6 @@ END_TEST
 
 START_TEST(test_003Wallet_0005InitWalletFailureWrongKeypair) 
 {
-    BOAT_RESULT ret;
-
     BOAT_RESULT networkIndex;
     BoatVenachainNetworkConfig networkConfig;
     BoatVenachainWallet *wallet_p = NULL;
@@ -271,8 +272,6 @@ END_TEST
 
 START_TEST(test_003Wallet_0006InitWalletFailureWrongNetwork) 
 {
-    BOAT_RESULT ret;
-
     BOAT_RESULT keypair_index;
     BoatKeypairPriKeyCtx_config keypair_config;
 
