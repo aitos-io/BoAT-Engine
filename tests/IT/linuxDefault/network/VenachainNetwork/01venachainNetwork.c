@@ -48,7 +48,7 @@ const BUINT32 chainID = 1;
 *  for details.
 ****************************************************************************************
 */
-BOAT_RESULT getVenachainNetworkConfig(BoatVenachainNetworkConfig *config, BUINT32 chainID, BBOOL eip155, BCHAR *url)
+BOAT_RESULT getVenachainNetworkConfig(BoatVenachainNetworkConfig *config, BUINT32 chainID, BBOOL eip155, const BCHAR *url)
 {
     BOAT_RESULT result = BOAT_SUCCESS;
     /* check param*/

@@ -23,6 +23,7 @@
 #include "tcase_network.h"
 #include "boatiotsdk.h"
 #include "boatlog.h"
+#include "boatosal.h"
 
 /**
  * test node url
@@ -132,10 +133,10 @@ BOAT_RESULT getChainmakerNetworkConfig(BoatChainmakerNetworkData *networkConfig)
     }
     memcpy(networkConfig->client_sign_cert_content.content, chainmaker_client_sign_cert, networkConfig->client_sign_cert_content.length);
 
-    networkConfig->node_url  = BoatMalloc(strlen(chainmaker_node_url) + 1);
-    networkConfig->host_name = BoatMalloc(strlen(chainmaker_host_name) + 1);
-    networkConfig->chain_id  = BoatMalloc(strlen(chainmaker_chain_id) + 1);
-    networkConfig->org_id    = BoatMalloc(strlen(chainmaker_org_id) + 1);
+    networkConfig->node_url  = (BCHAR *)BoatMalloc(strlen(chainmaker_node_url) + 1);
+    networkConfig->host_name = (BCHAR *)BoatMalloc(strlen(chainmaker_host_name) + 1);
+    networkConfig->chain_id  = (BCHAR *)BoatMalloc(strlen(chainmaker_chain_id) + 1);
+    networkConfig->org_id    = (BCHAR *)BoatMalloc(strlen(chainmaker_org_id) + 1);
 
     strcpy(networkConfig->node_url,  chainmaker_node_url);
     strcpy(networkConfig->host_name, chainmaker_host_name);
@@ -198,10 +199,10 @@ BOAT_RESULT getChainmakerNetworkConfig2(BoatChainmakerNetworkData *networkConfig
     memcpy(networkConfig->client_sign_cert_content.content, chainmaker_client_sign_cert, networkConfig->client_sign_cert_content.length);
 
 
-    networkConfig->node_url  = BoatMalloc(strlen(chainmaker_node_url2) + 1);
-    networkConfig->host_name = BoatMalloc(strlen(chainmaker_host_name2) + 1);
-    networkConfig->chain_id  = BoatMalloc(strlen(chainmaker_chain_id2) + 1);
-    networkConfig->org_id    = BoatMalloc(strlen(chainmaker_org_id2) + 1);
+    networkConfig->node_url  = (BCHAR *)BoatMalloc(strlen(chainmaker_node_url2) + 1);
+    networkConfig->host_name = (BCHAR *)BoatMalloc(strlen(chainmaker_host_name2) + 1);
+    networkConfig->chain_id  = (BCHAR *)BoatMalloc(strlen(chainmaker_chain_id2) + 1);
+    networkConfig->org_id    = (BCHAR *)BoatMalloc(strlen(chainmaker_org_id2) + 1);
 
     strcpy(networkConfig->node_url,  chainmaker_node_url2);
     strcpy(networkConfig->host_name, chainmaker_host_name2);
@@ -362,7 +363,6 @@ START_TEST(test_001chainmakerNetwork_0003CreatetNetworkFail_signCert_content_emp
 {
     BSINT32 rtnVal;
     BoatChainmakerNetworkData network_config;
-    BoatChainmakerNetworkData networkdata;
     /* get configuration */
     rtnVal = getChainmakerNetworkConfig2(&network_config);
     ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
@@ -390,12 +390,11 @@ START_TEST(test_001chainmakerNetwork_0004CreatetNetworkFail_node_url_empty)
 {
     BSINT32 rtnVal;
     BoatChainmakerNetworkData network_config;
-    BoatChainmakerNetworkData networkdata;
     /* get configuration */
     rtnVal = getChainmakerNetworkConfig2(&network_config);
     ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
     /* clear the nodeurl content*/
-    memset(network_config.node_url, 0x00, sizeof(network_config.node_url));
+    memset(network_config.node_url, 0x00, sizeof(*network_config.node_url));
     /* create persist network , store type must be FLASH */
     rtnVal = BoATChainmakerNetworkCreate(&network_config, BOAT_STORE_TYPE_FLASH);
     /* check result */
@@ -417,12 +416,11 @@ START_TEST(test_001chainmakerNetwork_0005CreatetNetworkFail_host_name_empty)
 {
     BSINT32 rtnVal;
     BoatChainmakerNetworkData network_config;
-    BoatChainmakerNetworkData networkdata;
     /* get configuration */
     rtnVal = getChainmakerNetworkConfig2(&network_config);
     ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
     /* clear the hostname content*/
-    memset(network_config.host_name, 0x00, sizeof(network_config.host_name));
+    memset(network_config.host_name, 0x00, sizeof(* network_config.host_name));
     /* create persist network , store type must be FLASH */
     rtnVal = BoATChainmakerNetworkCreate(&network_config, BOAT_STORE_TYPE_FLASH);
     /* check result */
@@ -444,12 +442,11 @@ START_TEST(test_001chainmakerNetwork_0006CreatetNetworkFail_chain_id_empty)
 {
     BSINT32 rtnVal;
     BoatChainmakerNetworkData network_config;
-    BoatChainmakerNetworkData networkdata;
     /* get configuration */
     rtnVal = getChainmakerNetworkConfig2(&network_config);
     ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
     /* clear the chain_id content*/
-    memset(network_config.chain_id, 0x00, sizeof(network_config.chain_id));
+    memset(network_config.chain_id, 0x00, sizeof(*network_config.chain_id));
     /* create persist network , store type must be FLASH */
     rtnVal = BoATChainmakerNetworkCreate(&network_config, BOAT_STORE_TYPE_FLASH);
     /* check result */
@@ -471,12 +468,11 @@ START_TEST(test_001chainmakerNetwork_0007CreatetNetworkFail_org_id_empty)
 {
     BSINT32 rtnVal;
     BoatChainmakerNetworkData network_config;
-    BoatChainmakerNetworkData networkdata;
     /* get configuration */
     rtnVal = getChainmakerNetworkConfig2(&network_config);
     ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
     /* clear the org_id content*/
-    memset(network_config.org_id, 0x00, sizeof(network_config.org_id));
+    memset(network_config.org_id, 0x00, sizeof(* network_config.org_id));
     /* create persist network , store type must be FLASH */
     rtnVal = BoATChainmakerNetworkCreate(&network_config, BOAT_STORE_TYPE_FLASH);
     /* check result */

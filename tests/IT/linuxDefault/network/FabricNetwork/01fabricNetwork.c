@@ -23,6 +23,7 @@
 #include "tcase_network.h"
 #include "boatiotsdk.h"
 #include "boatlog.h"
+#include "boatosal.h"
 
 const BCHAR *fabric_client_demokey = "-----BEGIN PRIVATE KEY-----\n"
                                      "MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg/tXXUwnCl5b0Un9q\n"
@@ -548,7 +549,7 @@ __BOATSTATIC BOAT_RESULT fabric_checkNetworkNodesConfg(BoatHlfabricNodesCfg node
                 return BOAT_ERROR;
             }
             /* check every tlsOrgCertContent*/
-            if (!strcmp(nodesCfg1.layoutCfg[i].groupCfg[j].tlsOrgCertContent.content, nodesCfg2.layoutCfg[i].groupCfg[j].tlsOrgCertContent.content), 0)
+            if (!strcmp(nodesCfg1.layoutCfg[i].groupCfg[j].tlsOrgCertContent.content, nodesCfg2.layoutCfg[i].groupCfg[j].tlsOrgCertContent.content))
             {
                 BoatLog(BOAT_LOG_NORMAL, " tlsOrgCertContent content err ");
                 return BOAT_ERROR;

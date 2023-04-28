@@ -13,6 +13,7 @@
 #include "tcase_keypair.h"
 #include "boatiotsdk.h"
 #include "boatlog.h"
+#include "boatosal.h"
 
 /**
  * PKCS format demo key. The original private key of 'pkcs_demoKey' is
@@ -506,7 +507,6 @@ END_TEST
 START_TEST(test_001Keypair_0011CreateKeypair_storeTypeERR)
 {
     BSINT32 rtnVal;
-    BoatKeypairPriKeyCtx createkeypair;
     BoatKeypairPriKeyCtx_config keypair_config;
     /* get config : gen from external , native ,  256K1  */
     get_keypair_external_native_256k1_config(&keypair_config);
@@ -529,7 +529,6 @@ END_TEST
 START_TEST(test_001Keypair_0012CreateOneTimeKeypair_PriKeyGenModeERR)
 {
     BSINT32 rtnVal;
-    BoatKeypairPriKeyCtx createkeypair;
     BoatKeypairPriKeyCtx_config keypair_config;
     /* get config : gen from external , native ,  256K1  */
     get_keypair_external_native_256k1_config(&keypair_config);
@@ -554,7 +553,6 @@ END_TEST
 START_TEST(test_001Keypair_0013CreateOneTimeKeypair_PriKeyFormatERR)
 {
     BSINT32 rtnVal;
-    BoatKeypairPriKeyCtx createkeypair;
     BoatKeypairPriKeyCtx_config keypair_config;
     /* get config : gen from external , native ,  256K1  */
     get_keypair_external_native_256k1_config(&keypair_config);
@@ -579,7 +577,6 @@ END_TEST
 START_TEST(test_001Keypair_0014CreateOneTimeKeypair_PriKeyTypeERR)
 {
     BSINT32 rtnVal;
-    BoatKeypairPriKeyCtx createkeypair;
     BoatKeypairPriKeyCtx_config keypair_config;
     /* get config : gen from external , native ,  256K1  */
     get_keypair_external_native_256k1_config(&keypair_config);
