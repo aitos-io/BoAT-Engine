@@ -21,6 +21,7 @@
  * limitations under the License.
  *****************************************************************************/
 #include "tcase_fabric.h"
+#include "boatosal.h"
 
 START_TEST(test_005Transaction_0001TxInvoke_Success) 
 {
@@ -308,7 +309,7 @@ START_TEST(test_005Transaction_0013TxInvoke_Failure_Walleturl_Err)
     g_fabric_wallet_ptr->network_info.nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl = NULL;
 
     BCHAR *fabric_demo_endorser_peer0Org1_url_err = "127.0.0.1";
-    g_fabric_wallet_ptr->network_info.nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl = BoatMalloc(strlen(fabric_demo_endorser_peer0Org1_url_err) + 1);
+    g_fabric_wallet_ptr->network_info.nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl = (BCHAR *)BoatMalloc(strlen(fabric_demo_endorser_peer0Org1_url_err) + 1);
     strcpy(g_fabric_wallet_ptr->network_info.nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl, fabric_demo_endorser_peer0Org1_url_err);
 
     rtnVal = BoatHlfabricTxInit(&tx_ptr, g_fabric_wallet_ptr, NULL, "mycc", NULL, "mychannel", "Org1MSP");
@@ -338,7 +339,7 @@ START_TEST(test_005Transaction_0014TxInvoke_Success_WalletHostName_Err)
     g_fabric_wallet_ptr->network_info.nodesCfg.orderCfg.endorser[0].hostName = NULL;
 
     BCHAR *fabric_demo_order1_hostName_err = "peer0.org1.com111";
-    g_fabric_wallet_ptr->network_info.nodesCfg.orderCfg.endorser[0].hostName = BoatMalloc(strlen(fabric_demo_order1_hostName_err) + 1);
+    g_fabric_wallet_ptr->network_info.nodesCfg.orderCfg.endorser[0].hostName = (BCHAR *)BoatMalloc(strlen(fabric_demo_order1_hostName_err) + 1);
     strcpy(g_fabric_wallet_ptr->network_info.nodesCfg.orderCfg.endorser[0].hostName, fabric_demo_order1_hostName_err);
 
     rtnVal = BoatHlfabricTxInit(&tx_ptr, g_fabric_wallet_ptr, NULL, "mycc", NULL, "mychannel", "Org1MSP");
@@ -624,7 +625,7 @@ START_TEST(test_005Transaction_0026TxQuery_Failure_Walleturl_Err)
     g_fabric_wallet_ptr->network_info.nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl = NULL;
 
     BCHAR *fabric_demo_endorser_peer0Org1_url_err = "127.0.0.1";
-    g_fabric_wallet_ptr->network_info.nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl = BoatMalloc(strlen(fabric_demo_endorser_peer0Org1_url_err) + 1);
+    g_fabric_wallet_ptr->network_info.nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl = (BCHAR *)BoatMalloc(strlen(fabric_demo_endorser_peer0Org1_url_err) + 1);
     strcpy(g_fabric_wallet_ptr->network_info.nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl, fabric_demo_endorser_peer0Org1_url_err);
 
     rtnVal = BoatHlfabricTxInit(&tx_ptr, g_fabric_wallet_ptr, NULL, "mycc", NULL, "mychannel", "Org1MSP");
@@ -654,7 +655,7 @@ START_TEST(test_005Transaction_0027TxQuery_Success_WalletHostName_Err)
     g_fabric_wallet_ptr->network_info.nodesCfg.orderCfg.endorser[0].hostName = NULL;
 
     BCHAR *fabric_demo_order1_hostName_err = "peer0.org1.com111";
-    g_fabric_wallet_ptr->network_info.nodesCfg.orderCfg.endorser[0].hostName = BoatMalloc(strlen(fabric_demo_order1_hostName_err) + 1);
+    g_fabric_wallet_ptr->network_info.nodesCfg.orderCfg.endorser[0].hostName = (BCHAR *)BoatMalloc(strlen(fabric_demo_order1_hostName_err) + 1);
     strcpy(g_fabric_wallet_ptr->network_info.nodesCfg.orderCfg.endorser[0].hostName, fabric_demo_order1_hostName_err);
 
     rtnVal = BoatHlfabricTxInit(&tx_ptr, g_fabric_wallet_ptr, NULL, "mycc", NULL, "mychannel", "Org1MSP");

@@ -62,7 +62,7 @@ END_TEST
 START_TEST(test_004ParmsInit_0002TxInit_Failure_tx_ptr_NULL) 
 {
     BSINT32 rtnVal;
-    BoatHlfabricTx tx_ptr;
+    //BoatHlfabricTx tx_ptr;
     BoatHlfabricWallet *g_fabric_wallet_ptr = NULL;
     g_fabric_wallet_ptr = fabric_get_wallet_ptr();
 
@@ -77,8 +77,6 @@ START_TEST(test_004ParmsInit_0003TxInit_Failure_Wallet_NULL)
 {
    	BSINT32 rtnVal;
     BoatHlfabricTx tx_ptr;
-    BoatHlfabricWallet *g_fabric_wallet_ptr = NULL;
-    g_fabric_wallet_ptr = fabric_get_wallet_ptr();
 
     rtnVal = BoatHlfabricTxInit(&tx_ptr, NULL, NULL, "mycc", NULL, "mychannel", "Org1MSP");
     ck_assert_int_eq(rtnVal, BOAT_ERROR_COMMON_INVALID_ARGUMENT);

@@ -27,7 +27,6 @@ int main(int argc, char *argv[])
 {
     SRunner *sr = NULL;
     int failed_number = 0;
-    int ret = 0;
 
     /* new adding test suite should create in here */
     Suite *suite_walletInit  = make_fabricWalletTest_suite();

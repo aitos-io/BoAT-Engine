@@ -21,6 +21,7 @@
  * limitations under the License.
  *****************************************************************************/
 #include "tcase_fabric.h"
+#include "boatosal.h"
 
 /******************************************************************************
  * Copyright (C) 2018-2021 aitos.io
@@ -37,6 +38,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *****************************************************************************/
+ #ifndef TEST_FABRIC_NODE_URL
+ #define TEST_FABRIC_NODE_URL "127.0.0.1"
+ #endif
 static BoatHlfabricWallet *g_fabric_wallet_ptr;
 const BCHAR *fabric_client_demokey = "-----BEGIN PRIVATE KEY-----\n"
                                      "MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg/tXXUwnCl5b0Un9q\n"
@@ -290,19 +294,19 @@ BOAT_RESULT fabric_createNetwork(BBOOL is_onetime, BUINT8* networkIndex, BoatHlf
     strcpy(networkConfig->accountCertContent.content, fabric_client_democert);
 
     networkConfig->nodesCfg.endorserLayoutNum = 1;
-    networkConfig->nodesCfg.layoutCfg = BoatMalloc(networkConfig->nodesCfg.endorserLayoutNum * sizeof(BoatHlfabricNodeLayoutCfg));
+    networkConfig->nodesCfg.layoutCfg = (BoatHlfabricNodeLayoutCfg *)BoatMalloc(networkConfig->nodesCfg.endorserLayoutNum * sizeof(BoatHlfabricNodeLayoutCfg));
     networkConfig->nodesCfg.layoutCfg[0].endorserGroupNum = 2;
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg = BoatMalloc(networkConfig->nodesCfg.layoutCfg[0].endorserGroupNum * sizeof(BoatHlfabricNodeGroupCfg));
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg = (BoatHlfabricNodeGroupCfg *)BoatMalloc(networkConfig->nodesCfg.layoutCfg[0].endorserGroupNum * sizeof(BoatHlfabricNodeGroupCfg));
     networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorserNumber = 2;
     networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].quantities = 1;
     networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].tlsOrgCertContent.length = strlen(fabric_org1_tlsCert);
     strcpy(networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].tlsOrgCertContent.content, fabric_org1_tlsCert);
 
     networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser = BoatMalloc(networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorserNumber * sizeof(BoatHlfabricNodeInfoCfg));
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl = BoatMalloc(strlen(TEST_FABRIC_NODE_URL) + strlen(ORG1_PEER0_PORT)+1);
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].hostName = BoatMalloc(strlen(ORG1_PEER0_HOSTNAME)+1);
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[1].nodeUrl = BoatMalloc(strlen(TEST_FABRIC_NODE_URL) + strlen(ORG1_PEER1_PORT)+1);
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[1].hostName = BoatMalloc(strlen(ORG1_PEER1_HOSTNAME)+1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl = (BCHAR *)BoatMalloc(strlen(TEST_FABRIC_NODE_URL) + strlen(ORG1_PEER0_PORT)+1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].hostName = (BCHAR *)BoatMalloc(strlen(ORG1_PEER0_HOSTNAME)+1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[1].nodeUrl = (BCHAR *)BoatMalloc(strlen(TEST_FABRIC_NODE_URL) + strlen(ORG1_PEER1_PORT)+1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[1].hostName = (BCHAR *)BoatMalloc(strlen(ORG1_PEER1_HOSTNAME)+1);
 
     strcpy(networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl, TEST_FABRIC_NODE_URL);
     strcpy(networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl+strlen(TEST_FABRIC_NODE_URL), ORG1_PEER0_PORT);
@@ -317,10 +321,10 @@ BOAT_RESULT fabric_createNetwork(BBOOL is_onetime, BUINT8* networkIndex, BoatHlf
     networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].tlsOrgCertContent.length = strlen(fabric_org2_tlsCert);
     strcpy(networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].tlsOrgCertContent.content, fabric_org2_tlsCert);
     networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser = BoatMalloc(networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorserNumber * sizeof(BoatHlfabricNodeInfoCfg));
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[0].nodeUrl = BoatMalloc(strlen(TEST_FABRIC_NODE_URL) + strlen(ORG2_PEER0_PORT)+1);
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[0].hostName = BoatMalloc(strlen(ORG2_PEER0_HOSTNAME)+1);
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[1].nodeUrl = BoatMalloc(strlen(TEST_FABRIC_NODE_URL) + strlen(ORG2_PEER1_PORT)+1);
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[1].hostName = BoatMalloc(strlen(ORG2_PEER1_HOSTNAME)+1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[0].nodeUrl = (BCHAR *)BoatMalloc(strlen(TEST_FABRIC_NODE_URL) + strlen(ORG2_PEER0_PORT)+1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[0].hostName = (BCHAR *)BoatMalloc(strlen(ORG2_PEER0_HOSTNAME)+1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[1].nodeUrl = (BCHAR *)BoatMalloc(strlen(TEST_FABRIC_NODE_URL) + strlen(ORG2_PEER1_PORT)+1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[1].hostName = (BCHAR *)BoatMalloc(strlen(ORG2_PEER1_HOSTNAME)+1);
   
     strcpy(networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[0].nodeUrl, TEST_FABRIC_NODE_URL);
     strcpy(networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[0].nodeUrl+strlen(TEST_FABRIC_NODE_URL), ORG2_PEER0_PORT);
@@ -335,8 +339,8 @@ BOAT_RESULT fabric_createNetwork(BBOOL is_onetime, BUINT8* networkIndex, BoatHlf
     networkConfig->nodesCfg.orderCfg.tlsOrgCertContent.length = strlen(fabric_order_tlsCert);
     strcpy(networkConfig->nodesCfg.orderCfg.tlsOrgCertContent.content, fabric_order_tlsCert);
     networkConfig->nodesCfg.orderCfg.endorser = BoatMalloc(networkConfig->nodesCfg.orderCfg.endorserNumber * sizeof(BoatHlfabricNodeInfoCfg));
-    networkConfig->nodesCfg.orderCfg.endorser[0].hostName = BoatMalloc(strlen(ORDER_HOSTNAME)+1);
-    networkConfig->nodesCfg.orderCfg.endorser[0].nodeUrl = BoatMalloc(strlen(TEST_FABRIC_NODE_URL)+strlen(ORDER_PORT)+1);
+    networkConfig->nodesCfg.orderCfg.endorser[0].hostName = (BCHAR *)BoatMalloc(strlen(ORDER_HOSTNAME)+1);
+    networkConfig->nodesCfg.orderCfg.endorser[0].nodeUrl = (BCHAR *)BoatMalloc(strlen(TEST_FABRIC_NODE_URL)+strlen(ORDER_PORT)+1);
 
     strcpy(networkConfig->nodesCfg.orderCfg.endorser[0].nodeUrl, TEST_FABRIC_NODE_URL);
     strcpy(networkConfig->nodesCfg.orderCfg.endorser[0].nodeUrl+strlen(TEST_FABRIC_NODE_URL), ORDER_PORT);
