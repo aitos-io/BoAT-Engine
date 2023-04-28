@@ -11,6 +11,7 @@
 #include "tcase_keypair.h"
 #include "boatiotsdk.h"
 #include "boatlog.h"
+#include "boatosal.h"
 
 /**
  * PKCS format demo key. The original private key of 'pkcs_demoKey' is
@@ -297,7 +298,6 @@ START_TEST(test_002Keypair_0005Create6PersistKeypairSuccess)
 {
     BSINT32 rtnVal;
     BUINT8 prikey_index = 0;
-    BoatKeypairPriKeyCtx creatkeypair;
     BoatKeypairPriKeyCtx_config keypair_config;
 
     /* get config */
@@ -343,7 +343,7 @@ START_TEST(test_002Keypair_0006GetKeypairListSuccess)
     /* check persist keypair num */
     ck_assert_int_eq(keypairList.keypairPersistentNum, BOAT_MAX_KEYPAIR_NUM);
     /* check everyone in the list */
-    for (size_t i = 0; i < BOAT_MAX_KEYPAIR_NUM; i++)
+    for (int i = 0; i < BOAT_MAX_KEYPAIR_NUM; i++)
     {
         memset(keypairName, 0x00, sizeof(keypairName));
         snprintf(keypairName, sizeof(keypairName), "keypairPersist%02d", i + 1);
@@ -542,10 +542,9 @@ END_TEST
 START_TEST(test_002Keypair_0011GetKeypairByIndex)
 {
     BSINT32 rtnVal;
-    BUINT8 prikey_index = 0;
     BCHAR keypairName[64] = {0};
     BoatKeypairPriKeyCtx creatkeypair;
-    for (size_t i = 1; i <= BOAT_MAX_KEYPAIR_NUM; i++)
+    for (int i = 1; i <= BOAT_MAX_KEYPAIR_NUM; i++)
     {
         memset(keypairName, 0x00, sizeof(keypairName));
         snprintf(keypairName, sizeof(keypairName), "keypairPersist%02d", i);
