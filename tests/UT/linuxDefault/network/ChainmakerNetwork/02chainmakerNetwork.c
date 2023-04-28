@@ -26,6 +26,7 @@
 #include "tcase_network.h"
 #include "boatiotsdk.h"
 #include "boatlog.h"
+#include "boatosal.h"
 
 /**
  * test node url
@@ -128,10 +129,10 @@ BOAT_RESULT getChainmakerNetworkConfig(BoatChainmakerNetworkData *networkConfig,
         return BOAT_ERROR_COMMON_OUT_OF_MEMORY;
     }
     memcpy(networkConfig->client_sign_cert_content.content, chainmaker_client_sign_cert, networkConfig->client_sign_cert_content.length);
-    networkConfig->node_url = BoatMalloc(strlen(chainmaker_node_url[networkIndex]) + 1);
-    networkConfig->host_name = BoatMalloc(strlen(chainmaker_host_name[networkIndex]) + 1);
-    networkConfig->chain_id = BoatMalloc(strlen(chainmaker_chain_id[networkIndex]) + 1);
-    networkConfig->org_id = BoatMalloc(strlen(chainmaker_org_id[networkIndex]) + 1);
+    networkConfig->node_url = (BCHAR *)BoatMalloc(strlen(chainmaker_node_url[networkIndex]) + 1);
+    networkConfig->host_name = (BCHAR *)BoatMalloc(strlen(chainmaker_host_name[networkIndex]) + 1);
+    networkConfig->chain_id = (BCHAR *)BoatMalloc(strlen(chainmaker_chain_id[networkIndex]) + 1);
+    networkConfig->org_id = (BCHAR *)BoatMalloc(strlen(chainmaker_org_id[networkIndex]) + 1);
 
     strcpy(networkConfig->node_url, chainmaker_node_url[networkIndex]);
     strcpy(networkConfig->host_name, chainmaker_host_name[networkIndex]);
@@ -652,7 +653,6 @@ END_TEST
 START_TEST(test_002chainmakerNetwork_0013GetNetworkListSuccess)
 {
     BSINT32 rtnVal;
-    BUINT8 index = 0;
     BoatChainmakerNetworkContext networkList;
     /* get the network list */
     rtnVal = BoATChainmaker_GetNetworkList(&networkList);

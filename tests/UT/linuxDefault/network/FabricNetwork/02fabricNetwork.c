@@ -23,6 +23,7 @@
 #include "tcase_network.h"
 #include "boatiotsdk.h"
 #include "boatlog.h"
+#include "boatosal.h"
 
 const BCHAR *fabric_client_demokey = "-----BEGIN PRIVATE KEY-----\n"
                                      "MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg/tXXUwnCl5b0Un9q\n"
@@ -220,19 +221,19 @@ __BOATSTATIC BOAT_RESULT fabric_getNetworkCfg(BoatHlfabricNetworkConfig *network
     strcpy(networkConfig->accountCertContent.content, fabric_client_democert);
 
     networkConfig->nodesCfg.endorserLayoutNum = 1;
-    networkConfig->nodesCfg.layoutCfg = BoatMalloc(networkConfig->nodesCfg.endorserLayoutNum * sizeof(BoatHlfabricNodeLayoutCfg));
+    networkConfig->nodesCfg.layoutCfg = (BoatHlfabricNodeLayoutCfg *)BoatMalloc(networkConfig->nodesCfg.endorserLayoutNum * sizeof(BoatHlfabricNodeLayoutCfg));
     networkConfig->nodesCfg.layoutCfg[0].endorserGroupNum = 2;
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg = BoatMalloc(networkConfig->nodesCfg.layoutCfg[0].endorserGroupNum * sizeof(BoatHlfabricNodeGroupCfg));
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg = (BoatHlfabricNodeGroupCfg *)BoatMalloc(networkConfig->nodesCfg.layoutCfg[0].endorserGroupNum * sizeof(BoatHlfabricNodeGroupCfg));
     networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorserNumber = 2;
     networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].quantities = 1;
     networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].tlsOrgCertContent.length = strlen(fabric_org1_tlsCert);
     strcpy(networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].tlsOrgCertContent.content, fabric_org1_tlsCert);
 
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser = BoatMalloc(networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorserNumber * sizeof(BoatHlfabricNodeInfoCfg));
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl = BoatMalloc(strlen(fabric_demo_endorser_peer0Org1_url[index]) + 1);
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].hostName = BoatMalloc(strlen(fabric_demo_endorser_peer0Org1_hostName[index]) + 1);
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[1].nodeUrl = BoatMalloc(strlen(fabric_demo_endorser_peer1Org1_url[index]) + 1);
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[1].hostName = BoatMalloc(strlen(fabric_demo_endorser_peer1Org1_hostName[index]) + 1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser = (BoatHlfabricNodeInfoCfg *)BoatMalloc(networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorserNumber * sizeof(BoatHlfabricNodeInfoCfg));
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl = (BCHAR *)BoatMalloc(strlen(fabric_demo_endorser_peer0Org1_url[index]) + 1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].hostName = (BCHAR *)BoatMalloc(strlen(fabric_demo_endorser_peer0Org1_hostName[index]) + 1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[1].nodeUrl = (BCHAR *)BoatMalloc(strlen(fabric_demo_endorser_peer1Org1_url[index]) + 1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[1].hostName = (BCHAR *)BoatMalloc(strlen(fabric_demo_endorser_peer1Org1_hostName[index]) + 1);
     // memset(networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl, 0, strlen(fabric_demo_endorser_peer0Org1_url) + 1);
     strcpy(networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].nodeUrl, fabric_demo_endorser_peer0Org1_url[index]);
     strcpy(networkConfig->nodesCfg.layoutCfg[0].groupCfg[0].endorser[0].hostName, fabric_demo_endorser_peer0Org1_hostName[index]);
@@ -244,11 +245,11 @@ __BOATSTATIC BOAT_RESULT fabric_getNetworkCfg(BoatHlfabricNetworkConfig *network
     networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].quantities = 1;
     networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].tlsOrgCertContent.length = strlen(fabric_org2_tlsCert);
     strcpy(networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].tlsOrgCertContent.content, fabric_org2_tlsCert);
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser = BoatMalloc(networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorserNumber * sizeof(BoatHlfabricNodeInfoCfg));
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[0].nodeUrl = BoatMalloc(strlen(fabric_demo_endorser_peer0Org2_url[index]) + 1);
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[0].hostName = BoatMalloc(strlen(fabric_demo_endorser_peer0Org2_hostName[index]) + 1);
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[1].nodeUrl = BoatMalloc(strlen(fabric_demo_endorser_peer1Org2_url[index]) + 1);
-    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[1].hostName = BoatMalloc(strlen(fabric_demo_endorser_peer1Org2_hostName[index]) + 1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser = (BoatHlfabricNodeInfoCfg *)BoatMalloc(networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorserNumber * sizeof(BoatHlfabricNodeInfoCfg));
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[0].nodeUrl = (BCHAR *)BoatMalloc(strlen(fabric_demo_endorser_peer0Org2_url[index]) + 1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[0].hostName = (BCHAR *)BoatMalloc(strlen(fabric_demo_endorser_peer0Org2_hostName[index]) + 1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[1].nodeUrl = (BCHAR *)BoatMalloc(strlen(fabric_demo_endorser_peer1Org2_url[index]) + 1);
+    networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[1].hostName = (BCHAR *)BoatMalloc(strlen(fabric_demo_endorser_peer1Org2_hostName[index]) + 1);
     // memset(networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[0].nodeUrl, 0, strlen(fabric_demo_endorser_peer0Org2_url) + 1);
     strcpy(networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[0].nodeUrl, fabric_demo_endorser_peer0Org2_url[index]);
     strcpy(networkConfig->nodesCfg.layoutCfg[0].groupCfg[1].endorser[0].hostName, fabric_demo_endorser_peer0Org2_hostName[index]);
@@ -260,9 +261,9 @@ __BOATSTATIC BOAT_RESULT fabric_getNetworkCfg(BoatHlfabricNetworkConfig *network
     networkConfig->nodesCfg.orderCfg.endorserNumber = 1;
     networkConfig->nodesCfg.orderCfg.tlsOrgCertContent.length = strlen(fabric_order_tlsCert);
     strcpy(networkConfig->nodesCfg.orderCfg.tlsOrgCertContent.content, fabric_order_tlsCert);
-    networkConfig->nodesCfg.orderCfg.endorser = BoatMalloc(networkConfig->nodesCfg.orderCfg.endorserNumber * sizeof(BoatHlfabricNodeInfoCfg));
-    networkConfig->nodesCfg.orderCfg.endorser[0].hostName = BoatMalloc(strlen(fabric_demo_order1_hostName[index]) + 1);
-    networkConfig->nodesCfg.orderCfg.endorser[0].nodeUrl = BoatMalloc(strlen(fabric_demo_order1_url[index]) + 1);
+    networkConfig->nodesCfg.orderCfg.endorser = (BoatHlfabricNodeInfoCfg *)BoatMalloc(networkConfig->nodesCfg.orderCfg.endorserNumber * sizeof(BoatHlfabricNodeInfoCfg));
+    networkConfig->nodesCfg.orderCfg.endorser[0].hostName =(BCHAR *) BoatMalloc(strlen(fabric_demo_order1_hostName[index]) + 1);
+    networkConfig->nodesCfg.orderCfg.endorser[0].nodeUrl = (BCHAR *)BoatMalloc(strlen(fabric_demo_order1_url[index]) + 1);
     memset(networkConfig->nodesCfg.orderCfg.endorser[0].nodeUrl, 0, strlen(fabric_demo_order1_url[index]) + 1);
     strcpy(networkConfig->nodesCfg.orderCfg.endorser[0].nodeUrl, fabric_demo_order1_url[index]);
     strcpy(networkConfig->nodesCfg.orderCfg.endorser[0].hostName, fabric_demo_order1_hostName[index]);
@@ -342,7 +343,7 @@ __BOATSTATIC BOAT_RESULT fabric_checkNetworkNodesConfg(BoatHlfabricNodesCfg node
                 return BOAT_ERROR;
             }
             /* check every tlsOrgCertContent*/
-            if (!strcmp(nodesCfg1.layoutCfg[i].groupCfg[j].tlsOrgCertContent.content, nodesCfg2.layoutCfg[i].groupCfg[j].tlsOrgCertContent.content), 0)
+            if (!strcmp((char *)nodesCfg1.layoutCfg[i].groupCfg[j].tlsOrgCertContent.content, (char *)nodesCfg2.layoutCfg[i].groupCfg[j].tlsOrgCertContent.content))
             {
                 BoatLog(BOAT_LOG_NORMAL, " tlsOrgCertContent content err ");
                 return BOAT_ERROR;
@@ -859,7 +860,6 @@ START_TEST(test_002fabricNetwork_0012DeleteAllNetworkSuccess)
 {
     BSINT32 rtnVal;
     BUINT8 index = 0;
-    BoatHlfabricNetworkData networkData;
     /****************check network data  **************************/
     for (index = 1; index <= BOAT_MAX_NETWORK_NUM; index++)
     {

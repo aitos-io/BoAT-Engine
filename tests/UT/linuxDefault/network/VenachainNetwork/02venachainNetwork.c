@@ -490,7 +490,6 @@ END_TEST
 START_TEST(test_002venachainNetwork_0013GetNetworkListSuccess)
 {
     BSINT32 rtnVal;
-    BUINT8 index = 0;
     BoatVenachainNetworkContext networkList;
     /* get the network list */
     rtnVal = BoATVenachain_GetNetworkList(&networkList);
