@@ -15,7 +15,7 @@
  *****************************************************************************/
 #include "boatconfig.h"
 #include "boatiotsdk.h"
-#include "boatlog.h"
+#include "boatEngine.h"
 
 /**
  * macro used to select wallet type:
@@ -44,8 +44,11 @@ const BCHAR *native_demoKey = "0x6cbed15c793ce57650b9877cf6fa156fbef513c4e6134f0
 /**
  * test node url
  */
+#ifndef ETHEREUM_DEMO_URL
+#define ETHEREUM_DEMO_URL "http://127.0.0.1:8545"
+#endif
 
-const BCHAR *demoUrl = "http://127.0.0.1:8545";
+const BCHAR *demoUrl = ETHEREUM_DEMO_URL;
 
 /**
  * transfer recipient address
@@ -100,11 +103,11 @@ __BOATSTATIC BOAT_RESULT ethereum_createKeypair(BCHAR *keypairName)
 #endif
     if (result < BOAT_SUCCESS)
     {
-        // BoatLog(BOAT_LOG_CRITICAL, "create one-time keypair failed.");
+        //BoatLog(BOAT_LOG_NORMAL, "create one-time keypair failed.");
         return BOAT_ERROR_WALLET_CREATE_FAIL;
     }
     keypairIndex = result;
-    BoatLog(BOAT_LOG_NORMAL, " create keypair index = %d ", keypairIndex);
+    //BoatLog(BOAT_LOG_NORMAL, " create keypair index = %d ", keypairIndex);
     return BOAT_SUCCESS;
 }
 
@@ -126,11 +129,11 @@ __BOATSTATIC BOAT_RESULT createNetwork()
 #endif
     if (result < BOAT_SUCCESS)
     {
-        // BoatLog(BOAT_LOG_CRITICAL, "create one-time wallet failed.");
+        //BoatLog(BOAT_LOG_NORMAL, "create one-time wallet failed.");
         return BOAT_ERROR_WALLET_CREATE_FAIL;
     }
     networkIndex = result;
-    BoatLog(BOAT_LOG_NORMAL, " create network index = %d ", networkIndex);
+    //BoatLog(BOAT_LOG_NORMAL, " create network index = %d ", networkIndex);
     return BOAT_SUCCESS;
 }
 
@@ -172,7 +175,7 @@ BOAT_RESULT ethereumTransfer(BoatEthWallet *wallet_ptr)
 
     if (result != BOAT_SUCCESS)
     {
-        // BoatLog(BOAT_LOG_CRITICAL, "BoatEthTxInit failed.");
+        //BoatLog(BOAT_LOG_NORMAL, "BoatEthTxInit failed.");
         return BOAT_ERROR_WALLET_INIT_FAIL;
     }
 
@@ -195,35 +198,35 @@ int main(int argc, char *argv[])
     result = ethereum_createKeypair("keypair00");
     if (result != BOAT_SUCCESS)
     {
-        // BoatLog(BOAT_LOG_CRITICAL, "ethereumWalletPrepare_create failed : %d.", result);
+        //BoatLog(BOAT_LOG_NORMAL, "ethereumWalletPrepare_create failed : %d.", result);
         // return -1;
         boat_throw(result, ethereum_trans_demo_catch);
     }
     result = createNetwork();
     if (result != BOAT_SUCCESS)
     {
-        // BoatLog(BOAT_LOG_CRITICAL, "ethereumWalletPrepare_create failed : %d.", result);
+        //BoatLog(BOAT_LOG_NORMAL, "ethereumWalletPrepare_create failed : %d.", result);
         // return -1;
         boat_throw(result, ethereum_trans_demo_catch);
     }
     result = BoATKeypair_GetKeypairList(&walletList);
     if (result != BOAT_SUCCESS)
     {
-        BoatLog(BOAT_LOG_CRITICAL, "get wallet list failed: %d.", result);
+        //BoatLog(BOAT_LOG_NORMAL, "get wallet list failed: %d.", result);
         boat_throw(result, ethereum_trans_demo_catch);
     }
 
-    BoatLog(BOAT_LOG_NORMAL, "eth wallet init begin num = %d", walletList.keypairNum);
-    BoatLog(BOAT_LOG_NORMAL, "eth wallet init walletIndex = %d ,networkIndex = %d ", keypairIndex, networkIndex);
+    //BoatLog(BOAT_LOG_NORMAL, "eth wallet init begin num = %d", walletList.keypairNum);
+    //BoatLog(BOAT_LOG_NORMAL, "eth wallet init walletIndex = %d ,networkIndex = %d ", keypairIndex, networkIndex);
     BoATKeypair_FreeKeypairContext(walletList);
     g_ethereum_wallet_ptr = BoatEthWalletInit(keypairIndex, networkIndex);
     if (g_ethereum_wallet_ptr == NULL)
     {
-        BoatLog(BOAT_LOG_NORMAL, "BoatEthWalletInit fail");
+        //BoatLog(BOAT_LOG_NORMAL, "BoatEthWalletInit fail");
         boat_throw(BOAT_ERROR, ethereum_trans_demo_catch);
     }
-    BoatLog(BOAT_LOG_NORMAL, "eth wallet init OK");
-    BoatLog(BOAT_LOG_NORMAL, "eth wallet url = %s ", g_ethereum_wallet_ptr->network_info.node_url_str);
+    //BoatLog(BOAT_LOG_NORMAL, "eth wallet init OK");
+    //BoatLog(BOAT_LOG_NORMAL, "eth wallet url = %s ", g_ethereum_wallet_ptr->network_info.node_url_str);
 
     /* step-3: execute balance transfer */
     result = ethereumGetBalance(g_ethereum_wallet_ptr);

@@ -48,8 +48,8 @@ const BCHAR *native_demoKey = "0xfcf6d76706e66250dbacc9827bc427321edb9542d58a74a
 /**
  * test node url
  */
-//const BCHAR *demoUrl = "http://116.236.47.90:7545";
-//const BCHAR *demoUrl = "http://127.0.0.1:6791";
+
+
 #ifndef VENACHAIN_DEMO_IP
 #define VENACHAIN_DEMO_IP "127.0.0.1"
 #endif
@@ -59,7 +59,6 @@ const BCHAR *demoUrl = "http://" VENACHAIN_DEMO_IP ":6781";
  * transfer recipient address
  */
 const BCHAR *demoRecipientAddress = "0xBDB623f91bBD1B37d17c8ED9d78c70954865247C"; //sol contract
-//const BCHAR *demoRecipientAddress = "0x42267f36f2c5b1610bfb253cf044ad0bcd9a5b47";//wasm contract
 
 BoatVenachainWallet *g_venachain_wallet_ptr;
 BUINT8 keypairIndex = 0;

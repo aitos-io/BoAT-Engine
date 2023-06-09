@@ -16,7 +16,7 @@
 #include "boatconfig.h"
 #include "boatiotsdk.h"
 
-#include "boatplaton.h"
+#include "boatEngine.h"
 #include "helloworld.h"
 
 
@@ -49,7 +49,10 @@ const BCHAR *native_demoKey = "0xa7f372a0b5b1e985a9ef631ce5d51777b41d534ff71d621
 /**
  * PlatON test network node url
  */
-const BCHAR *demoUrl = "https://127.0.0.1:8557";
+#ifndef PLATON_DEMO_URL
+#define PLATON_DEMO_URL "https://127.0.0.1:8557"
+#endif
+const BCHAR *demoUrl = PLATON_DEMO_URL;
 
 /**
  * PlatON test network human-readable part

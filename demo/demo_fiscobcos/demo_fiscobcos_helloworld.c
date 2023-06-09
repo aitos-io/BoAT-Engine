@@ -47,7 +47,10 @@ const BCHAR *native_demoKey = "0xcd92bb4235b5a849b675a0373ee97554e85d65494b50275
 /**
  * test node url
  */
-const BCHAR *demoUrl = "http://127.0.0.1:8545";
+#ifndef FISCOBCOS_DEMO_URL
+#define FISCOBCOS_DEMO_URL "http://127.0.0.1:8545"
+#endif
+const BCHAR *demoUrl = FISCOBCOS_DEMO_URL;
 
 /**
  * transfer recipient address

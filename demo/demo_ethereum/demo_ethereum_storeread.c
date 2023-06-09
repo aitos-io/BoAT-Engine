@@ -44,8 +44,11 @@ const BCHAR *native_demoKey = "0x6cbed15c793ce57650b9877cf6fa156fbef513c4e6134f0
 /**
  * test node url
  */
-const BCHAR * demoUrl = "http://127.0.0.1:8545";
+#ifndef ETHEREUM_DEMO_URL
+#define ETHEREUM_DEMO_URL "http://127.0.0.1:8545"
+#endif
 
+const BCHAR * demoUrl = ETHEREUM_DEMO_URL;
 
 /**
  * transfer recipient address
