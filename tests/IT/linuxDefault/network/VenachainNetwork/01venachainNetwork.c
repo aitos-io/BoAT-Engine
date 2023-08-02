@@ -509,6 +509,68 @@ START_TEST(test_001venachainNetwork_0014GetNetworkByIndex_Persist)
 }
 END_TEST
 
+/**
+****************************************************************************************
+* @brief:
+*  This function test case : free network in the networklist;
+* @return
+****************************************************************************************
+*/
+START_TEST(test_001venachainNetwork_0015FreeNetworkContext_OnetimeAndPersistNetwork)
+{
+    BSINT32 rtnVal;
+    BoatVenachainNetworkContext networkList;
+    BoatVenachainNetworkConfig network_config;
+    /* creat onetime network */
+    /* get configuration */
+    rtnVal = getVenachainNetworkConfig(&network_config, chainID, BOAT_FALSE, demoUrl_1);
+    ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
+    /* create onetime network , store type must be RAM */
+    rtnVal = BoatVenachainNetworkCreate(&network_config, BOAT_STORE_TYPE_RAM);
+    /* check index of onetime network , the index must equal 0 */
+    ck_assert_int_eq(rtnVal, 0);
+    /* creat a persist network*/
+    /* get configuration */
+    rtnVal = getVenachainNetworkConfig(&network_config, chainID, BOAT_FALSE, demoUrl_2);
+    ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
+    /* create persist network , store type must be FLASH */
+    rtnVal = BoatVenachainNetworkCreate(&network_config, BOAT_STORE_TYPE_FLASH);
+    /* check index of persist network ;
+        index of persist networks is form 1 to BOAT_MAX_NETWORK_NUM,
+        this is the first persist network, the index must equal 1 */
+    ck_assert_int_eq(rtnVal, 1);
+    /* get the network list */
+    rtnVal = BoATVenachain_GetNetworkList(&networkList);
+    /* check the result */
+    ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
+    /* check num of network ; a onetime network and a persist network , num of network must be 2*/
+    ck_assert_int_eq(networkList.networkNum, 2);
+    /* read persist networks and then read the onetime network ;
+        there are a onetime network and a persist network ,so list[0] is persist network , list[1] is onetime network*/
+    /* check index of persist network in the list , index of persist netwoek must 1 */
+    ck_assert_int_eq(networkList.networks[0].networkIndex, 1);
+    /* check chainId in the list ,must be same to cteated */
+    ck_assert_int_eq(networkList.networks[0].chain_id, chainID);
+    /* check eip155 flag , must be same to created */
+    ck_assert(networkList.networks[0].eip155_compatibility == BOAT_FALSE);
+    /* check url ,must be same to created */
+    ck_assert_int_eq(strcmp(networkList.networks[0].node_url_str, demoUrl_2), 0);
+    /* check index of onetime network in the list , index of onetime netwoek must 0 */
+    ck_assert_int_eq(networkList.networks[1].networkIndex, 0);
+    /* check chainId in the list ,must be same to cteated */
+    ck_assert_int_eq(networkList.networks[1].chain_id, chainID);
+    /* check eip155 flag , must be same to created */
+    ck_assert(networkList.networks[1].eip155_compatibility == BOAT_FALSE);
+    /* check url ,must be same to created */
+    ck_assert_int_eq(strcmp(networkList.networks[1].node_url_str, demoUrl_1), 0);
+    /* delete all the networks*/
+	rtnVal = BoATVenachain_FreeNetworkContext(networkList);
+    /* check the result */
+    ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
+    BoATVenachainNetworkDelete(0);
+    BoATVenachainNetworkDelete(1);
+}
+END_TEST
 Suite *make_venachainNetworkIntfTest_suite(void)
 {
     /* Create Suite */
@@ -534,6 +596,7 @@ Suite *make_venachainNetworkIntfTest_suite(void)
     tcase_add_test(tc_networkCreat_api, test_001venachainNetwork_0012GetNetworkByIndex_IndexExceed);
     tcase_add_test(tc_networkCreat_api, test_001venachainNetwork_0013GetNetworkByIndex_Onetime);
     tcase_add_test(tc_networkCreat_api, test_001venachainNetwork_0014GetNetworkByIndex_Persist);
+	tcase_add_test(tc_networkCreat_api, test_001venachainNetwork_0015FreeNetworkContext_OnetimeAndPersistNetwork);
 
     return s_networkcreate;
 }

@@ -495,7 +495,7 @@ BCHAR *web3_sendRawTransaction(Web3IntfContext *web3intf_context_ptr,
     return return_value_ptr;
 }
 
-
+#ifdef USEGETSTORAGEAT
 BCHAR *web3_getStorageAt(Web3IntfContext *web3intf_context_ptr,
 						 BCHAR *node_url_str,
 						 const Param_web3_getStorageAt *param_ptr,
@@ -591,7 +591,7 @@ BCHAR *web3_getStorageAt(Web3IntfContext *web3intf_context_ptr,
 
     return return_value_ptr;
 }
-
+#endif
 
 BCHAR *web3_getTransactionReceiptStatus(Web3IntfContext *web3intf_context_ptr,
 										BCHAR *node_url_str,

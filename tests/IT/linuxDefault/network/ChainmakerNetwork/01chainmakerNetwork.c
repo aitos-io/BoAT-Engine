@@ -873,6 +873,78 @@ START_TEST(test_001chainmakerNetwork_0019GetNetworkByIndex_Persist)
 }
 END_TEST
 
+START_TEST(test_001chainmakerNetwork_0020FreeNetworkContext_OnetimeAndPersistNetwork)
+{
+    BSINT32 rtnVal;
+    BoatChainmakerNetworkContext networkList;
+    BoatChainmakerNetworkData network_config;
+    /* creat onetime network */
+    /* get configuration */
+    rtnVal = getChainmakerNetworkConfig(&network_config);
+    ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
+    /* create onetime network , store type must be RAM */
+    rtnVal = BoATChainmakerNetworkCreate(&network_config, BOAT_STORE_TYPE_RAM);
+    /* check index of onetime network , the index must equal 0 */
+    ck_assert_int_eq(rtnVal, 0);
+    /* creat a persist network*/
+    /* get configuration */
+    rtnVal = getChainmakerNetworkConfig2(&network_config);
+    ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
+    /* create persist network , store type must be FLASH */
+    rtnVal = BoATChainmakerNetworkCreate(&network_config, BOAT_STORE_TYPE_FLASH);
+    /* check index of persist network ;
+        index of persist networks is form 1 to BOAT_MAX_NETWORK_NUM,
+        this is the first persist network, the index must equal 1 */
+    ck_assert_int_eq(rtnVal, 1);
+    /* get the network list */
+    rtnVal = BoATChainmaker_GetNetworkList(&networkList);
+    /* check the result */
+    ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
+    /* check num of network ; a onetime network and a persist network , num of network must be 2*/
+    ck_assert_int_eq(networkList.networkNum, 2);
+    /* read persist networks and then read the onetime network ;
+        there are a onetime network and a persist network ,so list[0] is persist network , list[1] is onetime network*/
+    /* check index of persist network in the list , index of persist netwoek must 1 */
+    ck_assert_int_eq(networkList.networks[0].networkIndex, 1);
+    /* check chainId in the list ,must be same to cteated */
+    ck_assert_int_eq(strcmp(networkList.networks[0].chain_id, chainmaker_chain_id2), 0);
+    /* check hostname in the list ,must be same to cteated */
+    ck_assert_int_eq(strcmp(networkList.networks[0].host_name, chainmaker_host_name2), 0);
+    /* check orgID in the list ,must be same to cteated */
+    ck_assert_int_eq(strcmp(networkList.networks[0].org_id, chainmaker_org_id2), 0);
+    /* check url ,must be same to created */
+    ck_assert_int_eq(strcmp(networkList.networks[0].node_url, chainmaker_node_url2), 0);
+    /* check index of onetime network in the list , index of onetime netwoek must 0 */
+    ck_assert_int_eq(networkList.networks[1].networkIndex, 0);
+    /* check chainId in the list ,must be same to cteated */
+    ck_assert_int_eq(strcmp(networkList.networks[1].chain_id, chainmaker_chain_id), 0);
+    /* check hostname in the list ,must be same to cteated */
+    ck_assert_int_eq(strcmp(networkList.networks[1].host_name, chainmaker_host_name), 0);
+    /* check orgID in the list ,must be same to cteated */
+    ck_assert_int_eq(strcmp(networkList.networks[1].org_id, chainmaker_org_id), 0);
+    /* check url ,must be same to created */
+    ck_assert_int_eq(strcmp(networkList.networks[1].node_url, chainmaker_node_url), 0);
+    /* free configuration struct */
+
+	rtnVal = BoATChainmaker_FreeNetworkContext(networkList);
+	
+    ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
+    //chainmakerWalletConfigFree(network_config);
+    /* delete all the networks*/
+    BoATChainmakerNetworkDelete(0);
+    BoATChainmakerNetworkDelete(1);
+}
+END_TEST
+
+START_TEST(test_001chainmakerNetwork_0021NetworkDataInit_OnetimeAndPersistNetwork)
+{
+    BSINT32 rtnVal;
+    BoatChainmakerNetworkData network_config;
+    rtnVal = BoATChainmakerNetworkDataInit(&network_config);
+    ck_assert_int_eq(rtnVal, BOAT_SUCCESS);
+}
+END_TEST
+
 Suite *make_chainmakerNetworkIntfTest_suite(void)
 {
     /* Create Suite */
@@ -903,6 +975,8 @@ Suite *make_chainmakerNetworkIntfTest_suite(void)
     tcase_add_test(tc_networkCreat_api, test_001chainmakerNetwork_0017GetNetworkByIndex_IndexExceed);
     tcase_add_test(tc_networkCreat_api, test_001chainmakerNetwork_0018GetNetworkByIndex_Onetime);
     tcase_add_test(tc_networkCreat_api, test_001chainmakerNetwork_0019GetNetworkByIndex_Persist);
+    tcase_add_test(tc_networkCreat_api, test_001chainmakerNetwork_0020FreeNetworkContext_OnetimeAndPersistNetwork);
+    tcase_add_test(tc_networkCreat_api, test_001chainmakerNetwork_0021NetworkDataInit_OnetimeAndPersistNetwork);
 
     return s_networkcreate;
 }

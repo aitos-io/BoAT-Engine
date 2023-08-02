@@ -183,6 +183,8 @@ BOAT_RESULT venachain_call_mycontract(BoatVenachainWallet *wallet_ptr)
 		return BOAT_ERROR;
     }
 	BoatLog(BOAT_LOG_NORMAL, "retrieve returns: %s", result_str);
+
+	BoatVenachainTransfer(&tx_ctx,"0x0");
 	
     return BOAT_SUCCESS;
 }
@@ -222,6 +224,8 @@ int main(int argc, char *argv[])
     }
 
 	/* step-3: execute 'venachain_call_mycontract' */
+	char *ctp = BoatVenachainWalletGetBalance(g_venachain_wallet_ptr,(BCHAR *)demoRecipientAddress);
+	BoatLog(BOAT_LOG_NORMAL, "venachain BoatVenachainWalletGetBalance. %s",ctp);
 	result = venachain_call_mycontract(g_venachain_wallet_ptr);
     if (result != BOAT_SUCCESS)
 	{
@@ -234,7 +238,6 @@ int main(int argc, char *argv[])
 	boat_catch(venachain_demo_catch)
     {
     }
-
     BoatVenachainWalletDeInit(g_venachain_wallet_ptr);
 	/* step-4: Boat SDK Deinitialization */
     BoatIotSdkDeInit();

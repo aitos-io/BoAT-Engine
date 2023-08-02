@@ -151,6 +151,30 @@ BOAT_RESULT BoATChainmakerNetworkDelete(BUINT8 index);
  */
 
 BOAT_RESULT BoATChainmaker_GetNetworkByIndex(BoatChainmakerNetworkData *networkData ,BUINT8 index);
+/**
+ * @description:
+ *  This function use to free BoatChainmakerNetworkContext param.
+ * @param[in] {BoatChainmakerNetworkContext} networkList
+ * @return {*}
+ *  This function returns BOAT_SUCCESS if successfully executed.
+ *  Otherwise it returns one of the error codes. Refer to header file boaterrcode.h
+ *  for details.
+ * @author: aitos
+ */
+BOAT_RESULT BoATChainmaker_FreeNetworkContext(BoatChainmakerNetworkContext networkList);
+
+
+/**
+ * @description:
+ *  This function initialize network data context
+ * @param[inout] {BoatChainmakerNetworkData} *mNetworkDataCtx
+ * @return
+ *   This function returns BOAT_SUCCESS if initialization is successful.\n
+ *   Otherwise it returns one of the error codes. Refer to header file boaterrcode.h
+ *   for details.
+ * @author: aitos
+ */
+BOAT_RESULT BoATChainmakerNetworkDataInit(BoatChainmakerNetworkData *mNetworkDataCtx);
 
 
 #endif
