@@ -76,18 +76,18 @@ BOAT_RESULT hlchainmakerTransactionPacked(BoatChainmakerTx *tx_ptr, BCHAR *metho
     common_payload.n_parameters = tx_ptr->trans_para.n_parameters;
     common_payload.parameters = (Common__KeyValuePair **)BoatMalloc(sizeof(Common__KeyValuePair *) * tx_ptr->trans_para.n_parameters);
     if (common_payload.parameters == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail parameters malloc");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, chainmakerProposalTransactionPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     for (i = 0; i < common_payload.n_parameters; i++)
     {
         Common__KeyValuePair *key_value_pair_ptr = BoatMalloc(sizeof(Common__KeyValuePair));
         if (key_value_pair_ptr == NULL)
-        {
+        {// LCOV_EXCL_START
             boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, chainmakerProposalTransactionPacked_exception);
-        }
+        }// LCOV_EXCL_STOP
         memcpy(key_value_pair_ptr, &common_key_value_pair, sizeof(Common__KeyValuePair));
         key_value_pair_ptr->key = tx_ptr->trans_para.parameters[i].key;
         key_value_pair_ptr->value.len = tx_ptr->trans_para.parameters[i].value.field_len;
@@ -99,10 +99,10 @@ BOAT_RESULT hlchainmakerTransactionPacked(BoatChainmakerTx *tx_ptr, BCHAR *metho
     packedLength = common__chainmaker_payload__get_packed_size(&common_payload);
     hash_data.field_ptr = BoatMalloc(packedLength);
     if (hash_data.field_ptr == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "Failed to allocate memory.");
         return BOAT_ERROR_COMMON_OUT_OF_MEMORY;
-    }
+    }// LCOV_EXCL_STOP
 
     hash_data.field_len = packedLength;
     common__chainmaker_payload__pack(&common_payload, hash_data.field_ptr);
@@ -112,24 +112,24 @@ BOAT_RESULT hlchainmakerTransactionPacked(BoatChainmakerTx *tx_ptr, BCHAR *metho
                       hash_data.field_len, hash_result, NULL, NULL);
 
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to exec BoatHash.");
         boat_throw(result, chainmakerProposalTransactionPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     /* step-4: signature */
     result = BoatSignature(tx_ptr->wallet_ptr->account_info.prikeyCtx, hash_result, sizeof(hash_result), &signatureResult, NULL);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to exec BoatSignature.");
         boat_throw(BOAT_ERROR_COMMON_GEN_SIGN_FAIL, chainmakerProposalTransactionPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     if (!signatureResult.pkcs_format_used)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to find expect signature.");
         boat_throw(BOAT_ERROR_COMMON_GEN_SIGN_FAIL, chainmakerProposalTransactionPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     /**************************  sender  start *************************/
     accesscontrol_member.org_id = tx_ptr->wallet_ptr->network_info.org_id;

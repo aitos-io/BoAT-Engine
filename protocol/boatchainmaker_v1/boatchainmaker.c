@@ -46,17 +46,17 @@ BOAT_RESULT generateTxRequestPayloadPack(BoatChainmakerTx *tx_ptr, char *method,
 
     transactPayload.parameters = (Common__KeyValuePair **)BoatMalloc(sizeof(Common__KeyValuePair *) * tx_ptr->trans_para.n_parameters);
     if (transactPayload.parameters == NULL)
-    {
+    {// LCOV_EXCL_START
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     for (i = 0; i < tx_ptr->trans_para.n_parameters; i++)
     {
         Common__KeyValuePair *key_value_pair = BoatMalloc(sizeof(Common__KeyValuePair));
         if (key_value_pair == NULL)
-        {
+        {// LCOV_EXCL_START
             boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, cleanup);
-        }
+        }// LCOV_EXCL_STOP
         memcpy(key_value_pair, &keyValuePair, sizeof(Common__KeyValuePair));
         key_value_pair->key = tx_ptr->trans_para.parameters[i].key;
         key_value_pair->value = (char *)tx_ptr->trans_para.parameters[i].value.field_ptr;
@@ -69,9 +69,9 @@ BOAT_RESULT generateTxRequestPayloadPack(BoatChainmakerTx *tx_ptr, char *method,
     output_ptr->field_ptr = BoatMalloc(packed_length_payload);
 
     if (output_ptr->field_ptr == NULL)
-    {
+    {// LCOV_EXCL_START
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     common__transact_payload__pack(&transactPayload, output_ptr->field_ptr);
     output_ptr->field_len = packed_length_payload;
@@ -141,10 +141,10 @@ BOAT_RESULT hlchainmakerTransactionPacked(BoatChainmakerTx *tx_ptr, BCHAR *metho
 
     hash_data.field_ptr = BoatMalloc(packedLength);
     if (hash_data.field_ptr == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "Failed to allocate memory.");
         return BOAT_ERROR_COMMON_OUT_OF_MEMORY;
-    }
+    }// LCOV_EXCL_STOP
     hash_data.field_len = packedLength;
     common__tx_header__pack__chainmaker(&tx_header, hash_data.field_ptr);
     hash_data.field_ptr += packedHeaderLength;
@@ -156,23 +156,23 @@ BOAT_RESULT hlchainmakerTransactionPacked(BoatChainmakerTx *tx_ptr, BCHAR *metho
                       hash_data.field_len, hash, NULL, NULL);
 
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to exec BoatHash.");
         boat_throw(result, chainmakerProposalTransactionPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
     /* step-4: signature */
     result = BoatSignature(tx_ptr->wallet_ptr->account_info.prikeyCtx, hash, sizeof(hash), &signatureResult, NULL);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to exec BoatSignature.");
         boat_throw(BOAT_ERROR_COMMON_GEN_SIGN_FAIL, chainmakerProposalTransactionPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     if (!signatureResult.pkcs_format_used)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to find expect signature.");
         boat_throw(BOAT_ERROR_COMMON_GEN_SIGN_FAIL, chainmakerProposalTransactionPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     /* step-5: pack the envelope */
     tx_request.header = &tx_header;

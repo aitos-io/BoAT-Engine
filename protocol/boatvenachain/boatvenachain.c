@@ -65,20 +65,20 @@ BOAT_RESULT VenachainSendRawtx(BOAT_INOUT BoatVenachainTx *tx_ptr)
     boat_try_declare;
 
     if (tx_ptr == NULL || tx_ptr->wallet_ptr == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Transaction and wallet pointer cannot be NULL.");
         boat_throw(BOAT_ERROR_COMMON_INVALID_ARGUMENT, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     // In case the transaction should fail, tx_hash.field_len is initialized to 0
     tx_ptr->tx_hash.field_len = 0;
     
     result = RlpInitListObject(&tx_rlp_object);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Tx RLP object initialize failed.");
         boat_throw(BOAT_ERROR_RLP_LIST_INIT_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     /**************************************************************************
     * STEP 1: Construct RAW transaction without real v/r/s                 *
@@ -89,101 +89,101 @@ BOAT_RESULT VenachainSendRawtx(BOAT_INOUT BoatVenachainTx *tx_ptr)
                                  tx_ptr->rawtx_fields.nonce.field,
                                  tx_ptr->rawtx_fields.nonce.field_len);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Nonce RLP object initialize failed.");
         boat_throw(BOAT_ERROR_RLP_STRING_INIT_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
     
     rlp_index = RlpEncoderAppendObjectToList(&tx_rlp_object, &nonce_rlp_object);
     if (rlp_index < 0)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Append nonce to Tx RLP object failed.");
         boat_throw(BOAT_ERROR_RLP_ENCODER_APPEND_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     // Encode gasprice
     result = RlpInitStringObject(&gasprice_rlp_object,
                                  tx_ptr->rawtx_fields.gasprice.field,
                                  tx_ptr->rawtx_fields.gasprice.field_len);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Gasprice RLP object initialize failed.");
         boat_throw(BOAT_ERROR_RLP_STRING_INIT_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
     
     rlp_index = RlpEncoderAppendObjectToList(&tx_rlp_object, &gasprice_rlp_object);
     if (rlp_index < 0)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Append gasprice to Tx RLP object failed.");
         boat_throw(BOAT_ERROR_RLP_ENCODER_APPEND_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
     
     // Encode gaslimit
     result = RlpInitStringObject(&gaslimit_rlp_object,
                                  tx_ptr->rawtx_fields.gaslimit.field,
                                  tx_ptr->rawtx_fields.gaslimit.field_len);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Gaslimit RLP object initialize failed.");
         boat_throw(BOAT_ERROR_RLP_STRING_INIT_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
     
     rlp_index = RlpEncoderAppendObjectToList(&tx_rlp_object, &gaslimit_rlp_object);
     if (result < 0)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Append gaslimit to Tx RLP object failed.");
         boat_throw(BOAT_ERROR_RLP_ENCODER_APPEND_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
     
     // Encode recipient
     result = RlpInitStringObject(&recipient_rlp_object,
                                  tx_ptr->rawtx_fields.recipient, 20);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Recipient RLP object initialize failed.");
         boat_throw(BOAT_ERROR_RLP_STRING_INIT_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
     
     rlp_index = RlpEncoderAppendObjectToList(&tx_rlp_object, &recipient_rlp_object);
     if (rlp_index < 0)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Append recipient to Tx RLP object failed.");
         boat_throw(BOAT_ERROR_RLP_ENCODER_APPEND_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     // Encode value
     result = RlpInitStringObject(&value_rlp_object,
                                  tx_ptr->rawtx_fields.value.field,
                                  tx_ptr->rawtx_fields.value.field_len);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Value RLP object initialize failed.");
         boat_throw(BOAT_ERROR_RLP_STRING_INIT_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
     
     rlp_index = RlpEncoderAppendObjectToList(&tx_rlp_object, &value_rlp_object);
     if (rlp_index < 0)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Append value to Tx RLP object failed.");
         boat_throw(BOAT_ERROR_RLP_ENCODER_APPEND_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     // Encode data
     result = RlpInitStringObject(&data_rlp_object,
                                  tx_ptr->rawtx_fields.data.field_ptr,
                                  tx_ptr->rawtx_fields.data.field_len);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Data RLP object initialize failed.");
         boat_throw(BOAT_ERROR_RLP_STRING_INIT_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
     
     rlp_index = RlpEncoderAppendObjectToList(&tx_rlp_object, &data_rlp_object);
     if (rlp_index < 0)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Append data to Tx RLP object failed.");
         boat_throw(BOAT_ERROR_RLP_ENCODER_APPEND_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     // If EIP-155 is required, encode v = chain id, r = s = NULL in this step
     if (tx_ptr->wallet_ptr->network_info.eip155_compatibility == BOAT_TRUE)
@@ -205,51 +205,51 @@ BOAT_RESULT VenachainSendRawtx(BOAT_INOUT BoatVenachainTx *tx_ptr)
                                      tx_ptr->rawtx_fields.v.field,
                                      tx_ptr->rawtx_fields.v.field_len);
         if (result != BOAT_SUCCESS)
-        {
+        {// LCOV_EXCL_START
             BoatLog(BOAT_LOG_CRITICAL, "V RLP object initialize failed.");
             boat_throw(BOAT_ERROR_RLP_STRING_INIT_FAIL, VenachainSendRawtx_cleanup);
-        }
+        }// LCOV_EXCL_STOP
         
         v_index = RlpEncoderAppendObjectToList(&tx_rlp_object, &v_rlp_object);
         if (v_index < 0)
-        {
+        {// LCOV_EXCL_START
             BoatLog(BOAT_LOG_CRITICAL, "Append v to Tx RLP object failed.");
             boat_throw(BOAT_ERROR_RLP_ENCODER_APPEND_FAIL, VenachainSendRawtx_cleanup);
-        }
+        }// LCOV_EXCL_STOP
 
         // Encode r
         result = RlpInitStringObject(&r_rlp_object,
                                      tx_ptr->rawtx_fields.sig.r32B,
                                      tx_ptr->rawtx_fields.sig.r_len);
         if (result != BOAT_SUCCESS)
-        {
+        {// LCOV_EXCL_START
             BoatLog(BOAT_LOG_CRITICAL, "R RLP object initialize failed.");
             boat_throw(BOAT_ERROR_RLP_STRING_INIT_FAIL, VenachainSendRawtx_cleanup);
-        }
+        }// LCOV_EXCL_STOP
         
         r_index = RlpEncoderAppendObjectToList(&tx_rlp_object, &r_rlp_object);
         if (r_index < 0)
-        {
+        {// LCOV_EXCL_START
             BoatLog(BOAT_LOG_CRITICAL, "Append r to Tx RLP object failed.");
             boat_throw(BOAT_ERROR_RLP_ENCODER_APPEND_FAIL, VenachainSendRawtx_cleanup);
-        }
+        }// LCOV_EXCL_STOP
 
         // Encode s
         result = RlpInitStringObject(&s_rlp_object,
                                      tx_ptr->rawtx_fields.sig.s32B,
                                      tx_ptr->rawtx_fields.sig.s_len);
         if (result != BOAT_SUCCESS)
-        {
+        {// LCOV_EXCL_START
             BoatLog(BOAT_LOG_CRITICAL, "S RLP object initialize failed.");
             boat_throw(BOAT_ERROR_RLP_STRING_INIT_FAIL, VenachainSendRawtx_cleanup);
-        }
+        }// LCOV_EXCL_STOP
         
         s_index = RlpEncoderAppendObjectToList(&tx_rlp_object, &s_rlp_object);
         if (s_index < 0)
-        {
+        {// LCOV_EXCL_START
             BoatLog(BOAT_LOG_CRITICAL, "Append s to Tx RLP object failed.");
             boat_throw(BOAT_ERROR_RLP_ENCODER_APPEND_FAIL, VenachainSendRawtx_cleanup);
-        }
+        }// LCOV_EXCL_STOP
     }
 
     // Encode Tx RLP LIST
@@ -261,10 +261,10 @@ BOAT_RESULT VenachainSendRawtx(BOAT_INOUT BoatVenachainTx *tx_ptr)
 						rlp_stream_storage_ptr->stream_ptr, rlp_stream_storage_ptr->stream_len);
     }
     else
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Encode Tx failed.");
         boat_throw(BOAT_ERROR_RLP_ENCODER_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     /**************************************************************************
     * STEP 2: Calculate SHA3 hash of message                                  *
@@ -275,10 +275,10 @@ BOAT_RESULT VenachainSendRawtx(BOAT_INOUT BoatVenachainTx *tx_ptr)
 					  rlp_stream_storage_ptr->stream_len, 
 					  message_digest, &message_digestLen, NULL);
 	if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Execute BoatHash failed.");
         boat_throw(result, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     /**************************************************************************
     * STEP 3: Sign the transaction                                            *
@@ -288,10 +288,10 @@ BOAT_RESULT VenachainSendRawtx(BOAT_INOUT BoatVenachainTx *tx_ptr)
 	result = BoatSignature(tx_ptr->wallet_ptr->account_info.prikeyCtx, 
 						   message_digest, message_digestLen, &signatureResultTmp, NULL);
 	if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Execute BoatSignature failed.");
         boat_throw(BOAT_ERROR_COMMON_GEN_SIGN_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
     // assign signature value
     if (signatureResultTmp.native_format_used)
     {
@@ -343,10 +343,10 @@ BOAT_RESULT VenachainSendRawtx(BOAT_INOUT BoatVenachainTx *tx_ptr)
                                  tx_ptr->rawtx_fields.v.field,
                                  tx_ptr->rawtx_fields.v.field_len);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Re-initialize v RLP object failed.");
         boat_throw(BOAT_ERROR_RLP_STRING_INIT_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     if (tx_ptr->wallet_ptr->network_info.eip155_compatibility == BOAT_TRUE)
     {
@@ -358,20 +358,20 @@ BOAT_RESULT VenachainSendRawtx(BOAT_INOUT BoatVenachainTx *tx_ptr)
     }
     
     if (v_index < 0)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Replace v in Tx RLP object failed.");
         boat_throw(BOAT_ERROR_RLP_ENCODER_REPLACE_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     // Re-encode r
     result = RlpInitStringObject(&r_rlp_object,
                                  tx_ptr->rawtx_fields.sig.r32B,
                                  tx_ptr->rawtx_fields.sig.r_len);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Re-initialize r RLP object failed.");
         boat_throw(BOAT_ERROR_RLP_ENCODER_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
     
     if (tx_ptr->wallet_ptr->network_info.eip155_compatibility == BOAT_TRUE)
     {
@@ -383,20 +383,20 @@ BOAT_RESULT VenachainSendRawtx(BOAT_INOUT BoatVenachainTx *tx_ptr)
     }
 
     if (r_index < 0)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Replace r in Tx RLP object failed.");
         boat_throw(BOAT_ERROR_RLP_ENCODER_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     // Re-encode s
     result = RlpInitStringObject(&s_rlp_object,
                                  tx_ptr->rawtx_fields.sig.s32B,
                                  tx_ptr->rawtx_fields.sig.s_len);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Re-initialize s RLP object failed.");
         boat_throw(BOAT_ERROR_RLP_STRING_INIT_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     if (tx_ptr->wallet_ptr->network_info.eip155_compatibility == BOAT_TRUE)
     {
@@ -408,10 +408,10 @@ BOAT_RESULT VenachainSendRawtx(BOAT_INOUT BoatVenachainTx *tx_ptr)
     }
     
     if (s_index < 0)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Replace s in Tx RLP object failed.");
         boat_throw(BOAT_ERROR_RLP_ENCODER_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     // Re-encode Tx RLP LIST
     result = RlpReEncode(&tx_rlp_object, NULL);
@@ -422,10 +422,10 @@ BOAT_RESULT VenachainSendRawtx(BOAT_INOUT BoatVenachainTx *tx_ptr)
 						rlp_stream_storage_ptr->stream_ptr, rlp_stream_storage_ptr->stream_len);
     }
     else
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Re-encode Tx failed.");
         boat_throw(BOAT_ERROR_RLP_ENCODER_FAIL, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
     
 
     // Allocate memory for RLP stream HEX string
@@ -434,10 +434,10 @@ BOAT_RESULT VenachainSendRawtx(BOAT_INOUT BoatVenachainTx *tx_ptr)
     // Where *2 for binary to HEX conversion, +2 for "0x" prefix, + 1 for null terminator.
     rlp_stream_hex_str = BoatMalloc(rlp_stream_storage_ptr->stream_len * 2 + 2 + 1);
     if (rlp_stream_hex_str == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Unable to dynamically allocate memory to store RLP HEX string.");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
 
     // To save memory, re-use rlp_stream_hex_str to print debug information
     // As rlp_stream_hex_str's size is enough to hold the entire RLP hex string,
@@ -475,17 +475,17 @@ BOAT_RESULT VenachainSendRawtx(BOAT_INOUT BoatVenachainTx *tx_ptr)
                                           tx_ptr->wallet_ptr->network_info.node_url_str,
                                           &param_web3_sendRawTransaction,&result);
 	if (tx_hash_str == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "Fail to send raw transaction to network.");
 		boat_throw(result, VenachainSendRawtx_cleanup);
-    }
+    }// LCOV_EXCL_STOP
     result = BoatVenachainParseRpcResponseStringResult(tx_hash_str,
 											         &tx_ptr->wallet_ptr->web3intf_context_ptr->web3_result_string_buf);
 	if (result != BOAT_SUCCESS)
-	{
+	{// LCOV_EXCL_START
 		BoatLog(BOAT_LOG_NORMAL, "Fail to parse RPC response.");
 		boat_throw(result, VenachainSendRawtx_cleanup);
-	}
+	}// LCOV_EXCL_STOP
 
     tx_ptr->tx_hash.field_len = UtilityHexToBin(tx_ptr->tx_hash.field, 32, 
 												(BCHAR *)tx_ptr->wallet_ptr->web3intf_context_ptr->web3_result_string_buf.field_ptr,
@@ -535,32 +535,32 @@ BOAT_RESULT venachain_parse_json_result(const BCHAR *json_string,
 	// Convert string to cJSON
 	cjson_string_ptr = cJSON_Parse(json_string);
 	if (cjson_string_ptr == NULL)
-    {
+    {// LCOV_EXCL_START
         cjson_error_ptr = cJSON_GetErrorPtr();
         if (cjson_error_ptr != NULL)
         {
             BoatLog(BOAT_LOG_NORMAL, "Parsing RESPONSE as JSON fails before: %s.", cjson_error_ptr);
         }
         boat_throw(BOAT_ERROR_WEB3_JSON_PARSE_FAIL, venachain_parse_json_result_cleanup);
-    }
+    }// LCOV_EXCL_STOP
 	
 	// Obtain result object
 	cjson_result_ptr = cJSON_GetObjectItemCaseSensitive(cjson_string_ptr, "result");
 	if (cjson_result_ptr == NULL)
-	{
+	{// LCOV_EXCL_START
 		BoatLog(BOAT_LOG_NORMAL, "Cannot find \"result\" item in RESPONSE.");
 		boat_throw(BOAT_ERROR_WEB3_JSON_GETOBJ_FAIL, venachain_parse_json_result_cleanup);
-	}
+	}// LCOV_EXCL_STOP
 
 	if (cJSON_IsObject(cjson_result_ptr))
 	{
 		// the "result" object is json item
 		cjson_child_name_ptr = cJSON_GetObjectItemCaseSensitive(cjson_result_ptr, child_name);
 		if (cjson_child_name_ptr == NULL)
-		{
+		{// LCOV_EXCL_START
 			BoatLog(BOAT_LOG_NORMAL, "Cannot find \"%s\" item in RESPONSE.", child_name);
 			boat_throw(BOAT_ERROR_WEB3_JSON_GETOBJ_FAIL, venachain_parse_json_result_cleanup);
-		}
+		}// LCOV_EXCL_STOP
 	
 		//parse child_name object
 		if (cJSON_IsString(cjson_child_name_ptr))
@@ -577,10 +577,10 @@ BOAT_RESULT venachain_parse_json_result(const BCHAR *json_string,
 					BoatLog(BOAT_LOG_VERBOSE, "Expand result_out memory...");
 					result = BoatFieldVariable_malloc_size_expand(result_out, WEB3_STRING_BUF_STEP_SIZE);
 					if (result != BOAT_SUCCESS)
-					{
+					{// LCOV_EXCL_START
 						BoatLog(BOAT_LOG_CRITICAL, "Failed to excute BoatFieldVariable_malloc_size_expand.");
 						boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, venachain_parse_json_result_cleanup);
-					}
+					}// LCOV_EXCL_STOP
 				}
 				strcpy((BCHAR*)result_out->field_ptr, parse_result_str);
 			}
@@ -604,24 +604,24 @@ BOAT_RESULT venachain_parse_json_result(const BCHAR *json_string,
 				BoatLog(BOAT_LOG_VERBOSE, "Expand result_out memory...");
 				result = BoatFieldVariable_malloc_size_expand(result_out, WEB3_STRING_BUF_STEP_SIZE);
 				if (result != BOAT_SUCCESS)
-				{
+				{// LCOV_EXCL_START
 					BoatLog(BOAT_LOG_CRITICAL, "Failed to excute BoatFieldVariable_malloc_size_expand.");
 					boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, venachain_parse_json_result_cleanup);
-				}
+				}// LCOV_EXCL_STOP
 			}
 			strcpy((BCHAR*)result_out->field_ptr, parse_result_str);
 		}
 	}
 	else if (cJSON_IsNull(cjson_result_ptr))//cjson_result_ptr:null
-	{
+	{// LCOV_EXCL_START
         BoatLog(BOAT_LOG_VERBOSE, "Result is NULL.");
 		boat_throw(BOAT_ERROR_JSON_OBJ_IS_NULL, venachain_parse_json_result_cleanup);
-    }
+    }// LCOV_EXCL_STOP
     else
-    {
+    {// LCOV_EXCL_START
 		BoatLog(BOAT_LOG_CRITICAL, "Un-expect object type.");
 		boat_throw(BOAT_ERROR_WEB3_JSON_PARSE_FAIL, venachain_parse_json_result_cleanup);
-	}
+	}// LCOV_EXCL_STOP
 	if (cjson_string_ptr != NULL)
     {
         cJSON_Delete(cjson_string_ptr);

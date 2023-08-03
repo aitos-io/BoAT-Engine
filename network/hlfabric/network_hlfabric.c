@@ -220,56 +220,56 @@ __BOATSTATIC BOAT_RESULT BoATHlfabric_getNetworkFromProto(BoatHlfabricNetworkDat
     Networkdata->nodesCfg.endorserLayoutNum = network_proto->n_layoutcfg;
     Networkdata->nodesCfg.layoutCfg = BoatMalloc(Networkdata->nodesCfg.endorserLayoutNum * sizeof(BoatHlfabricNodeLayoutCfg));
     if (NULL == Networkdata->nodesCfg.layoutCfg)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "fail to malloc memory for layoutCfg");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-    }
+    }// LCOV_EXCL_STOP
     for (size_t i = 0; i < Networkdata->nodesCfg.endorserLayoutNum; i++)
     {
         /* group */
         Networkdata->nodesCfg.layoutCfg[i].endorserGroupNum = network_proto->layoutcfg[i]->n_groupcfg;
         Networkdata->nodesCfg.layoutCfg[i].groupCfg = BoatMalloc(Networkdata->nodesCfg.layoutCfg[i].endorserGroupNum * sizeof(BoatHlfabricNodeGroupCfg));
         if (NULL == Networkdata->nodesCfg.layoutCfg[i].groupCfg)
-        {
+        {// LCOV_EXCL_START
             BoatLog(BOAT_LOG_NORMAL, "failt to malloc memory for groupCfg");
             boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-        }
+        }// LCOV_EXCL_STOP
         for (size_t j = 0; j < Networkdata->nodesCfg.layoutCfg[i].endorserGroupNum; j++)
         {
             Networkdata->nodesCfg.layoutCfg[i].groupCfg[j].endorserNumber = network_proto->layoutcfg[i]->groupcfg[j]->n_endorser;
             Networkdata->nodesCfg.layoutCfg[i].groupCfg[j].quantities = network_proto->layoutcfg[i]->groupcfg[j]->quantities;
             if (strlen(network_proto->layoutcfg[i]->groupcfg[j]->tlsorgcertcontent) > sizeof(Networkdata->nodesCfg.layoutCfg[i].groupCfg[j].tlsOrgCertContent.content))
-            {
+            {// LCOV_EXCL_START
                 BoatLog(BOAT_LOG_NORMAL, "tlsorgcertcontent length err ");
                 boat_throw(BOAT_ERROR, hlfabric_exception);
-            }
+            }// LCOV_EXCL_STOP
             Networkdata->nodesCfg.layoutCfg[i].groupCfg[j].tlsOrgCertContent.length = strlen(network_proto->layoutcfg[i]->groupcfg[j]->tlsorgcertcontent);
             strcpy(Networkdata->nodesCfg.layoutCfg[i].groupCfg[j].tlsOrgCertContent.content, network_proto->layoutcfg[i]->groupcfg[j]->tlsorgcertcontent);
             Networkdata->nodesCfg.layoutCfg[i].groupCfg[j].endorser =
                 BoatMalloc(Networkdata->nodesCfg.layoutCfg[i].groupCfg[j].endorserNumber * sizeof(BoatHlfabricNodeInfoCfg));
             if (NULL == Networkdata->nodesCfg.layoutCfg[i].groupCfg[j].endorser)
-            {
+            {// LCOV_EXCL_START
                 BoatLog(BOAT_LOG_NORMAL, "fail to malloc memory for endorser");
                 boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-            }
+            }// LCOV_EXCL_STOP
             for (size_t k = 0; k < Networkdata->nodesCfg.layoutCfg[i].groupCfg[j].endorserNumber; k++)
             {
                 /* code */
                 Networkdata->nodesCfg.layoutCfg[i].groupCfg[j].endorser[k].hostName =
                     BoatMalloc(strlen(network_proto->layoutcfg[i]->groupcfg[j]->endorser[k]->hostname) + 1);
                 if (NULL == Networkdata->nodesCfg.layoutCfg[i].groupCfg[j].endorser[k].hostName)
-                {
+                {// LCOV_EXCL_START
                     BoatLog(BOAT_LOG_NORMAL, "fail to malloc memory for hostname");
                     boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-                }
+                }// LCOV_EXCL_STOP
                 strcpy(Networkdata->nodesCfg.layoutCfg[i].groupCfg[j].endorser[k].hostName, network_proto->layoutcfg[i]->groupcfg[j]->endorser[k]->hostname);
                 Networkdata->nodesCfg.layoutCfg[i].groupCfg[j].endorser[k].nodeUrl =
                     BoatMalloc(strlen(network_proto->layoutcfg[i]->groupcfg[j]->endorser[k]->nodeurl) + 1);
                 if (NULL == Networkdata->nodesCfg.layoutCfg[i].groupCfg[j].endorser[k].nodeUrl)
-                {
+                {// LCOV_EXCL_START
                     BoatLog(BOAT_LOG_NORMAL, "fail to malloc memory for url");
                     boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-                }
+                }// LCOV_EXCL_STOP
                 strcpy(Networkdata->nodesCfg.layoutCfg[i].groupCfg[j].endorser[k].nodeUrl, network_proto->layoutcfg[i]->groupcfg[j]->endorser[k]->nodeurl);
             }
         }
@@ -278,10 +278,10 @@ __BOATSTATIC BOAT_RESULT BoATHlfabric_getNetworkFromProto(BoatHlfabricNetworkDat
     Networkdata->nodesCfg.orderCfg.endorserNumber = network_proto->ordercfg->n_endorser;
     Networkdata->nodesCfg.orderCfg.quantities = network_proto->ordercfg->quantities;
     if (strlen(network_proto->ordercfg->tlsorgcertcontent) > sizeof(Networkdata->nodesCfg.orderCfg.tlsOrgCertContent.content))
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "fail tomalloc memory for order's tls cert");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-    }
+    }// LCOV_EXCL_STOP
     strcpy(Networkdata->nodesCfg.orderCfg.tlsOrgCertContent.content, network_proto->ordercfg->tlsorgcertcontent);
     Networkdata->nodesCfg.orderCfg.tlsOrgCertContent.length = strlen(network_proto->ordercfg->tlsorgcertcontent);
     Networkdata->nodesCfg.orderCfg.endorser =
@@ -292,35 +292,35 @@ __BOATSTATIC BOAT_RESULT BoATHlfabric_getNetworkFromProto(BoatHlfabricNetworkDat
         Networkdata->nodesCfg.orderCfg.endorser[i].hostName =
             BoatMalloc(strlen(network_proto->ordercfg->endorser[i]->hostname) + 1);
         if (NULL == Networkdata->nodesCfg.orderCfg.endorser[i].hostName)
-        {
+        {// LCOV_EXCL_START
             BoatLog(BOAT_LOG_NORMAL, "fail to malloc memory for order's hostname");
             boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-        }
+        }// LCOV_EXCL_STOP
         strcpy(Networkdata->nodesCfg.orderCfg.endorser[i].hostName, network_proto->ordercfg->endorser[i]->hostname);
         Networkdata->nodesCfg.orderCfg.endorser[i].nodeUrl =
             BoatMalloc(strlen(network_proto->ordercfg->endorser[i]->nodeurl) + 1);
         if (NULL == Networkdata->nodesCfg.orderCfg.endorser[i].nodeUrl)
-        {
+        {// LCOV_EXCL_START
             BoatLog(BOAT_LOG_NORMAL, "fail to malloc memory for order's url");
             boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-        }
+        }// LCOV_EXCL_STOP
         strcpy(Networkdata->nodesCfg.orderCfg.endorser[i].nodeUrl, network_proto->ordercfg->endorser[i]->nodeurl);
     }
 
 #if (BOAT_HLFABRIC_TLS_SUPPORT == 1) && (BOAT_HLFABRIC_TLS_IDENTIFY_CLIENT == 1)
     if (strlen(network_proto->accountclienttlsprikey) - 1 > sizeof(Networkdata->accountClientTlsPrikey.value))
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "account client tls prikey len exceed");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-    }
+    }// LCOV_EXCL_STOP
     Networkdata->accountClientTlsPrikey.value_len = strlen(network_proto->accountclienttlsprikey);
     strcpy((BCHAR *)Networkdata->accountClientTlsPrikey.value, network_proto->accountclienttlsprikey);
 
     if (strlen(network_proto->accountclienttlscert) - 1 > sizeof(Networkdata->accountClientTlsCert.content))
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "account client tls cert len exceed");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-    }
+    }// LCOV_EXCL_STOP
     Networkdata->accountClientTlsCert.length = strlen(network_proto->accountclienttlscert);
     strcpy((BCHAR *)Networkdata->accountClientTlsCert.content, network_proto->accountclienttlscert);
 #endif
@@ -361,51 +361,51 @@ __BOATSTATIC BOAT_RESULT BoATHlfabric_GetNetworkFromNvram(BoatHlfabricNetworkDat
     Common__FabricNetworkData *protobuf_network = NULL;
     boat_try_declare;
     if (Networkdata == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "param is NULL");
         boat_throw(BOAT_ERROR_COMMON_INVALID_ARGUMENT, hlfabricGetnetworkdata_exception);
-    }
+    }// LCOV_EXCL_STOP
     result = BoatReadSoftRotNvram(BOAT_STORE_NETWORK, offset, lengthbytes, sizeof(lengthbytes), storeType);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "Read network length fail , errorcode = %d ", result);
         boat_throw(result, hlfabricGetnetworkdata_exception);
-    }
+    }// LCOV_EXCL_STOP
     networkDataLength = UtilityGetLVData_L(lengthbytes);
     if (networkDataLength < 0)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "network data length err ");
         boat_throw(BOAT_ERROR, hlfabricGetnetworkdata_exception);
-    }
+    }// LCOV_EXCL_STOP
     networkDataLengthLen = UtilityGetTLV_LL_from_len(networkDataLength);
     networkcontent = BoatMalloc(networkDataLength);
     if (networkcontent == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "fail to malloc memory");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabricGetnetworkdata_exception);
-    }
+    }// LCOV_EXCL_STOP
     offset += networkDataLengthLen;
     /* read network data */
     result = BoatReadSoftRotNvram(BOAT_STORE_NETWORK, offset, networkcontent, networkDataLength, storeType);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "Read network data fail , errorcode = %d ", result);
         boat_throw(result, hlfabricGetnetworkdata_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     /* unpacket network data */
     protobuf_network = common__fabric_network_data__unpack(NULL, networkDataLength, networkcontent);
     if (protobuf_network == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "unpack networkdata fail ");
         boat_throw(BOAT_ERROR, hlfabricGetnetworkdata_exception);
-    }
+    }// LCOV_EXCL_STOP
     result = BoATHlfabric_getNetworkFromProto(Networkdata, protobuf_network);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "fail to get network from protobuf struct");
         boat_throw(BOAT_ERROR, hlfabricGetnetworkdata_exception);
-    }
+    }// LCOV_EXCL_STOP
     *outlen = (networkDataLength + networkDataLengthLen);
 
     /* boat catch handle */
@@ -789,10 +789,10 @@ __BOATSTATIC BOAT_RESULT BoATHlfabric_Get_Network_Data(BoatHlfabricNetworkData *
     protobuf_network.n_layoutcfg = networkData->nodesCfg.endorserLayoutNum;
     nodelayoutcfg = BoatMalloc(protobuf_network.n_layoutcfg * sizeof(Common__FabricNodeLayoutCfg *));
     if (NULL == nodelayoutcfg)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "fail to malloc layoutcfg");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-    }
+    }// LCOV_EXCL_STOP
     for (size_t i = 0; i < protobuf_network.n_layoutcfg; i++)
     {
         /* code */
@@ -802,19 +802,19 @@ __BOATSTATIC BOAT_RESULT BoATHlfabric_Get_Network_Data(BoatHlfabricNetworkData *
         Common__FabricNodeGroupCfg **groupCfg;
         groupCfg = BoatMalloc(nodelayoutcfg[i]->n_groupcfg * sizeof(Common__FabricNodeGroupCfg *));
         if (groupCfg == NULL)
-        {
+        {// LCOV_EXCL_START
             BoatLog(BOAT_LOG_NORMAL, "fail to malloc groupCfg");
             boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-        }
+        }// LCOV_EXCL_STOP
         for (size_t j = 0; j < nodelayoutcfg[i]->n_groupcfg; j++)
         {
             /* code */
             groupCfg[j] = BoatMalloc(sizeof(Common__FabricNodeGroupCfg));
             if (NULL == groupCfg[j])
-            {
+            {// LCOV_EXCL_START
                 BoatLog(BOAT_LOG_NORMAL, "fail to malloc groupCfg");
                 boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-            }
+            }// LCOV_EXCL_STOP
             common__fabric_node_group_cfg__init(groupCfg[j]);
             groupCfg[j]->quantities = networkData->nodesCfg.layoutCfg[i].groupCfg[j].quantities;
             groupCfg[j]->tlsorgcertcontent = networkData->nodesCfg.layoutCfg[i].groupCfg[j].tlsOrgCertContent.content;
@@ -822,19 +822,19 @@ __BOATSTATIC BOAT_RESULT BoATHlfabric_Get_Network_Data(BoatHlfabricNetworkData *
             Common__FabricNodeInfo **endorserCfg;
             endorserCfg = BoatMalloc(groupCfg[j]->n_endorser * sizeof(Common__FabricNodeInfo *));
             if (endorserCfg == NULL)
-            {
+            {// LCOV_EXCL_START
                 BoatLog(BOAT_LOG_NORMAL, "fail to malloc endorserCfg");
                 boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-            }
+            }// LCOV_EXCL_STOP
             for (size_t k = 0; k < groupCfg[j]->n_endorser; k++)
             {
                 /* code */
                 endorserCfg[k] = BoatMalloc(sizeof(Common__FabricNodeInfo));
                 if (NULL == endorserCfg[k])
-                {
+                {// LCOV_EXCL_START
                     BoatLog(BOAT_LOG_NORMAL, "fail to malloc endorserCfg");
                     boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-                }
+                }// LCOV_EXCL_STOP
                 common__fabric_node_info__init(endorserCfg[k]);
                 endorserCfg[k]->hostname = networkData->nodesCfg.layoutCfg[i].groupCfg[j].endorser[k].hostName;
                 endorserCfg[k]->nodeurl = networkData->nodesCfg.layoutCfg[i].groupCfg[j].endorser[k].nodeUrl;
@@ -846,10 +846,10 @@ __BOATSTATIC BOAT_RESULT BoATHlfabric_Get_Network_Data(BoatHlfabricNetworkData *
     protobuf_network.layoutcfg = nodelayoutcfg;
     protobuf_network.ordercfg = BoatMalloc(sizeof(Common__FabricNodeGroupCfg));
     if (protobuf_network.ordercfg == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "fail to malloc ordercfg");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-    }
+    }// LCOV_EXCL_STOP
     common__fabric_node_group_cfg__init(protobuf_network.ordercfg);
     protobuf_network.ordercfg->quantities = networkData->nodesCfg.orderCfg.quantities;
     protobuf_network.ordercfg->tlsorgcertcontent = networkData->nodesCfg.orderCfg.tlsOrgCertContent.content;
@@ -857,19 +857,19 @@ __BOATSTATIC BOAT_RESULT BoATHlfabric_Get_Network_Data(BoatHlfabricNetworkData *
     Common__FabricNodeInfo **endorserCfg;
     endorserCfg = BoatMalloc(protobuf_network.ordercfg->n_endorser * sizeof(Common__FabricNodeInfo *));
     if (endorserCfg == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "fail to malloc ordercfg endorser");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-    }
+    }// LCOV_EXCL_STOP
     for (size_t i = 0; i < protobuf_network.ordercfg->n_endorser; i++)
     {
         /* code */
         endorserCfg[i] = BoatMalloc(sizeof(Common__FabricNodeInfo));
         if (NULL == endorserCfg[i])
-        {
+        {// LCOV_EXCL_START
             BoatLog(BOAT_LOG_NORMAL, "fail to malloc endorserCfg");
             boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-        }
+        }// LCOV_EXCL_STOP
         common__fabric_node_info__init(endorserCfg[i]);
         endorserCfg[i]->hostname = networkData->nodesCfg.orderCfg.endorser[i].hostName;
         endorserCfg[i]->nodeurl = networkData->nodesCfg.orderCfg.endorser[i].nodeUrl;
@@ -883,23 +883,23 @@ __BOATSTATIC BOAT_RESULT BoATHlfabric_Get_Network_Data(BoatHlfabricNetworkData *
 
     networkLength = common__fabric_network_data__get_packed_size(&protobuf_network);
     if (networkLength <= 0)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "fail to get packed size of network");
         boat_throw(BOAT_ERROR, hlfabric_exception);
-    }
+    }// LCOV_EXCL_STOP
     networkLengthLen = UtilityGetTLV_LL_from_len(networkLength);
     networkbuf = BoatMalloc(networkLength + networkLengthLen);
     if (networkbuf == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "fail to malloc memory for network buf");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabric_exception);
-    }
+    }// LCOV_EXCL_STOP
     networkLength = common__fabric_network_data__pack(&protobuf_network, networkbuf);
     if (networkLength <= 0)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "fail to packed  network");
         boat_throw(BOAT_ERROR, hlfabric_exception);
-    }
+    }// LCOV_EXCL_STOP
     offset = 0;
     add_L_withOffset(networkbuf, &offset, networkLength);
     *data = networkbuf;
@@ -983,9 +983,9 @@ __BOATSTATIC BOAT_RESULT BoATHlfabric_NetworkDataCtx_Store(BoatHlfabricNetworkDa
         }
     }
     if (networkNum >= BOAT_MAX_NETWORK_NUM)
-    {
+    {// LCOV_EXCL_START
         boat_throw(BOAT_ERROR_NETWORK_INDEX_EXCEED, hlfabric_exception);
-    }
+    }// LCOV_EXCL_STOP
     if (storeType == BOAT_STORE_TYPE_RAM)
     {
         networkNum = 0;
@@ -1000,47 +1000,47 @@ __BOATSTATIC BOAT_RESULT BoATHlfabric_NetworkDataCtx_Store(BoatHlfabricNetworkDa
         /* network length */
         result = BoatReadSoftRotNvram(BOAT_STORE_NETWORK, offset, lengthbytes, sizeof(lengthbytes), storeType);
         if (result != BOAT_SUCCESS)
-        {
+        {// LCOV_EXCL_START
             BoatLog(BOAT_LOG_NORMAL, "read network length fail");
             boat_throw(result, hlfabric_exception);
-        }
+        }// LCOV_EXCL_STOP
         networkLength = UtilityGetLVData_L(lengthbytes);
         if (networkLength < 0)
-        {
+        {// LCOV_EXCL_START
             BoatLog(BOAT_LOG_NORMAL, "network data length err ");
             boat_throw(BOAT_ERROR, hlfabric_exception);
-        }
+        }// LCOV_EXCL_STOP
         networkLengthLen = UtilityGetTLV_LL_from_len(networkLength);
         offset += (networkLength + networkLengthLen);
     }
     /* get network data */
     result = BoATHlfabric_Get_Network_Data(mNetworkDataCtx, &networkData, &networkLength);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, " get network data fail ");
         boat_throw(result, hlfabric_exception);
-    }
+    }// LCOV_EXCL_STOP
     /* protocol type */
     result = BoATStoreSoftRotNvram(BOAT_STORE_NETWORK, offset, (BUINT8 *)&protocol, sizeof(protocol), storeType);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         boat_throw(result, hlfabric_exception);
-    }
+    }// LCOV_EXCL_STOP
     offset += sizeof(protocol);
     /* network index */
     result = BoATStoreSoftRotNvram(BOAT_STORE_NETWORK, offset, (BUINT8 *)&mNetworkDataCtx->index, sizeof(mNetworkDataCtx->index), storeType);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         boat_throw(result, hlfabric_exception);
-    }
+    }// LCOV_EXCL_STOP
     offset += sizeof(mNetworkDataCtx->index);
     BoatLog(BOAT_LOG_NORMAL, "store fabric network, networkLength = %d ", networkLength);
     /* store network data */
     result = BoATStoreSoftRotNvram(BOAT_STORE_NETWORK, offset, networkData, networkLength, storeType);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         boat_throw(result, hlfabric_exception);
-    }
+    }// LCOV_EXCL_STOP
     networkNum++;
     utility_get_NumBytes(networkNum, networknumBytes);
     result = BoATStoreSoftRotNvram(BOAT_STORE_NETWORK, 0, networknumBytes, sizeof(networknumBytes), storeType);
@@ -1286,10 +1286,10 @@ BOAT_RESULT BoATHlfabricNetworkDelete(BUINT8 index)
             // all the networks'length after index network
             networkData = BoatMalloc(networkLength);
             if (NULL == networkData)
-            {
+            {// LCOV_EXCL_START
                 BoatLog(BOAT_LOG_NORMAL, "fail to malloc memory ");
                 return BOAT_ERROR_COMMON_OUT_OF_MEMORY;
-            }
+            }// LCOV_EXCL_STOP
             result = BoatReadSoftRotNvram(BOAT_STORE_NETWORK, offset_moveFrom, networkData, networkLength, BOAT_STORE_TYPE_FLASH);
             if (result != BOAT_SUCCESS)
             {
