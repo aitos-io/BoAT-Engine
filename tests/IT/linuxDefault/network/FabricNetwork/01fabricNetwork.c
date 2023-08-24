@@ -549,7 +549,7 @@ __BOATSTATIC BOAT_RESULT fabric_checkNetworkNodesConfg(BoatHlfabricNodesCfg node
                 return BOAT_ERROR;
             }
             /* check every tlsOrgCertContent*/
-            if (!strcmp(nodesCfg1.layoutCfg[i].groupCfg[j].tlsOrgCertContent.content, nodesCfg2.layoutCfg[i].groupCfg[j].tlsOrgCertContent.content))
+            if (strcmp(nodesCfg1.layoutCfg[i].groupCfg[j].tlsOrgCertContent.content, nodesCfg2.layoutCfg[i].groupCfg[j].tlsOrgCertContent.content) != 0)
             {
                 BoatLog(BOAT_LOG_NORMAL, " tlsOrgCertContent content err ");
                 return BOAT_ERROR;
