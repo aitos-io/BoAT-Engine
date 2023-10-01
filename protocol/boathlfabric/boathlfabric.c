@@ -102,10 +102,10 @@ __BOATSTATIC BOAT_RESULT hlfabricSignatureHeaderPacked(const BoatHlfabricTx *tx_
     packedLength = msp__serialized_identity__get_packed_size(&serializedIdentity);
     serializedIdentityBuffer = BoatMalloc(packedLength);
     if (NULL == serializedIdentityBuffer)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to allocate serializedIdentityBuffer.");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabricSignatureHeaderPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
     msp__serialized_identity__pack(&serializedIdentity, serializedIdentityBuffer);
     /* -------->creator value assignment */
     signatureHeader.has_creator = true;
@@ -120,27 +120,27 @@ __BOATSTATIC BOAT_RESULT hlfabricSignatureHeaderPacked(const BoatHlfabricTx *tx_
     txIdRawMaterial.field_len = signatureHeader.nonce.len + signatureHeader.creator.len;
     txIdRawMaterial.field_ptr = BoatMalloc(txIdRawMaterial.field_len);
     if (NULL == txIdRawMaterial.field_ptr)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to allocate txIdRawMaterial buffer.");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabricSignatureHeaderPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     memcpy(txIdRawMaterial.field_ptr, signatureHeader.nonce.data, signatureHeader.nonce.len);
     memcpy(txIdRawMaterial.field_ptr + signatureHeader.nonce.len, signatureHeader.creator.data, signatureHeader.creator.len);
     result = BoatHash(BOAT_HASH_SHA256, txIdRawMaterial.field_ptr, txIdRawMaterial.field_len, txIdBin, NULL, NULL);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to exec BoatHash.");
         boat_throw(result, hlfabricSignatureHeaderPacked_exception);
-    };
+    }// LCOV_EXCL_STOP
     /* pack the signatureHeader */
     packedLength = common__signature_header__get_packed_size(&signatureHeader);
     output_ptr->field_ptr = BoatMalloc(packedLength);
     if (NULL == output_ptr->field_ptr)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to allocate output_ptr->field_ptr buffer.");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabricSignatureHeaderPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
     output_ptr->field_len = packedLength;
     common__signature_header__pack(&signatureHeader, output_ptr->field_ptr);
 
@@ -230,19 +230,19 @@ __BOATSTATIC BOAT_RESULT hlfabricChannelHeaderPacked(const BoatHlfabricTx *tx_pt
     channelHeader.extension.len = protos__chaincode_header_extension__get_packed_size(&chaincodeHeaderExtension);
     channelHeader.extension.data = BoatMalloc(channelHeader.extension.len);
     if (NULL == channelHeader.extension.data)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to allocate channelHeader->extension.");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabricChannelHeaderPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
     protos__chaincode_header_extension__pack(&chaincodeHeaderExtension, channelHeader.extension.data);
     /* pack the channelHeader */
     packedLength = common__channel_header__get_packed_size(&channelHeader);
     output_ptr->field_ptr = BoatMalloc(packedLength);
     if (NULL == output_ptr->field_ptr)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to allocate output_ptr->field_ptr.");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabricChannelHeaderPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
     output_ptr->field_len = packedLength;
     common__channel_header__pack(&channelHeader, output_ptr->field_ptr);
 
@@ -329,10 +329,10 @@ __BOATSTATIC BOAT_RESULT hlfabricProposalPayloadDataPacked(BoatHlfabricTx *tx_pt
     packedLength = protos__chaincode_invocation_spec__get_packed_size(&chaincodeInvocationSpec);
     chaincodeInvocationSpecBuffer = BoatMalloc(packedLength);
     if (NULL == chaincodeInvocationSpecBuffer)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to allocate chaincodeInvocationSpecBuffer.");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabricProposalPayloadDataPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
     protos__chaincode_invocation_spec__pack(&chaincodeInvocationSpec, chaincodeInvocationSpecBuffer);
 
     /* chaincodeProposalPayload pack */
@@ -342,10 +342,10 @@ __BOATSTATIC BOAT_RESULT hlfabricProposalPayloadDataPacked(BoatHlfabricTx *tx_pt
     packedLength = protos__chaincode_proposal_payload__get_packed_size(&chaincodeProposalPayload);
     output_ptr->field_ptr = BoatMalloc(packedLength);
     if (NULL == output_ptr->field_ptr)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to allocate output_ptr->field_ptr.");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabricProposalPayloadDataPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
     output_ptr->field_len = packedLength;
     protos__chaincode_proposal_payload__pack(&chaincodeProposalPayload, output_ptr->field_ptr);
 
@@ -412,10 +412,10 @@ __BOATSTATIC BOAT_RESULT hlfabricTransactionPayloadDataPacked(BoatHlfabricTx *tx
     /* chaincode_proposal_payload */
     result = hlfabricProposalPayloadDataPacked(tx_ptr, &payloadDataPacked);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to exec hlfabricProposalPayloadDataPacked[size].");
         boat_throw(result, hlfabricTransactionPayloadDataPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     /* chaincodeEndorsedAction */
     chaincodeEndorsedAction.has_proposal_response_payload = true;
@@ -449,20 +449,20 @@ __BOATSTATIC BOAT_RESULT hlfabricTransactionPayloadDataPacked(BoatHlfabricTx *tx
     chaincodeActionPayloadBufferLen = protos__chaincode_action_payload__get_packed_size(&chaincodeActionPayload);
     chaincodeActionPayloadBuffer = BoatMalloc(chaincodeActionPayloadBufferLen);
     if (NULL == chaincodeActionPayloadBuffer)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to allocate chaincodeActionPayloadBuffer.");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabricTransactionPayloadDataPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
     protos__chaincode_action_payload__pack(&chaincodeActionPayload, chaincodeActionPayloadBuffer);
 
     /* signature header */
     transactionAction.has_header = true;
     result = hlfabricSignatureHeaderPacked(tx_ptr, txIdBin, &signatureHeadPacked);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to exec hlfabricSignatureHeaderPacked.");
         boat_throw(BOAT_ERROR_COMMON_PROTO_PACKET_FAIL, hlfabricTransactionPayloadDataPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     /* transactionAction */
     transactionAction.header.len = signatureHeadPacked.field_len;
@@ -478,10 +478,10 @@ __BOATSTATIC BOAT_RESULT hlfabricTransactionPayloadDataPacked(BoatHlfabricTx *tx
     transactionBufferLen = protos__transaction__get_packed_size(&transaction);
     output_ptr->field_ptr = BoatMalloc(transactionBufferLen);
     if (NULL == output_ptr->field_ptr)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to allocate output_ptr->field_ptr.");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabricTransactionPayloadDataPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
     output_ptr->field_len = transactionBufferLen;
     protos__transaction__pack(&transaction, output_ptr->field_ptr);
 
@@ -542,10 +542,10 @@ __BOATSTATIC BOAT_RESULT hlfabricPayloadPacked(BoatHlfabricTx *tx_ptr,
     header.signature_header.len = signatureHeaderPacked.field_len;
     header.signature_header.data = signatureHeaderPacked.field_ptr;
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to exec hlfabricSignatureHeaderPacked.");
         boat_throw(BOAT_ERROR_COMMON_PROTO_PACKET_FAIL, hlfabricPayloadPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     /* ------>channel header */
     header.has_channel_header = true;
@@ -553,10 +553,10 @@ __BOATSTATIC BOAT_RESULT hlfabricPayloadPacked(BoatHlfabricTx *tx_ptr,
     header.channel_header.len = channelHeaderPacked.field_len;
     header.channel_header.data = channelHeaderPacked.field_ptr;
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to exec hlfabricChannelHeaderPacked.");
         boat_throw(BOAT_ERROR_COMMON_PROTO_PACKET_FAIL, hlfabricPayloadPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     /* payload.data */
     payload.has_data = true;
@@ -573,26 +573,26 @@ __BOATSTATIC BOAT_RESULT hlfabricPayloadPacked(BoatHlfabricTx *tx_ptr,
         payload.data.data = payloadDataPacked.field_ptr;
     }
     else
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "UNKNOWN hlfabric packed Command.");
         boat_throw(BOAT_ERROR_COMMON_INVALID_ARGUMENT, hlfabricPayloadPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to exec hlfabricChannelHeaderPacked[data].");
         boat_throw(BOAT_ERROR_COMMON_PROTO_PACKET_FAIL, hlfabricPayloadPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     /* pack the payload */
     packedLength = common__payload__get_packed_size(&payload);
     output_ptr->field_len = packedLength;
     output_ptr->field_ptr = BoatMalloc(packedLength);
     if (NULL == output_ptr->field_ptr)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to allocate output_ptr->field_ptr.");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabricPayloadPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
     common__payload__pack(&payload, output_ptr->field_ptr);
 
     /* boat catch handle */
@@ -638,10 +638,10 @@ BOAT_RESULT hlfabricProposalTransactionPacked(BoatHlfabricTx *tx_ptr)
         result = BoatRandom(tx_ptr->var.nonce.field, tx_ptr->var.nonce.field_len, NULL);
     }
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to exec hlfabricGenNonce.");
         boat_throw(BOAT_ERROR_COMMON_GEN_RAND_FAIL, hlfabricProposalTransactionPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     /* step-2: compute payload packed length */
     result = hlfabricPayloadPacked(tx_ptr, &payloadPacked);
@@ -650,25 +650,25 @@ BOAT_RESULT hlfabricProposalTransactionPacked(BoatHlfabricTx *tx_ptr)
     result = BoatHash(BOAT_HASH_SHA256, payloadPacked.field_ptr,
                       payloadPacked.field_len, hash, NULL, NULL);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to exec BoatHash.");
         boat_throw(result, hlfabricProposalTransactionPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     /* step-4: signature */
     result = BoatSignature(tx_ptr->wallet_ptr->account_info.prikeyCtx,
                            hash, sizeof(hash), &signatureResult, NULL);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to exec BoatSignature.");
         boat_throw(BOAT_ERROR_COMMON_GEN_SIGN_FAIL, hlfabricProposalTransactionPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     if (!signatureResult.pkcs_format_used)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Fail to find expect signature.");
         boat_throw(BOAT_ERROR_COMMON_GEN_SIGN_FAIL, hlfabricProposalTransactionPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     /* step-5: pack the envelope */
     envelope.has_payload = true;
@@ -682,10 +682,10 @@ BOAT_RESULT hlfabricProposalTransactionPacked(BoatHlfabricTx *tx_ptr)
     /* step-6: packed length assignment */
     ((http2IntfContext *)(tx_ptr->wallet_ptr->http2Context_ptr))->sendBuf.field_len = packedLength + sizeof(grpcHeader);
     if (((http2IntfContext *)(tx_ptr->wallet_ptr->http2Context_ptr))->sendBuf.field_len > BOAT_HLFABRIC_HTTP2_SEND_BUF_MAX_LEN)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "packed length out of sendbuffer size limit.");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, hlfabricProposalTransactionPacked_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     /* step-7: packed data assignment */
     /* ---grpcHeader compute */

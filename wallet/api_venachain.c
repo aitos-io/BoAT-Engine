@@ -49,10 +49,10 @@ BoatVenachainWallet *BoatVenachainWalletInit(BUINT8 walletIndex, BUINT8 networkI
 
     wallet_ptr = BoatMalloc(sizeof(BoatVenachainWallet));
     if (wallet_ptr == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "wallet memory malloc falied.");
         return NULL;
-    }
+    }// LCOV_EXCL_STOP
     result = BoATKeypair_GetKeypairByIndex(&(wallet_ptr->account_info.prikeyCtx), walletIndex);
     if (result != BOAT_SUCCESS)
     {

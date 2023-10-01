@@ -447,6 +447,10 @@ START_TEST(test_002Network_0010DeletePersistNetworkFailureNonExistentIndex)
     ck_assert_int_lt(pickNum,5);
     ck_assert_int_gt(pickNum,0);
 
+	ret = BoATVenachain_FreeNetworkContext(networkList);
+    /* check the result */
+    ck_assert_int_eq(ret, BOAT_SUCCESS);
+
     /* 2. Delete network */
     ret = BoATVenachainNetworkDelete(pickNum);
     ck_assert_int_eq(ret, BOAT_ERROR_NETWORK_INEXISTENCE);

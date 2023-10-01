@@ -499,6 +499,14 @@ START_TEST(test_003Wallet_0004DeInitWalletSuccessPersistKeypairPersistNetwork)
 }
 END_TEST
 
+START_TEST(test_003Wallet_0011BoatVenachainParseRpcResponseResult_fail) 
+{
+	BOAT_RESULT ret = 0;
+	ret = BoatVenachainParseRpcResponseResult(NULL,NULL,NULL);
+    ck_assert_int_eq(ret, BOAT_ERROR_COMMON_INVALID_ARGUMENT);
+}
+END_TEST
+
 Suite *make_wallet_suite(void) 
 {
     /* Create Suite */
@@ -521,6 +529,9 @@ Suite *make_wallet_suite(void)
     tcase_add_test(tc_wallet_api, test_003Wallet_0002DeInitWalletSuccessOneTimeKeypairPersistNetwork);
     tcase_add_test(tc_wallet_api, test_003Wallet_0003DeInitWalletSuccessPersistKeypairOneTimeNetwork);
     tcase_add_test(tc_wallet_api, test_003Wallet_0004DeInitWalletSuccessPersistKeypairPersistNetwork);
+	
+    tcase_add_test(tc_wallet_api, test_003Wallet_0011BoatVenachainParseRpcResponseResult_fail);
+	
 
     return s_wallet;
 }

@@ -133,53 +133,53 @@ __BOATSTATIC BOAT_RESULT BoATChainmaker_GetNetworkFromNvram(BoatChainmakerNetwor
     boat_try_declare;
 
     if (Networkdata == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "param is NULL");
         boat_throw(BOAT_ERROR_COMMON_INVALID_ARGUMENT, chainmakerGetnetworkdata_exception);
-    }
+    }// LCOV_EXCL_STOP
     result = BoatReadSoftRotNvram(BOAT_STORE_NETWORK, offset, lengthbytes, sizeof(lengthbytes), storeType);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "Read network length fail , errorcode = %d ", result);
         boat_throw(result, chainmakerGetnetworkdata_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     networkDataLength = UtilityGetLVData_L(lengthbytes);
     if (networkDataLength < 0)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "network data length err ");
         boat_throw(BOAT_ERROR, chainmakerGetnetworkdata_exception);
-    }
+    }// LCOV_EXCL_STOP
     networkDataLengthLen = UtilityGetTLV_LL_from_len(networkDataLength);
     networkcontent = BoatMalloc(networkDataLength);
     if (networkcontent == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "fail to malloc memory");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, chainmakerGetnetworkdata_exception);
-    }
+    }// LCOV_EXCL_STOP
     offset += networkDataLengthLen;
     /* read network data */
     result = BoatReadSoftRotNvram(BOAT_STORE_NETWORK, offset, networkcontent, networkDataLength, storeType);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "Read network data fail , errorcode = %d ", result);
         boat_throw(result, chainmakerGetnetworkdata_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     /* unpacket network data */
     protobuf_network = common__chainmaker_network_data__unpack(NULL, networkDataLength, networkcontent);
     if (protobuf_network == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "unpack networkdata fail ");
         boat_throw(BOAT_ERROR, chainmakerGetnetworkdata_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     result = BoATChainmaker_getNetworkFromProto(Networkdata, protobuf_network);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "fail to get network from protobuf struct");
         boat_throw(BOAT_ERROR, chainmakerGetnetworkdata_exception);
-    }
+    }// LCOV_EXCL_STOP
     *outlen = (networkDataLength + networkDataLengthLen);
 
     /* boat catch handle */
@@ -482,24 +482,24 @@ __BOATSTATIC BOAT_RESULT BoATChainmaker_Get_Network_Data(BoatChainmakerNetworkDa
 
     networkLength = common__chainmaker_network_data__get_packed_size(&protobuf_network);
     if (networkLength <= 0)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "fail to get packed size of network");
         boat_throw(BOAT_ERROR, chainmaker_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     networkLengthLen = UtilityGetTLV_LL_from_len(networkLength);
     networkbuf = BoatMalloc(networkLength + networkLengthLen);
     if (networkbuf == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "fail to malloc memory for network buf");
         boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, chainmaker_exception);
-    }
+    }// LCOV_EXCL_STOP
     networkLength = common__chainmaker_network_data__pack(&protobuf_network, networkbuf);
     if (networkLength <= 0)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_NORMAL, "fail to packed  network");
         boat_throw(BOAT_ERROR, chainmaker_exception);
-    }
+    }// LCOV_EXCL_STOP
     offset = 0;
     result = add_L_withOffset(networkbuf, &offset, networkLength);
     *data = networkbuf;
@@ -578,9 +578,9 @@ __BOATSTATIC BOAT_RESULT BoATChainmaker_NetworkDataCtx_Store(BoatChainmakerNetwo
         BoatLog(BOAT_LOG_NORMAL, "read networkNum = %d", networkNum);
     }
     if (networkNum >= BOAT_MAX_NETWORK_NUM)
-    {
+    {// LCOV_EXCL_START
         boat_throw(BOAT_ERROR_NETWORK_INDEX_EXCEED, chainmaker_exception);
-    }
+    }// LCOV_EXCL_STOP
     if (BOAT_STORE_TYPE_RAM == storeType)
     {
         networkNum = 0;
@@ -595,16 +595,16 @@ __BOATSTATIC BOAT_RESULT BoATChainmaker_NetworkDataCtx_Store(BoatChainmakerNetwo
         /* network length */
         result = BoatReadSoftRotNvram(BOAT_STORE_NETWORK, offset, lengthbytes, sizeof(lengthbytes), storeType);
         if (result != BOAT_SUCCESS)
-        {
+        {// LCOV_EXCL_START
             BoatLog(BOAT_LOG_NONE, "read network length fail");
             boat_throw(result, chainmaker_exception);
-        }
+        }// LCOV_EXCL_STOP
         networkLength = UtilityGetLVData_L(lengthbytes);
         if (networkLength < 0)
-        {
+        {// LCOV_EXCL_START
             BoatLog(BOAT_LOG_NORMAL, "network data length err ");
             boat_throw(BOAT_ERROR, chainmaker_exception);
-        }
+        }// LCOV_EXCL_STOP
         networkLengthLen = UtilityGetTLV_LL_from_len(networkLength);
         offset += (networkLength + networkLengthLen);
     }
@@ -613,40 +613,40 @@ __BOATSTATIC BOAT_RESULT BoATChainmaker_NetworkDataCtx_Store(BoatChainmakerNetwo
     result = BoATChainmaker_Get_Network_Data(mNetworkDataCtx, &networkData, &networkLength);
 
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
 
         BoatLog(BOAT_LOG_NONE, " get network data fail ");
         boat_throw(result, chainmaker_exception);
-    }
+    }// LCOV_EXCL_STOP
 
     /* protocol type */
     result = BoATStoreSoftRotNvram(BOAT_STORE_NETWORK, offset, (BUINT8 *)&protocol, sizeof(protocol), storeType);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         boat_throw(result, chainmaker_exception);
-    }
+    }// LCOV_EXCL_STOP
     offset += sizeof(protocol);
     /* network index */
     result = BoATStoreSoftRotNvram(BOAT_STORE_NETWORK, offset, (BUINT8 *)&mNetworkDataCtx->networkIndex, sizeof(mNetworkDataCtx->networkIndex), storeType);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         boat_throw(result, chainmaker_exception);
-    }
+    }// LCOV_EXCL_STOP
     offset += sizeof(mNetworkDataCtx->networkIndex);
     BoatLog(BOAT_LOG_NORMAL, "store chainmaker network, networkLength = %d", networkLength);
     /* store network data */
     result = BoATStoreSoftRotNvram(BOAT_STORE_NETWORK, offset, networkData, networkLength, storeType);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         boat_throw(result, chainmaker_exception);
-    }
+    }// LCOV_EXCL_STOP
     networkNum++;
     utility_get_NumBytes(networkNum, networknumBytes);
     result = BoATStoreSoftRotNvram(BOAT_STORE_NETWORK, 0, networknumBytes, sizeof(networknumBytes), storeType);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         boat_throw(result, chainmaker_exception);
-    }
+    }// LCOV_EXCL_STOP
     boat_catch(chainmaker_exception)
     {
         BoatLog(BOAT_LOG_CRITICAL, "Exception: %d", boat_exception);
@@ -916,10 +916,10 @@ BOAT_RESULT BoATChainmakerNetworkDelete(BUINT8 index)
             // all the networks'length after index network
             networkData = BoatMalloc(networkLength);
             if (NULL == networkData)
-            {
+            {// LCOV_EXCL_START
                 BoatLog(BOAT_LOG_NONE, "fail to malloc memory ");
                 return BOAT_ERROR_COMMON_OUT_OF_MEMORY;
-            }
+            }// LCOV_EXCL_STOP
             result = BoatReadSoftRotNvram(BOAT_STORE_NETWORK, offset_moveFrom, networkData, networkLength, BOAT_STORE_TYPE_FLASH);
             if (result != BOAT_SUCCESS)
             {

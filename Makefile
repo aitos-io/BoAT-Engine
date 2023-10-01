@@ -4,13 +4,17 @@
 ALLSUBDIRS := $(shell $(BOAT_FIND) . -maxdepth 1 -type d)
 ALLSUBDIRS := $(basename $(patsubst ./%,%,$(ALLSUBDIRS)))
 
-EXCLUDE_DIRS := include tests demo tools
+EXCLUDE_DIRS := include tests demo tools docs
 SUBDIRS := $(filter-out $(EXCLUDE_DIRS),$(ALLSUBDIRS))
-CLEANEXCLUDE_DIRS := include tools
+CLEANEXCLUDE_DIRS := include tools docs
 CLEANSUBDIRS := $(filter-out $(CLEANEXCLUDE_DIRS),$(ALLSUBDIRS))
 
 # Add _clean_ prefix to avoid clean subdir target names being confused with compile subdir targets
 CLEAN_SUBDIRS := $(addprefix _clean_,$(CLEANSUBDIRS)	)
+
+ifneq (,$(BOAT_LOG_LEVEL))
+BOAT_CFLAGS +=  -DBOAT_LOG_LEVEL=$(BOAT_LOG_LEVEL)
+endif
 
 OBJECTS = $(wildcard $(BOAT_BUILD_DIR)/BoAT-Engine/protocol/*.o) \
 		  $(wildcard $(BOAT_BUILD_DIR)/BoAT-Engine/wallet/*.o)

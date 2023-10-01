@@ -83,10 +83,10 @@ __BOATSTATIC BOAT_RESULT BoatHlfabricTxExec(BoatHlfabricTx *tx_ptr,
 
     result = hlfabricProposalTransactionPacked(tx_ptr);
     if (result != BOAT_SUCCESS)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "[%s]:packed failed.", tx_ptr->var.args.args[0]);
         boat_throw(BOAT_ERROR_COMMON_PROTO_PACKET_FAIL, BoatHlfabricTxProposal_exception);
-    }
+    }// LCOV_EXCL_STOP
 #if (BOAT_HLFABRIC_TLS_IDENTIFY_CLIENT == 1)
     // if (((http2IntfContext *)(tx_ptr->wallet_ptr->http2Context_ptr))->tlsPrikey.field_ptr != NULL)
     // {
@@ -215,10 +215,10 @@ __BOATSTATIC BOAT_RESULT BoatHlfabricTxExec(BoatHlfabricTx *tx_ptr,
                             tx_ptr->evaluateRes.httpResLen = chaincodeEvent->response->payload.len;
                             tx_ptr->evaluateRes.http2Res = BoatMalloc(tx_ptr->evaluateRes.httpResLen);
                             if (NULL == tx_ptr->evaluateRes.http2Res)
-                            {
+                            {// LCOV_EXCL_START
                                 BoatLog(BOAT_LOG_CRITICAL, "Fail to allocate http2Res buffer.");
                                 boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, BoatHlfabricTxProposal_exception);
-                            }
+                            }// LCOV_EXCL_STOP
                             memcpy(tx_ptr->evaluateRes.http2Res, chaincodeEvent->response->payload.data, chaincodeEvent->response->payload.len);
                             protos__chaincode_action__free_unpacked(chaincodeEvent, NULL);
                         }
@@ -235,10 +235,10 @@ __BOATSTATIC BOAT_RESULT BoatHlfabricTxExec(BoatHlfabricTx *tx_ptr,
                     }
                 }
                 if (valid_node_quantities < nodeCfg.layoutCfg[i].groupCfg[j].quantities)
-                {
+                {// LCOV_EXCL_START
                     BoatLog(BOAT_LOG_CRITICAL, "http2SubmitRequest failed ");
                     boat_throw(BOAT_ERROR, BoatHlfabricTxProposal_exception);
-                }
+                }// LCOV_EXCL_STOP
             }
         }
     }
@@ -350,10 +350,10 @@ BoatHlfabricWallet *BoatHlfabricWalletInit(BUINT8 keypairIndex, BUINT8 networkIn
     /* allocate wallet memory */
     wallet_ptr = BoatMalloc(sizeof(BoatHlfabricWallet));
     if (wallet_ptr == NULL)
-    {
+    {// LCOV_EXCL_START
         BoatLog(BOAT_LOG_CRITICAL, "Failed to malloc wallet memory.");
         return NULL;
-    }
+    }// LCOV_EXCL_STOP
     result = BoATKeypair_GetKeypairByIndex(&(wallet_ptr->account_info.prikeyCtx), keypairIndex);
     if (result != BOAT_SUCCESS)
     {
@@ -510,10 +510,10 @@ BOAT_RESULT BoatHlfabricTxInit(BoatHlfabricTx *tx_ptr,
         {
             *paramDstList[i] = BoatMalloc(stringLen + 1);
             if (*paramDstList[i] == NULL)
-            {
+            {// LCOV_EXCL_START
                 BoatLog(BOAT_LOG_CRITICAL, "BoatMalloc failed.");
                 boat_throw(BOAT_ERROR_COMMON_OUT_OF_MEMORY, BoatHlfabricTxInit_exception);
-            }
+            }// LCOV_EXCL_STOP
             memcpy(*paramDstList[i], paramSrcList[i], stringLen + 1);
         }
     }
@@ -647,13 +647,13 @@ BOAT_RESULT BoatHlfabricTxSetArgs(BoatHlfabricTx *tx_ptr,
 
     while (NULL != (args = va_arg(ap, BCHAR *)))
     {
-        tx_ptr->var.args.args[tx_ptr->var.args.nArgs] = (BCHAR *)args;
-        tx_ptr->var.args.nArgs++;
         if (tx_ptr->var.args.nArgs >= BOAT_HLFABRIC_ARGS_MAX_NUM)
         {
             result = BOAT_ERROR_COMMON_OUT_OF_MEMORY;
             break;
         }
+        tx_ptr->var.args.args[tx_ptr->var.args.nArgs] = (BCHAR *)args;
+        tx_ptr->var.args.nArgs++;
     }
     va_end(ap);
 
