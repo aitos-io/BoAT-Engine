@@ -41,7 +41,7 @@ const BCHAR *pkcs_demoKey =  "-----BEGIN EC PRIVATE KEY-----\n"
  * native demo key
  */
 //const BCHAR *native_demoKey = "0x6cbed15c793ce57650b9877cf6fa156fbef513c4e6134f022a85b1ffdd59b2a1";
-const BCHAR *native_demoKey = "0x0cfd728e2fcf8de0de28465cf134842a7d1cdc0cbe3fd8d5f5f2ae059e93bbc2";
+const BCHAR *native_demoKey = "0x0cfd728e2fcf8de0de28465cf7612134842a7d1cdc0cbe3fd8d5f5f2ae059e93bbc2";
 
 /**
  * test node url
