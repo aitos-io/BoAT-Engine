@@ -41,13 +41,17 @@ const BCHAR *pkcs_demoKey =  "-----BEGIN EC PRIVATE KEY-----\n"
  * native demo key
  */
 //const BCHAR *native_demoKey = "0x6cbed15c793ce57650b9877cf6fa156fbef513c4e6134f022a85b1ffdd59b2a1";
-const BCHAR *native_demoKey = "0x0cfd728e2fcf8de0de28465cf7612134842a7d1cdc0cbe3fd8d5f5f2ae059e93bbc2";
+const BCHAR *native_demoKey = "0x0cfd728e2fcf8de0de28465cf134842a7d1cdc0cbe3fd8d5f5f2ae059e93bbc2";
 
 /**
  * test node url
  */
 #ifndef ETHEREUM_DEMO_URL
-#define ETHEREUM_DEMO_URL "https://sepolia.base.org"
+//#define ETHEREUM_DEMO_URL "https://sepolia.base.org"
+//#define ETHEREUM_DEMO_URL "https://data-seed-prebsc-1-s2.binance.org:8545/"
+//#define ETHEREUM_DEMO_URL "https://alfajores-forno.celo-testnet.org/"
+#define ETHEREUM_DEMO_URL "https://wss-async.agung.peaq.network"
+
 #endif
 
 const BCHAR * demoUrl = ETHEREUM_DEMO_URL;
@@ -56,7 +60,10 @@ const BCHAR * demoUrl = ETHEREUM_DEMO_URL;
  * transfer recipient address
  */
 //const BCHAR *demoRecipientAddress = "0xe78a0f7e598cc8b0bb87894b0f60dd2a88d6a8ab";
-const BCHAR *demoRecipientAddress = "0x036cbd53842c5426634e7929541ec2318f3dcf7e";
+//const BCHAR *demoRecipientAddress = "0x036cbd53842c5426634e7929541ec2318f3dcf7e"; // base usdc
+//const BCHAR *demoRecipientAddress = "0x93eFC409Ff44788E8b1DAF395F46965046cAe84B"; // BNB SMART CHAIN TESTNET
+//const BCHAR *demoRecipientAddress = "0x2F25deB3848C207fc8E0c34035B3Ba7fC157602B";// CELO TEST USDC
+const BCHAR *demoRecipientAddress = "0xAef7a31b064031C474F5FE85d9c2f854308a1e59";// agung peaq LTK
 BoatAddress toAddress = {0x9b, 0xfE, 0xd7, 0x5d, 0x18, 0x09, 0xb5, 0xF0, 0x62, 0xF7, 0x24, 0x1e, 0x59, 0x8F, 0xD3, 0x88, 0x43, 0x4A, 0xbd, 0xFE};
 
 
@@ -123,7 +130,7 @@ __BOATSTATIC BOAT_RESULT createNetwork()
     BOAT_RESULT result = BOAT_SUCCESS;
     BoatEthNetworkConfig network_config = {0};
 
-    network_config.chain_id             = 84532;
+    network_config.chain_id             = 9990;//agung peaq:9990,CELO:44787,BNB:97,BASE:84532;
     network_config.eip155_compatibility = BOAT_TRUE;
     strncpy(network_config.node_url_str, demoUrl, BOAT_ETH_NODE_URL_MAX_LEN - 1);
 
