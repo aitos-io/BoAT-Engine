@@ -152,7 +152,7 @@ __BOATSTATIC BOAT_RESULT createNetwork()
     return BOAT_SUCCESS;
 }
 
-BOAT_RESULT ethereum_call_usdc_transfer(BoatEthWallet *wallet_ptr)
+BOAT_RESULT ethereum_call_erc20_transfer(BoatEthWallet *wallet_ptr)
 {
     BCHAR *result_str;
     BUINT32 list_len;
@@ -177,7 +177,7 @@ BOAT_RESULT ethereum_call_usdc_transfer(BoatEthWallet *wallet_ptr)
     value[1] = 0x86;
     value[0] = 0xa0;
     UtilityChangeEndian(toAddress, sizeof(BoatAddress));
-    result_str = usdcTransfer_transfer(&tx_ctx, toAddress, value);
+    result_str = erc20Transfer_transfer(&tx_ctx, toAddress, value);
     
     if (result_str != NULL)
     {
@@ -224,7 +224,7 @@ int main(int argc, char *argv[])
 	{
 		 //BoatLog(BOAT_LOG_CRITICAL, "ethereumWalletPrepare_create failed: %d.", result);
 		//return -1;
-        boat_throw(result, ethereum_storeread_demo_catch);
+        boat_throw(result, ethereum_erc20_demo_catch);
 	}
     BoatLog(BOAT_LOG_NORMAL,"    execute creat network");
     result = createNetwork();
@@ -232,17 +232,17 @@ int main(int argc, char *argv[])
 	{
 		 //BoatLog(BOAT_LOG_CRITICAL, "ethereumWalletPrepare_create failed: %d.", result);
 		//return -1;
-        boat_throw(result, ethereum_storeread_demo_catch);
+        boat_throw(result, ethereum_erc20_demo_catch);
 	}
     BoatLog(BOAT_LOG_NORMAL,"    execute wallet init");
     g_ethereum_wallet_ptr = BoatEthWalletInit(keypairIndex,networkIndex);
     if(g_ethereum_wallet_ptr == NULL){
         // BoatLog(BOAT_LOG_NORMAL,"BoatEthWalletInit fail");
-        boat_throw(BOAT_ERROR, ethereum_storeread_demo_catch);
+        boat_throw(BOAT_ERROR, ethereum_erc20_demo_catch);
     }
     /* step-3: execute 'usdc transfer' */
     BoatLog(BOAT_LOG_NORMAL,"    execute usdc transfer");
-    result = ethereum_call_usdc_transfer(g_ethereum_wallet_ptr);
+    result = ethereum_call_erc20_transfer(g_ethereum_wallet_ptr);
     if (result != BOAT_SUCCESS)
     {
         //BoatLog(BOAT_LOG_NORMAL, "ethereum readStore access Failed: %d.", result);
@@ -251,7 +251,7 @@ int main(int argc, char *argv[])
     {
         //BoatLog(BOAT_LOG_NORMAL, "ethereum readStore access Passed.");
     }
-    boat_catch(ethereum_storeread_demo_catch)
+    boat_catch(ethereum_erc20_demo_catch)
     {
     }
     BoatEthWalletDeInit(g_ethereum_wallet_ptr);
